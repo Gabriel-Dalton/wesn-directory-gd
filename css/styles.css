@@ -260,10 +260,13 @@ dialog#place-detail {
 }
 
 .hero-points li::before {
-  content: "•";
-  color: var(--color-accent);
-  font-size: 1.35rem;
-  line-height: 1;
+  content: "";
+  width: 0.72rem;
+  height: 0.72rem;
+  margin-top: 0.42rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  flex: 0 0 auto;
 }
 
 .sidebar label,
