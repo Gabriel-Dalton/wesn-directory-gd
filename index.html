@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A senior-friendly map of community amenities across Vancouver — clinics, pharmacies, libraries, community centres, washrooms, parks and more. Built for the West End Seniors' Network." />
-    <meta name="theme-color" content="#0b4c7a" />
+    <meta name="theme-color" content="#0a3522" />
     <title>Vancouver Amenities Map · WESN</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -17,10 +17,15 @@
 
     <header class="site-header" role="banner">
       <div class="brand">
-        <span class="brand-mark" aria-hidden="true">📍</span>
-        <div>
+        <picture class="brand-logo-wrap">
+          <source srcset="assets/wesn-logo.avif" type="image/avif" />
+          <source srcset="assets/wesn-logo.webp" type="image/webp" />
+          <img class="brand-logo" src="assets/wesn-logo-fallback.svg" alt="West End Seniors' Network logo" width="3375" height="1102" />
+        </picture>
+        <div class="brand-copy">
+          <p class="brand-eyebrow">West End Seniors' Network</p>
           <h1>Vancouver Amenities Map</h1>
-          <p class="tagline">Find services and places near you</p>
+          <p class="tagline">Find trusted services, essentials, and community spaces near you.</p>
         </div>
       </div>
       <nav class="site-nav" aria-label="Primary">
@@ -28,19 +33,37 @@
           A<span aria-hidden="true">+</span>
           <span class="visually-hidden">Increase text size</span>
         </button>
+        <a href="https://www.wesn.ca/" target="_blank" rel="noopener">
+          Visit WESN
+          <span class="visually-hidden">(opens in new window)</span>
+        </a>
         <a href="#about">About</a>
       </nav>
     </header>
 
     <main class="layout">
       <aside class="sidebar" aria-label="Filters and search">
-        <section class="search-section">
+        <section class="sidebar-hero">
+          <p class="section-eyebrow">Senior-friendly community directory</p>
+          <h2>Browse Vancouver amenities with clearer search and simpler filters.</h2>
+          <p>
+            Built for WESN members to quickly find health services, groceries,
+            libraries, washrooms, and other everyday destinations.
+          </p>
+          <ul class="hero-points" aria-label="Highlights">
+            <li>Accessible type and high-contrast controls</li>
+            <li>Neighbourhood filtering for faster browsing</li>
+            <li>Directions links for each location</li>
+          </ul>
+        </section>
+
+        <section class="search-section surface-card">
           <label for="search-input">Search by name or address</label>
           <input id="search-input" type="search" autocomplete="off"
                  placeholder="e.g. pharmacy, Davie Street, Library" />
         </section>
 
-        <section class="area-section">
+        <section class="area-section surface-card">
           <label for="area-select">Neighbourhood</label>
           <select id="area-select">
             <option value="all">All of Vancouver</option>
@@ -50,7 +73,7 @@
           </select>
         </section>
 
-        <section class="filter-section" aria-labelledby="filter-heading">
+        <section class="filter-section surface-card" aria-labelledby="filter-heading">
           <h2 id="filter-heading">What are you looking for?</h2>
           <div id="category-list" class="category-list" role="group" aria-labelledby="filter-heading">
             <p class="loading">Loading categories…</p>
@@ -61,7 +84,8 @@
           </div>
         </section>
 
-        <section class="status-section" aria-live="polite">
+        <section class="status-section surface-card" aria-live="polite">
+          <p class="status-label">Map status</p>
           <p id="result-count" class="result-count">Loading places…</p>
         </section>
       </aside>
@@ -81,13 +105,19 @@
     </dialog>
 
     <section id="about" class="about" aria-labelledby="about-heading">
-      <h2 id="about-heading">About this map</h2>
+      <p class="section-eyebrow">About this tool</p>
+      <h2 id="about-heading">A calmer, more accessible way to find nearby services.</h2>
       <p>
         This map helps people — especially seniors — find services and places
         across Vancouver. It uses open data from the
         <a href="https://opendata.vancouver.ca/" target="_blank" rel="noopener">City of Vancouver Open Data Portal</a>
         and is maintained for the
         <a href="https://www.wesn.ca/" target="_blank" rel="noopener">West End Seniors' Network</a>.
+      </p>
+      <p>
+        The interface prioritizes readable type, clear controls, and quick
+        directions so members can browse with less friction on desktop, tablet,
+        or phone.
       </p>
       <p>
         Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
@@ -97,6 +127,7 @@
 
     <footer class="site-footer">
       <p>&copy; <span id="year"></span> West End Seniors' Network. Data sourced from the City of Vancouver.</p>
+      <p>Designed to reflect WESN's community-first, accessibility-focused brand.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
