@@ -6,6 +6,7 @@
   document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("year").textContent = new Date().getFullYear();
     setupTextSizeToggle();
+    setupSidebarDrawer();
 
     const map = window.AmenityMap.init("map");
 
@@ -51,23 +52,42 @@
     }
 
     // First-load fit: zoom to currently visible markers (after filters apply).
-    setTimeout(() => window.AmenityMap.fitToVisible(), 50);
+    setTimeout(() => {
+      window.AmenityMap.fitToVisible();
+      // Leaflet needs invalidateSize after layout shifts (e.g. mobile drawer).
+      if (map && map.invalidateSize) map.invalidateSize();
+    }, 50);
   });
 
   function setStatus(text) {
     const el = document.getElementById("result-count");
     if (el) el.textContent = text;
+    updateToggleBadge(null);
   }
 
   function updateResultCount(n) {
     const el = document.getElementById("result-count");
-    if (!el) return;
-    if (n === 0) {
-      el.textContent =
-        "No places match the current filters. Try selecting more categories or clearing the search.";
-    } else {
-      el.textContent = `${n.toLocaleString()} place${n === 1 ? "" : "s"} shown`;
+    if (el) {
+      if (n === 0) {
+        el.textContent =
+          "No places match the current filters. Try selecting more categories or clearing the search.";
+      } else {
+        el.textContent = `${n.toLocaleString()} place${n === 1 ? "" : "s"} shown`;
+      }
     }
+    updateToggleBadge(n);
+  }
+
+  function updateToggleBadge(n) {
+    const badge = document.getElementById("filters-toggle-count");
+    if (!badge) return;
+    if (n === null || n === undefined || Number.isNaN(n)) {
+      badge.classList.remove("is-visible");
+      badge.textContent = "";
+      return;
+    }
+    badge.textContent = n.toLocaleString();
+    badge.classList.add("is-visible");
   }
 
   /** Toggle a 'text-large' root class to bump font-size for low-vision users. */
@@ -86,5 +106,72 @@
         localStorage.setItem("wesn-amenities-text-large", isOn ? "1" : "0");
       } catch (_) { /* ignore */ }
     });
+  }
+
+  /**
+   * Mobile-only: bottom-sheet style drawer for filters/search.
+   * The sidebar is always present in the DOM; on small screens CSS hides it
+   * by translating it off-screen until `is-open` is added.
+   */
+  function setupSidebarDrawer() {
+    const toggle = document.getElementById("filters-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    const closeBtn = document.getElementById("sidebar-close");
+    const applyBtn = document.getElementById("sidebar-apply");
+    if (!toggle || !sidebar || !backdrop) return;
+
+    const open = () => {
+      sidebar.classList.add("is-open");
+      backdrop.hidden = false;
+      // next frame so the transition runs
+      requestAnimationFrame(() => backdrop.classList.add("is-visible"));
+      toggle.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      // Move focus to the close button for keyboard users.
+      setTimeout(() => closeBtn && closeBtn.focus(), 50);
+    };
+
+    const close = () => {
+      sidebar.classList.remove("is-open");
+      backdrop.classList.remove("is-visible");
+      toggle.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      // Hide backdrop after transition so it doesn't catch clicks.
+      setTimeout(() => {
+        if (!backdrop.classList.contains("is-visible")) backdrop.hidden = true;
+      }, 250);
+      toggle.focus();
+    };
+
+    toggle.addEventListener("click", () => {
+      const isOpen = sidebar.classList.contains("is-open");
+      if (isOpen) close();
+      else open();
+    });
+
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    if (applyBtn) applyBtn.addEventListener("click", close);
+    backdrop.addEventListener("click", close);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && sidebar.classList.contains("is-open")) {
+        close();
+      }
+    });
+
+    // If viewport widens past the mobile breakpoint, ensure drawer state resets.
+    const mq = window.matchMedia("(min-width: 881px)");
+    const handle = () => {
+      if (mq.matches && sidebar.classList.contains("is-open")) {
+        sidebar.classList.remove("is-open");
+        backdrop.classList.remove("is-visible");
+        backdrop.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+      }
+    };
+    if (mq.addEventListener) mq.addEventListener("change", handle);
+    else if (mq.addListener) mq.addListener(handle);
   }
 })();
