@@ -169,7 +169,7 @@ button {
 
 .site-header h1 {
   margin: 0;
-  font-size: clamp(1.65rem, 2.8vw, 2.4rem);
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem);
   font-weight: 700;
   line-height: 1.1;
   max-width: 14ch;
@@ -420,7 +420,9 @@ dialog#place-detail {
 /* Map */
 .map {
   width: 100%;
-  min-height: clamp(var(--map-min-height), 65vh, var(--map-max-height));
+  min-height: var(--map-min-height);
+  height: calc(100vh - 10rem);
+  max-height: var(--map-max-height);
   background: var(--color-bg-soft);
   border-radius: 28px;
   overflow: hidden;
