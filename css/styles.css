@@ -8,9 +8,11 @@
   --color-primary-bright: #0f4830;
   --color-primary-rgb: 10, 53, 34;
   --color-primary-soft: #e4efe8;
+  --color-primary-soft-translucent: rgba(228, 239, 232, 0.95);
   --color-accent: #b78326;
   --color-accent-rgb: 183, 131, 38;
   --color-accent-soft: #f6ebd3;
+  --color-accent-soft-translucent: rgba(246, 235, 211, 0.78);
   --color-accent-overlay: rgba(var(--color-accent-rgb), 0.12);
   --color-accent-overlay-strong: rgba(var(--color-accent-rgb), 0.22);
   --color-primary-border: rgba(var(--color-primary-rgb), 0.14);
@@ -23,6 +25,7 @@
   --color-bg-soft: #edf2ec;
   --color-surface: #ffffff;
   --color-surface-translucent: rgba(255, 255, 255, 0.94);
+  --color-surface-translucent-strong: rgba(255, 255, 255, 0.96);
   --color-border: #cad5cc;
   --color-focus: #f0b64d;
   --shadow-1: 0 1px 2px rgba(8, 30, 20, 0.08);
@@ -133,11 +136,11 @@ button {
 }
 
 .brand-logo-wrap {
-  width: 84px;
-  height: 84px;
-  background: var(--color-surface-translucent);
-  border-radius: 22px;
-  padding: 0.6rem;
+  width: 168px;
+  aspect-ratio: 3375 / 1102;
+  background: var(--color-surface-translucent-strong);
+  border-radius: 26px;
+  padding: 0.7rem 0.95rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
   flex: 0 0 auto;
 }
@@ -250,7 +253,7 @@ dialog#place-detail {
 .sidebar-hero {
   padding: 1.4rem;
   background:
-    linear-gradient(180deg, rgba(228, 239, 232, 0.95), var(--color-surface-translucent)),
+    linear-gradient(180deg, var(--color-primary-soft-translucent), var(--color-surface-translucent)),
     var(--color-surface);
 }
 
@@ -407,7 +410,7 @@ dialog#place-detail {
 
 .status-section {
   background:
-    linear-gradient(180deg, rgba(246, 235, 211, 0.78), rgba(255, 255, 255, 0.96)),
+    linear-gradient(180deg, var(--color-accent-soft-translucent), var(--color-surface-translucent-strong)),
     var(--color-surface);
 }
 
@@ -566,10 +569,7 @@ dialog#place-detail::backdrop {
     align-items: flex-start;
   }
 
-  .brand-logo-wrap {
-    width: 72px;
-    height: 72px;
-  }
+  .brand-logo-wrap { width: 144px; }
 
   .site-header h1 { font-size: 1.4rem; }
   .tagline { font-size: 0.95rem; }
