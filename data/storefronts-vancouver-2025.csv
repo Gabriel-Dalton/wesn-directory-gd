@@ -1,0 +1,143 @@
+OBJECTID,Store_ID,Address,Unit,Civic_Numb,Street,Address_Ab,Business_N,Year_Recor,General_Bu,BIA_Name,ID_Year,Local_Area,Sub_Category,Sub_Category1
+3,11113,1311 HOWE ST,104,1311,HOWE ST,1311 HOWE ST,Hair Production Studio,2025,Service Commercial,Downtown Vancouver BIA,11113_2025,Downtown,Beauty & Wellness,Beauty & Wellness
+4,7587,1037 DAVIE ST,N/A,1037,DAVIE ST,1037 DAVIE ST,Davie Village Optometry,2025,Service Commercial,West End BIA,7587_2025,West End,Optometry,Optometry
+21,7663,1216 DAVIE ST,N/A,1216,DAVIE ST,1216 DAVIE ST,Davie Village Bakery,2025,Convenience Goods,West End BIA,7663_2025,West End,Bakery & Cafe,Bakery & Cafe
+25,3839,179 KEEFER PLACE,N/A,179,KEEFER PLACE,179 KEEFER PLACE,T & T Supermarket,2025,Convenience Goods,N/A,3839_2025,Downtown,Grocery Store,Grocery Store
+29,10554,622 BUTE ST,N/A,622,BUTE ST,622 BUTE ST,Coal Harbour Health Centre,2025,Service Commercial,Downtown Vancouver BIA,10554_2025,Downtown,Clinic,Clinic
+40,7593,1051 DAVIE ST,N/A,1051,DAVIE ST,1051 DAVIE ST,RBC Royal Bank,2025,Service Commercial,West End BIA,7593_2025,West End,Bank,Bank
+42,2689,898 W PENDER ST,N/A,898,W PENDER ST,898 W PENDER ST,Vancity,2025,Service Commercial,Downtown Vancouver BIA,2689_2025,Downtown,Bank,Bank
+43,2903,1199 W PENDER ST,N/A,1199,W PENDER ST,1199 W PENDER ST,7-Eleven,2025,Convenience Goods,Downtown Vancouver BIA,2903_2025,Downtown,Supermarket,Supermarket
+60,10869,700 W GEORGIA ST,N/A,700,W GEORGIA ST,700 W GEORGIA ST,TD Canada Trust,2025,Service Commercial,Downtown Vancouver BIA,10869_2025,Downtown,Bank,Bank
+61,7879,1175 DENMAN ST,N/A,1175,DENMAN ST,1175 DENMAN ST,Medical Centre Pharmacy,2025,Convenience Goods,West End BIA,7879_2025,West End,Pharmacy,Pharmacy
+66,3424,126 W CORDOVA ST,N/A,126,W CORDOVA ST,126 W CORDOVA ST,W Dental,2025,Service Commercial,Hastings Crossing BIA,3424_2025,Downtown,Dentist,Dentist
+72,3466,159 W HASTINGS ST,N/A,159,W HASTINGS ST,159 W HASTINGS ST,Pure Bread,2025,Convenience Goods,Hastings Crossing BIA,3466_2025,Downtown,Bakery & Cafe,Bakery & Cafe
+87,3393,199 E HASTINGS ST,N/A,199,E HASTINGS ST,199 E HASTINGS ST,Owl Drugs,2025,Convenience Goods,Hastings Crossing BIA,3393_2025,Downtown,Pharmacy,Pharmacy
+91,11125,1128 RICHARDS ST,N/A,1128,RICHARDS ST,1128 RICHARDS ST,Greenwoods Dental Centre,2025,Service Commercial,Downtown Vancouver BIA,11125_2025,Downtown,Dentist,Dentist
+95,8403,1262 HOMER ST,N/A,1262,HOMER ST,1262 HOMER ST,Chez Nous Bakery & Cafe,2025,Convenience Goods,Yaletown BIA,8403_2025,Downtown,Bakery & Cafe,Bakery & Cafe
+133,3404,223 MAIN ST,N/A,223,MAIN ST,227 MAIN ST,Pier Health Resource Centre,2025,Service Commercial,Hastings Crossing BIA,3404_2025,Downtown,Pharmacy,Pharmacy
+146,7798,940 DENMAN ST,N/A,940,DENMAN ST,940 DENMAN ST,Denman Market,2025,Convenience Goods,West End BIA,7798_2025,West End,Convenience Store,Convenience Store
+208,1215,118 KEEFER ST,N/A,118,KEEFER ST,118 KEEFER ST,Keefer Medical Clinic,2025,Service Commercial,Chinatown BIA,1215_2025,Downtown,Clinic,Clinic
+217,10738,139 KEEFER ST,N/A,139,KEEFER ST,139 KEEFER ST,Caveman Bakery,2025,Convenience Goods,Chinatown BIA,10738_2025,Downtown,Bakery & Cafe,Bakery & Cafe
+269,8400,1238 HOMER ST,N/A,1238,HOMER ST,1238 HOMER ST,Yaletown Chiropractic,2025,Service Commercial,Yaletown BIA,8400_2025,Downtown,Health & Wellness,Health & Wellness
+270,1977,1939 CORNWALL AV,N/A,1939,CORNWALL AV,1939 CORNWALL AV,Bakery by Jany,2025,Convenience Goods,N/A,1977_2025,Kitsilano,Bakery & Cafe,Bakery & Cafe
+281,11115,797 HOWE ST,N/A,797,HOWE ST,797 HOWE ST,Howe Dental,2025,Service Commercial,Downtown Vancouver BIA,11115_2025,Downtown,Dentist,Dentist
+283,7674,1236 DAVIE ST,N/A,1236,DAVIE ST,1236 DAVIE ST,Davie Dental Clinic,2025,Service Commercial,West End BIA,7674_2025,West End,Dentist,Dentist
+292,7698,1669 DAVIE ST,N/A,1669,DAVIE ST,1669 DAVIE ST,Scotiabank,2025,Service Commercial,West End BIA,7698_2025,West End,Bank,Bank
+296,8313,1060 HAMILTON ST,N/A,1060,HAMILTON ST,1060 HAMILTON ST,Smile Studio,2025,Service Commercial,Yaletown BIA,8313_2025,Downtown,Dentist,Dentist
+298,7849,1057 DENMAN ST,N/A,1057,DENMAN ST,1057 DENMAN ST,Kin's Farm Market,2025,Convenience Goods,West End BIA,7849_2025,West End,Produce Store,Produce Store
+301,2803,675 W HASTINGS ST,N/A,675,W HASTINGS ST,675 W HASTINGS ST,RBC Royal Bank,2025,Service Commercial,Downtown Vancouver BIA,2803_2025,Downtown,Bank,Bank
+312,10744,142 WATER ST,N/A,142,WATER ST,142 WATER ST,Vancouver Film School,2025,Service Commercial,Gastown BIA,10744_2025,Downtown,College,College
+355,2206,1133 ALBERNI ST,N/A,1133,ALBERNI ST,1133 ALBERNI ST,Urban Fare,2025,Convenience Goods,Downtown Vancouver BIA,2206_2025,West End,Grocery Store,Grocery Store
+357,10553,689 THURLOW ST,N/A,689,THURLOW ST,689 THURLOW ST,49th Parallel Coffee Roasters,2025,Food & Beverage,Downtown Vancouver BIA,10553_2025,Downtown,Food & Beverage,Food & Beverage
+376,9057,1743 ROBSON ST,210,1743,ROBSON ST,1743 ROBSON ST,Willow Dental Care West End,2025,Service Commercial,West End BIA,9057_2025,West End,Dentist,Dentist
+377,2690,310 ROBSON ST,N/A,310,ROBSON ST,310 ROBSON ST,7-Eleven,2025,Convenience Goods,Downtown Vancouver BIA,2690_2025,Downtown,Supermarket,Supermarket
+379,8374,1108 HOMER ST,N/A,1108,HOMER ST,1108 HOMER ST,Scotiabank,2025,Service Commercial,Yaletown BIA,8374_2025,Downtown,Bank,Bank
+410,2587,1010 HORNBY ST,N/A,1010,HORNBY ST,1010 HORNBY ST,RBC Royal Bank,2025,Service Commercial,Downtown Vancouver BIA,2587_2025,Downtown,Bank,Bank
+435,1969,1891 CORNWALL AV,N/A,1891,CORNWALL AV,1891 CORNWALL AV,Kits Point Dental,2025,Service Commercial,N/A,1969_2025,Kitsilano,Dentist,Dentist
+488,1281,515 MAIN ST,101,515,MAIN ST,515 MAIN ST,Corning Drugs,2025,Convenience Goods,Chinatown BIA,1281_2025,Downtown,Pharmacy,Pharmacy
+491,7621,1123 DAVIE ST,N/A,1123,DAVIE ST,1123 DAVIE ST,Care Point Medical & Wellness,2025,Service Commercial,West End BIA,7621_2025,West End,Clinic,Clinic
+492,10791,90 SMITHE ST,N/A,90,SMITHE ST,90 SMITHE ST,Max Dental,2025,Service Commercial,N/A,10791_2025,Downtown,Dentist,Dentist
+493,11034,1431 CONTINENTAL ST,201,1431,CONTINENTAL ST,1431 CONTINENTAL ST,London Drugs,2025,Convenience Goods,N/A,11034_2025,Downtown,Pharmacy,Pharmacy
+498,8501,1251 PACIFIC BOULEVARD,N/A,1251,PACIFIC BOULEVARD,1251 PACIFIC BOULEVARD,The Pharmacy,2025,Convenience Goods,Yaletown BIA,8501_2025,Downtown,Pharmacy,Pharmacy
+511,2369,609 GRANVILLE ST,N/A,609,GRANVILLE ST,609 GRANVILLE ST,Meinhardt Fine Foods,2025,Convenience Goods,Downtown Vancouver BIA,2369_2025,Downtown,Gourmet Grocery Store,Gourmet Grocery Store
+526,7623,1125 DAVIE ST,N/A,1125,DAVIE ST,1125 DAVIE ST,Shoppers Drug Mart,2025,Convenience Goods,West End BIA,7623_2025,West End,Pharmacy,Pharmacy
+536,1282,515 MAIN ST,104,515,MAIN ST,515 MAIN ST,Main Street Medical Group,2025,Service Commercial,Chinatown BIA,1282_2025,Downtown,Clinic,Clinic
+552,2330,855 DAVIE ST,N/A,855,DAVIE ST,855 DAVIE ST,Breka Bakery & Cafe,2025,Convenience Goods,Downtown Vancouver BIA,2330_2025,Downtown,Bakery & Cafe,Bakery & Cafe
+559,11028,1423 CONTINENTAL ST,N/A,1423,CONTINENTAL ST,1423 CONTINENTAL ST,Fresh St. Market,2025,Convenience Goods,N/A,11028_2025,Downtown,Grocery Store,Grocery Store
+577,7705,1690 DAVIE ST,N/A,1690,DAVIE ST,1690 DAVIE ST,TD Canada Trust,2025,Service Commercial,West End BIA,7705_2025,West End,Bank,Bank
+589,10890,783 RICHARDS ST,N/A,783,RICHARDS ST,783 RICHARDS ST,CIBC,2025,Service Commercial,Downtown Vancouver BIA,10890_2025,Downtown,Bank,Bank
+594,2727,489 ROBSON ST,N/A,489,ROBSON ST,489 ROBSON ST,IGA,2025,Convenience Goods,Downtown Vancouver BIA,2727_2025,Downtown,Grocery Store,Grocery Store
+598,7769,821 DENMAN ST,N/A,821,DENMAN ST,821 DENMAN ST,Breka Bakery & Cafe,2025,Convenience Goods,West End BIA,7769_2025,West End,Bakery & Cafe,Bakery & Cafe
+683,11029,1401 GRANVILLE ST,N/A,1401,GRANVILLE ST,1401 GRANVILLE ST,Monzo,2025,Food & Beverage,N/A,11029_2025,Downtown,Food & Beverage,Food & Beverage
+696,3350,12 E HASTINGS ST,N/A,12,E HASTINGS ST,12 E HASTINGS ST,Portland Community Dental Clinic,2025,Service Commercial,Hastings Crossing BIA,3350_2025,Downtown,Dentist,Dentist
+724,7683,1255 DAVIE ST,N/A,1255,DAVIE ST,1255 DAVIE ST,Your Independent Grocer,2025,Convenience Goods,West End BIA,7683_2025,West End,Grocery Store,Grocery Store
+731,11401,1156 HORNBY ST,N/A,1156,HORNBY ST,1156 HORNBY ST,West Coast Medical Imaging,2025,Service Commercial,Downtown Vancouver BIA,11401_2025,Downtown,Lab,Lab
+820,7749,683 DENMAN ST,N/A,683,DENMAN ST,683 DENMAN ST,Georgia Medical Clinic,2025,Service Commercial,West End BIA,7749_2025,West End,Clinic,Clinic
+838,1226,178 KEEFER ST,N/A,178,KEEFER ST,178 KEEFER ST,Pharmatrust Pharmacy,2025,Convenience Goods,Chinatown BIA,1226_2025,Downtown,Pharmacy,Pharmacy
+903,8302,1004 HAMILTON ST,N/A,1004,HAMILTON ST,1004 HAMILTON ST,Bank of Montreal,2025,Service Commercial,Yaletown BIA,8302_2025,Downtown,Bank,Bank
+914,10409,1285 HORNBY ST,N/A,1285,HORNBY ST,1285 HORNBY ST,Pure Integrative Pharmacy,2025,Convenience Goods,Downtown Vancouver BIA,10409_2025,Downtown,Pharmacy,Pharmacy
+919,7672,1232 DAVIE ST,N/A,1232,DAVIE ST,1232 DAVIE ST,Davie Pharmacy,2025,Convenience Goods,West End BIA,7672_2025,West End,Pharmacy,Pharmacy
+937,2389,710 GRANVILLE ST,N/A,710,GRANVILLE ST,710 GRANVILLE ST,London Drugs,2025,Convenience Goods,Downtown Vancouver BIA,2389_2025,Downtown,Pharmacy,Pharmacy
+1056,3324,333 ABBOTT ST,N/A,333,ABBOTT ST,333 ABBOTT ST,Nesters Market,2025,Convenience Goods,Hastings Crossing BIA,3324_2025,Downtown,Grocery Store,Grocery Store
+1099,8508,1272 PACIFIC BOULEVARD,N/A,1272,PACIFIC BOULEVARD,1272 PACIFIC BOULEVARD,CPR Cell Phone Repair,2025,Service Commercial,Yaletown BIA,8508_2025,Downtown,Computer & Mobile Phone Service,Computer & Mobile Phone Service
+1101,8011,1766 ROBSON ST,N/A,1766,ROBSON ST,1766 ROBSON ST,Safeway,2025,Convenience Goods,West End BIA,8011_2025,West End,Grocery Store,Grocery Store
+1105,11317,875 W HASTINGS ST,N/A,875,W HASTINGS ST,875 W HASTINGS ST,Inspire Dental Group,2025,Service Commercial,Downtown Vancouver BIA,11317_2025,Downtown,Dentist,Dentist
+1112,8975,205 SMITHE ST,N/A,205,SMITHE ST,205 SMITHE ST,Yaletown Dental Boutique,2025,Service Commercial,Yaletown BIA,8975_2025,Downtown,Dentist,Dentist
+1120,10763,1079 MARINASIDE CR,N/A,1079,MARINASIDE CR,1079 MARINASIDE CR,Vancouver Downtown Pet Hospital,2025,Service Commercial,N/A,10763_2025,Downtown,Vet,Vet
+1162,7693,1611 DAVIE ST,N/A,1611,DAVIE ST,1611 DAVIE ST,Safeway,2025,Convenience Goods,West End BIA,7693_2025,West End,Grocery Store,Grocery Store
+1175,11236,891 HOMER ST,N/A,891,HOMER ST,891 HOMER ST,Per Se Social Corner,2025,Food & Beverage,Downtown Vancouver BIA,11236_2025,Downtown,Food & Beverage,Food & Beverage
+1176,10799,919 EXPO BLVD,N/A,919,EXPO BLVD,919 EXPO BLVD,Aarm Dental Group,2025,Service Commercial,N/A,10799_2025,Downtown,Dentist,Dentist
+1232,8312,1050 HAMILTON ST,N/A,1050,HAMILTON ST,1050 HAMILTON ST,Yaletown Dentistry,2025,Service Commercial,Yaletown BIA,8312_2025,Downtown,Dentist,Dentist
+1257,1213,110 KEEFER ST,N/A,110,KEEFER ST,110 KEEFER ST,Keefer Medical Clinic,2025,Service Commercial,Chinatown BIA,1213_2025,Downtown,Clinic,Clinic
+1280,10919,1128 W HASTINGS ST,601,1128,W HASTINGS ST,1128 W HASTINGS ST,Presentation Centre,2025,Service Commercial,Downtown Vancouver BIA,10919_2025,Downtown,Other Services,Other Services
+1284,8899,1030 DENMAN ST,N/A,1030,DENMAN ST,1030 DENMAN ST,No Frills,2025,Convenience Goods,West End BIA,8899_2025,West End,Grocery Store,Grocery Store
+1288,7699,1670 DAVIE ST,N/A,1670,DAVIE ST,1670 DAVIE ST,English Bay Dental,2025,Service Commercial,West End BIA,7699_2025,West End,Dentist,Dentist
+1291,2592,1065 HORNBY ST,N/A,1065,HORNBY ST,1065 HORNBY ST,Wall Centre Dental,2025,Service Commercial,Downtown Vancouver BIA,2592_2025,Downtown,Dentist,Dentist
+1293,2248,909 BURRARD ST,110,909,BURRARD ST,909 BURRARD ST,IGA,2025,Convenience Goods,Downtown Vancouver BIA,2248_2025,West End,Grocery Store,Grocery Store
+1303,2520,1284 GRANVILLE ST,N/A,1284,GRANVILLE ST,1284 GRANVILLE ST,Yale Pharmacy,2025,Convenience Goods,Downtown Vancouver BIA,2520_2025,Downtown,Pharmacy,Pharmacy
+1311,5367,1149 MAIN ST,N/A,1149,MAIN ST,1149 MAIN ST,Main Station Pharmacy,2025,Convenience Goods,N/A,5367_2025,Downtown,Pharmacy,Pharmacy
+1318,8289,402 DAVIE ST,N/A,402,DAVIE ST,402 DAVIE ST,JJ Bean,2025,Food & Beverage,Yaletown BIA,8289_2025,Downtown,Food & Beverage,Food & Beverage
+1331,8983,1119 HAMILTON ST,N/A,1119,HAMILTON ST,1119 HAMILTON ST,Luigi & Sons Butcher Shop,2025,Convenience Goods,Yaletown BIA,8983_2025,Downtown,Meat Shop,Meat Shop
+1332,11318,400 BURRARD ST,N/A,400,BURRARD ST,400 BURRARD ST,CIBC,2025,Service Commercial,Downtown Vancouver BIA,11318_2025,Downtown,Bank,Bank
+1342,8918,1185 W GEORGIA ST,103,1185,W GEORGIA ST,1185 W GEORGIA ST,Georgia Dental,2025,Service Commercial,Downtown Vancouver BIA,8918_2025,Downtown,Dentist,Dentist
+1382,8362,1006 HOMER ST,N/A,1006,HOMER ST,1006 HOMER ST,Shoppers Drug Mart,2025,Convenience Goods,Yaletown BIA,8362_2025,Downtown,Pharmacy,Pharmacy
+1424,10934,748 BURRARD ST,N/A,748,BURRARD ST,748 BURRARD ST,Shoppers Drug Mart,2025,Convenience Goods,Downtown Vancouver BIA,10934_2025,Downtown,Pharmacy,Pharmacy
+1433,8272,120 DAVIE ST,N/A,120,DAVIE ST,120 DAVIE ST,Coast Capital Savings,2025,Service Commercial,Yaletown BIA,8272_2025,Downtown,Financial Advisors,Financial Advisors
+1440,8905,817 W HASTINGS ST,N/A,817,W HASTINGS ST,817 W HASTINGS ST,Ideal Care Pharmacy,2025,Convenience Goods,Downtown Vancouver BIA,8905_2025,Downtown,Pharmacy,Pharmacy
+1474,10562,401 BURRARD ST,100,401,BURRARD ST,401 BURRARD ST,Freshii,2025,Food & Beverage,Downtown Vancouver BIA,10562_2025,Downtown,Food & Beverage,Food & Beverage
+1488,7799,945 DENMAN ST,N/A,945,DENMAN ST,945 DENMAN ST,RBC Royal Bank,2025,Service Commercial,West End BIA,7799_2025,West End,Bank,Bank
+1506,10929,595 BURRARD ST,N/A,595,BURRARD ST,595 BURRARD ST,BMO,2025,Service Commercial,Downtown Vancouver BIA,10929_2025,Downtown,Bank,Bank
+1517,1100,1 E PENDER ST,N/A,1,E PENDER ST,1 E PENDER ST,Jack W Chow Insurance Services,2025,Service Commercial,Chinatown BIA,1100_2025,Downtown,Insurance Company,Insurance Company
+1593,2368,586 GRANVILLE ST,N/A,586,GRANVILLE ST,586 GRANVILLE ST,Shoppers Drug Mart,2025,Convenience Goods,Downtown Vancouver BIA,2368_2025,Downtown,Pharmacy,Pharmacy
+1645,8629,515 W HASTINGS ST,L19,515,W HASTINGS ST,515 W HASTINGS ST,Harbour Centre Dental,2025,Service Commercial,Downtown Vancouver BIA,8629_2025,Downtown,Dentist,Dentist
+1661,8914,1036 W GEORGIA ST,N/A,1036,W GEORGIA ST,1036 W GEORGIA ST,CIBC,2025,Service Commercial,Downtown Vancouver BIA,8914_2025,West End,Bank,Bank
+1678,8707,1202 RICHARDS ST,1202,1202,RICHARDS ST,1202 RICHARDS ST,Choices Markets,2025,Convenience Goods,Downtown Vancouver BIA,8707_2025,Downtown,Supermarket,Supermarket
+1689,9012,510 BURRARD ST,N/A,510,BURRARD ST,510 BURRARD ST,Scotiabank,2025,Service Commercial,Downtown Vancouver BIA,9012_2025,Downtown,Bank,Bank
+1758,9008,1102 W PENDER ST,N/A,1102,W PENDER ST,1102 W PENDER ST,Downtown Vancouver Clinic,2025,Service Commercial,Downtown Vancouver BIA,9008_2025,Downtown,Clinic,Clinic
+1860,2711,382 ROBSON ST,N/A,382,ROBSON ST,382 ROBSON ST,Pelicana Chicken,2025,Food & Beverage,Downtown Vancouver BIA,2711_2025,Downtown,Food & Beverage,Food & Beverage
+1875,11229,711 RICHARDS ST,N/A,711,RICHARDS ST,711 RICHARDS ST,Vancouver City Centre Dental,2025,Service Commercial,Downtown Vancouver BIA,11229_2025,Downtown,Dentist,Dentist
+1882,10921,451 BUTE ST,N/A,451,BUTE ST,451 BUTE ST,A Smile Above,2025,Service Commercial,Downtown Vancouver BIA,10921_2025,Downtown,Dentist,Dentist
+1906,10920,305 BUTE ST,N/A,305,BUTE ST,305 BUTE ST,Urban Fare,2025,Convenience Goods,Downtown Vancouver BIA,10920_2025,Downtown,Grocery Store,Grocery Store
+1908,2839,1177 W HASTINGS ST,N/A,1177,W HASTINGS ST,1177 W HASTINGS ST,TD Canada Trust,2025,Service Commercial,Downtown Vancouver BIA,2839_2025,Downtown,Bank,Bank
+1914,10889,993 SEYMOUR ST,N/A,993,SEYMOUR ST,993 SEYMOUR ST,Aarm Dental Group,2025,Service Commercial,Downtown Vancouver BIA,10889_2025,Downtown,Dentist,Dentist
+1934,2261,1200 BURRARD ST,N/A,1200,BURRARD ST,1200 BURRARD ST,TD Canada Trust,2025,Service Commercial,Downtown Vancouver BIA,2261_2025,Downtown,Bank,Bank
+1949,8920,1185 W GEORGIA ST,102,1185,W GEORGIA ST,1185 W GEORGIA ST,Hibo Sushi,2025,Food & Beverage,Downtown Vancouver BIA,8920_2025,Downtown,Food & Beverage,Food & Beverage
+1955,2667,1070 HOWE ST,N/A,1070,HOWE ST,1070 HOWE ST,Pharmasave,2025,Convenience Goods,Downtown Vancouver BIA,2667_2025,Downtown,Pharmacy,Pharmacy
+1956,1296,601 MAIN ST,N/A,601,MAIN ST,601 MAIN ST,Bank of Montreal,2025,Service Commercial,Chinatown BIA,1296_2025,Downtown,Bank,Bank
+1957,7697,1665 DAVIE ST,N/A,1665,DAVIE ST,1665 DAVIE ST,BC Liquor Store,2025,Convenience Goods,West End BIA,7697_2025,West End,Alcohol Retail,Alcohol Retail
+1962,2590,1062 HORNBY ST,N/A,1062,HORNBY ST,1062 HORNBY ST,Moca eyelash and nail,2025,Service Commercial,Downtown Vancouver BIA,2590_2025,Downtown,Beauty & Wellness,Beauty & Wellness
+1970,8275,130 DAVIE ST,N/A,130,DAVIE ST,130 DAVIE ST,FYiDoctors,2025,Service Commercial,Yaletown BIA,8275_2025,Downtown,Optometry,Optometry
+1972,3400,101 MAIN ST,N/A,101,MAIN ST,101 MAIN ST,Deacon's Corner,2025,Food & Beverage,Hastings Crossing BIA,3400_2025,Downtown,Food & Beverage,Food & Beverage
+1973,8917,768 BUTE ST,N/A,768,BUTE ST,768 BUTE ST,BC Liquor Store,2025,Convenience Goods,Downtown Vancouver BIA,8917_2025,West End,Alcohol Retail,Alcohol Retail
+1978,8516,238 ROBSON ST,N/A,238,ROBSON ST,238 ROBSON ST,Pure Integrative Pharmacy,2025,Convenience Goods,Yaletown BIA,8516_2025,Downtown,Pharmacy,Pharmacy
+2050,8935,1025 W GEORGIA ST,N/A,1025,W GEORGIA ST,1025 W GEORGIA ST,RBC Royal Bank,2025,Service Commercial,Downtown Vancouver BIA,8935_2025,Downtown,Bank,Bank
+2065,7880,1175 DENMAN ST,N/A,1175,DENMAN ST,1175 DENMAN ST,Denman Medical Centre,2025,Service Commercial,West End BIA,7880_2025,West End,Clinic,Clinic
+2070,7696,1650 DAVIE ST,N/A,1650,DAVIE ST,1650 DAVIE ST,London Drugs,2025,Convenience Goods,West End BIA,7696_2025,West End,Pharmacy,Pharmacy
+2099,8273,125 DAVIE ST,N/A,125,DAVIE ST,125 DAVIE ST,Starbucks,2025,Food & Beverage,Yaletown BIA,8273_2025,Downtown,Food & Beverage,Food & Beverage
+2107,8711,1236 BURRARD ST,N/A,1236,BURRARD ST,1236 BURRARD ST,Yugen Nail Spa,2025,Service Commercial,Downtown Vancouver BIA,8711_2025,Downtown,Beauty & Wellness,Beauty & Wellness
+2155,1290,535 MAIN ST,N/A,535,MAIN ST,535 MAIN ST,Low-Cost Western Pharmacy,2025,Convenience Goods,Chinatown BIA,1290_2025,Downtown,Pharmacy,Pharmacy
+2185,8483,1156 PACIFIC BOULEVARD,N/A,1156,PACIFIC BOULEVARD,1156 PACIFIC BOULEVARD,Aarm Dental Group,2025,Service Commercial,Yaletown BIA,8483_2025,Downtown,Dentist,Dentist
+2229,3541,510 RICHARDS ST,N/A,510,RICHARDS ST,510 RICHARDS ST,Vacant,2025,Vacant,Hastings Crossing BIA,3541_2025,Downtown,Vacant,Vacant
+2243,1272,465 MAIN ST,N/A,465,MAIN ST,465 MAIN ST,Sam's Pharmacy,2025,Convenience Goods,Chinatown BIA,1272_2025,Downtown,Pharmacy,Pharmacy
+2287,10924,577 BUTE ST,N/A,577,BUTE ST,577 BUTE ST,Blink Brow Bar,2025,Service Commercial,Downtown Vancouver BIA,10924_2025,Downtown,Personal & Household Services,Personal & Household Services
+2309,8712,1088 BURRARD ST,N/A,1088,BURRARD ST,1088 BURRARD ST,Starbucks,2025,Food & Beverage,Downtown Vancouver BIA,8712_2025,Downtown,Food & Beverage,Food & Beverage
+2362,7794,917 DENMAN ST,N/A,917,DENMAN ST,917 DENMAN ST,Aarm Dental Group,2025,Service Commercial,West End BIA,7794_2025,West End,Dentist,Dentist
+2382,8008,1747 ROBSON ST,N/A,1747,ROBSON ST,1747 ROBSON ST,The Pharmacy,2025,Convenience Goods,West End BIA,8008_2025,West End,Pharmacy,Pharmacy
+2386,7570,1155 BUTE ST,N/A,1155,BUTE ST,1155 BUTE ST,BC Liquor Store,2025,Convenience Goods,West End BIA,7570_2025,West End,Alcohol Retail,Alcohol Retail
+2409,10875,990 SEYMOUR ST,N/A,990,SEYMOUR ST,990 SEYMOUR ST,Nesters Market,2025,Convenience Goods,Downtown Vancouver BIA,10875_2025,Downtown,Grocery Store,Grocery Store
+2436,8402,1258 HOMER ST,N/A,1258,HOMER ST,1258 HOMER ST,Homer Dental Centre,2025,Service Commercial,Yaletown BIA,8402_2025,Downtown,Dentist,Dentist
+2486,8802,475 MAIN ST,201,475,MAIN ST,475 MAIN ST,Dr. Wing Hong Ng,2025,Service Commercial,Chinatown BIA,8802_2025,Downtown,Doctor,Doctor
+2490,8373,1096 HOMER ST,N/A,1096,HOMER ST,1096 HOMER ST,CIBC,2025,Service Commercial,Yaletown BIA,8373_2025,Downtown,Bank,Bank
+2511,8762,913 DAVIE ST,N/A,913,DAVIE ST,913 DAVIE ST,Aarm Dental Group,2025,Service Commercial,Downtown Vancouver BIA,8762_2025,Downtown,Dentist,Dentist
+2535,1310,681 MAIN ST,N/A,681,MAIN ST,681 MAIN ST,RBC Royal Bank,2025,Service Commercial,Chinatown BIA,1310_2025,Downtown,Bank,Bank
+2567,2549,885 W GEORGIA ST,N/A,885,W GEORGIA ST,885 W GEORGIA ST,RBC Royal Bank,2025,Service Commercial,Downtown Vancouver BIA,2549_2025,Downtown,Bank,Bank
+2581,,1318 ALBERNI ST,,1318,ALBERNI ST,1318 ALBERNI ST,Alberni Medical Clinic,2026,Service Commercial,,,Downtown,Clinic,Clinic
+2582,,1575 W GEORGIA ST,520,1575,W GEORGIA ST,1575 W GEORGIA ST,Promis Medical Centre,2026,Service Commercial,,,Downtown,Clinic,Clinic
+2583,,1055 W GEORGIA ST,112,1055,W GEORGIA ST,1055 W GEORGIA ST,Loyal Medical Clinic,2026,Service Commercial,Downtown Vancouver BIA,,Downtown,Clinic,Clinic
+2584,,1188 W GEORGIA ST,,1188,W GEORGIA ST,1188 W GEORGIA ST,Robson Medical Clinic,2026,Service Commercial,Downtown Vancouver BIA,,West End,Clinic,Clinic
+2585,,817 W PENDER ST,,817,W PENDER ST,817 W PENDER ST,Choice Medical Clinic,2026,Service Commercial,Downtown Vancouver BIA,,Downtown,Clinic,Clinic
+2586,,1160 BURRARD ST,201,1160,BURRARD ST,1160 BURRARD ST,Wave Medical Clinic,2026,Service Commercial,Downtown Vancouver BIA,,Downtown,Clinic,Clinic
+2587,,808 NELSON ST,,808,NELSON ST,808 NELSON ST,TELUS Health Care Centre,2026,Service Commercial,Downtown Vancouver BIA,,Downtown,Clinic,Clinic
+2588,,1080 HOWE ST,,1080,HOWE ST,1080 HOWE ST,Spectrum Health Care,2026,Service Commercial,Downtown Vancouver BIA,,Downtown,Clinic,Clinic
+2589,,1280 GRANVILLE ST,,1280,GRANVILLE ST,1280 GRANVILLE ST,Yale Medical Centre - Walk In Clinic,2026,Service Commercial,Downtown Vancouver BIA,,Downtown,Clinic,Clinic
+2590,,179 DAVIE ST,,179,DAVIE ST,179 DAVIE ST,Aquarius Medical Clinic,2026,Service Commercial,Yaletown BIA,,,Clinic,Clinic

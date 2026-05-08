@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A senior-friendly map of community amenities across Vancouver — clinics, pharmacies, libraries, community centres, washrooms, parks and more. Built for the West End Seniors' Network." />
+    <meta name="theme-color" content="#0b4c7a" />
+    <title>Vancouver Amenities Map · WESN</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#map">Skip to map</a>
+
+    <header class="site-header" role="banner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">📍</span>
+        <div>
+          <h1>Vancouver Amenities Map</h1>
+          <p class="tagline">Find services and places near you</p>
+        </div>
+      </div>
+      <nav class="site-nav" aria-label="Primary">
+        <button id="text-size-toggle" type="button" aria-pressed="false" title="Make text larger">
+          A<span aria-hidden="true">+</span>
+          <span class="visually-hidden">Increase text size</span>
+        </button>
+        <a href="#about">About</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Filters and search">
+        <section class="search-section">
+          <label for="search-input">Search by name or address</label>
+          <input id="search-input" type="search" autocomplete="off"
+                 placeholder="e.g. pharmacy, Davie Street, Library" />
+        </section>
+
+        <section class="area-section">
+          <label for="area-select">Neighbourhood</label>
+          <select id="area-select">
+            <option value="all">All of Vancouver</option>
+            <option value="West End" selected>West End</option>
+            <option value="Downtown">Downtown</option>
+            <option value="Kitsilano">Kitsilano</option>
+          </select>
+        </section>
+
+        <section class="filter-section" aria-labelledby="filter-heading">
+          <h2 id="filter-heading">What are you looking for?</h2>
+          <div id="category-list" class="category-list" role="group" aria-labelledby="filter-heading">
+            <p class="loading">Loading categories…</p>
+          </div>
+          <div class="filter-actions">
+            <button id="select-all" type="button">Select all</button>
+            <button id="clear-all" type="button">Clear all</button>
+          </div>
+        </section>
+
+        <section class="status-section" aria-live="polite">
+          <p id="result-count" class="result-count">Loading places…</p>
+        </section>
+      </aside>
+
+      <section id="map" class="map" aria-label="Map of Vancouver amenities"></section>
+    </main>
+
+    <dialog id="place-detail" aria-labelledby="detail-name">
+      <button class="close-button" data-close type="button" aria-label="Close details">✕</button>
+      <h2 id="detail-name"></h2>
+      <p class="detail-category" id="detail-category"></p>
+      <p class="detail-address" id="detail-address"></p>
+      <p class="detail-area" id="detail-area"></p>
+      <div class="detail-actions">
+        <a id="detail-directions" href="#" target="_blank" rel="noopener">Get directions</a>
+      </div>
+    </dialog>
+
+    <section id="about" class="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About this map</h2>
+      <p>
+        This map helps people — especially seniors — find services and places
+        across Vancouver. It uses open data from the
+        <a href="https://opendata.vancouver.ca/" target="_blank" rel="noopener">City of Vancouver Open Data Portal</a>
+        and is maintained for the
+        <a href="https://www.wesn.ca/" target="_blank" rel="noopener">West End Seniors' Network</a>.
+      </p>
+      <p>
+        Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+        Map library: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>.
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <p>&copy; <span id="year"></span> West End Seniors' Network. Data sourced from the City of Vancouver.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script src="js/categories.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
