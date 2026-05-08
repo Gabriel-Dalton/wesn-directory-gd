@@ -17,7 +17,10 @@
 
     <header class="site-header" role="banner">
       <div class="brand">
-        <img class="brand-logo" src="assets/wesn-logo.avif" alt="West End Seniors' Network logo" />
+        <picture class="brand-logo-wrap">
+          <source srcset="assets/wesn-logo.avif" type="image/avif" />
+          <img class="brand-logo" src="assets/wesn-logo-fallback.svg" alt="West End Seniors' Network logo" />
+        </picture>
         <div class="brand-copy">
           <p class="brand-eyebrow">West End Seniors' Network</p>
           <h1>Vancouver Amenities Map</h1>

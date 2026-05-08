@@ -120,14 +120,21 @@ button {
   min-width: 0;
 }
 
-.brand-logo {
+.brand-logo-wrap {
   width: 84px;
   height: 84px;
-  object-fit: contain;
   background: rgba(255, 255, 255, 0.96);
   border-radius: 22px;
   padding: 0.6rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  flex: 0 0 auto;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-copy {
@@ -401,7 +408,7 @@ dialog#place-detail {
 /* Map */
 .map {
   width: 100%;
-  min-height: 680px;
+  min-height: clamp(420px, 65vh, 680px);
   background: var(--color-bg-soft);
   border-radius: 28px;
   overflow: hidden;
@@ -545,7 +552,7 @@ dialog#place-detail::backdrop {
     align-items: flex-start;
   }
 
-  .brand-logo {
+  .brand-logo-wrap {
     width: 72px;
     height: 72px;
   }
