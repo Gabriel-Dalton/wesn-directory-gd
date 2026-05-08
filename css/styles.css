@@ -5,9 +5,17 @@
 :root {
   --color-primary: #0a3522;
   --color-primary-dark: #062417;
+  --color-primary-bright: #0f4830;
+  --color-primary-rgb: 10, 53, 34;
   --color-primary-soft: #e4efe8;
   --color-accent: #b78326;
+  --color-accent-rgb: 183, 131, 38;
   --color-accent-soft: #f6ebd3;
+  --color-accent-overlay: rgba(var(--color-accent-rgb), 0.12);
+  --color-accent-overlay-strong: rgba(var(--color-accent-rgb), 0.22);
+  --color-primary-border: rgba(var(--color-primary-rgb), 0.14);
+  --color-primary-border-strong: rgba(var(--color-primary-rgb), 0.3);
+  --color-primary-border-soft: rgba(var(--color-primary-rgb), 0.12);
   --color-text: #16211a;
   --color-text-muted: #526056;
   --color-bg: #f5f2ea;
@@ -47,7 +55,7 @@ body {
   line-height: 1.5;
   color: var(--color-text);
   background:
-    radial-gradient(circle at top left, rgba(183, 131, 38, 0.12), transparent 24rem),
+    radial-gradient(circle at top left, var(--color-accent-overlay), transparent 24rem),
     linear-gradient(180deg, #faf7f0 0%, var(--color-bg) 100%);
 }
 
@@ -106,8 +114,8 @@ button {
   gap: var(--space-3);
   padding: 1.25rem 1.5rem;
   background:
-    linear-gradient(135deg, rgba(183, 131, 38, 0.22), transparent 28%),
-    linear-gradient(135deg, var(--color-primary) 0%, #0f4830 100%);
+    linear-gradient(135deg, var(--color-accent-overlay-strong), transparent 28%),
+    linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-bright) 100%);
   color: #fff;
   min-height: var(--header-height);
   box-shadow: var(--shadow-2);
@@ -328,7 +336,7 @@ dialog#place-detail {
 }
 
 .category-item:hover {
-  border-color: rgba(10, 53, 34, 0.3);
+  border-color: var(--color-primary-border-strong);
   box-shadow: 0 10px 24px rgba(8, 30, 20, 0.08);
   transform: translateY(-1px);
 }
@@ -368,7 +376,7 @@ dialog#place-detail {
 .filter-actions button {
   flex: 1;
   background: var(--color-primary-soft);
-  border: 1px solid rgba(10, 53, 34, 0.14);
+  border: 1px solid var(--color-primary-border);
   color: var(--color-primary);
   padding: 0.75rem 1rem;
   border-radius: 999px;
@@ -412,7 +420,7 @@ dialog#place-detail {
   background: var(--color-bg-soft);
   border-radius: 28px;
   overflow: hidden;
-  border: 1px solid rgba(10, 53, 34, 0.12);
+  border: 1px solid var(--color-primary-border-soft);
   box-shadow: var(--shadow-2);
 }
 
