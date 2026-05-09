@@ -30,15 +30,40 @@ window.AmenityMap = (function () {
       maxZoom: 19,
     }).addTo(map);
 
-    // Initialize an empty layer for each known category group so toggling
-    // visibility is just `addLayer` / `removeLayer`.
+    // Each category group gets its own marker-cluster layer so toggling
+    // visibility is just addLayer/removeLayer, and dense areas auto-collapse
+    // into readable cluster bubbles instead of an overwhelming pile of pins.
+    const ClusterCtor = L.markerClusterGroup || L.layerGroup;
     for (const group of window.AmenityCategories.groups) {
-      const layer = L.layerGroup();
+      const layer = ClusterCtor === L.markerClusterGroup
+        ? L.markerClusterGroup({
+            showCoverageOnHover: false,
+            spiderfyOnMaxZoom: true,
+            disableClusteringAtZoom: 17,
+            maxClusterRadius: 60,
+            iconCreateFunction: (cluster) =>
+              buildClusterIcon(cluster.getChildCount(), group),
+          })
+        : L.layerGroup();
       layerByGroup.set(group.id, layer);
       layer.addTo(map);
     }
 
     return map;
+  }
+
+  function buildClusterIcon(count, group) {
+    const color = group?.color || "#0e3b25";
+    const size = count >= 100 ? 56 : count >= 25 ? 50 : 42;
+    return L.divIcon({
+      className: "amenity-cluster-wrap",
+      html:
+        `<div class="amenity-cluster" style="--cl-color:${color};width:${size}px;height:${size}px">` +
+          `<span class="amenity-cluster-count">${count}</span>` +
+        `</div>`,
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2],
+    });
   }
 
   function buildMarkerIcon(group) {
