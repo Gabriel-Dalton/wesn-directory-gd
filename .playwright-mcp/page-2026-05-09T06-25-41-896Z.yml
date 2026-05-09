@@ -1,0 +1,70 @@
+- generic [active] [ref=e1]:
+  - link "Skip to map" [ref=e2] [cursor=pointer]:
+    - /url: "#map"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - img "West End Seniors' Network" [ref=e5]
+      - heading "Vancouver Amenities Map" [level=1] [ref=e6]:
+        - text: Vancouver
+        - emphasis [ref=e7]: Amenities
+        - text: Map
+    - navigation "Primary" [ref=e8]:
+      - button "A Increase text size" [ref=e9] [cursor=pointer]:
+        - text: A
+        - generic [ref=e10]: +
+        - generic [ref=e11]: Increase text size
+      - link "Visit WESN (opens in new window)" [ref=e12] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+        - text: Visit WESN
+        - generic [ref=e13]: (opens in new window)
+      - link "About" [ref=e14] [cursor=pointer]:
+        - /url: "#about"
+  - main [ref=e15]:
+    - complementary "Filters and search" [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Search
+        - searchbox "Search" [ref=e19]
+      - generic [ref=e20]:
+        - generic [ref=e21]: Neighbourhood
+        - combobox "Neighbourhood" [ref=e22]:
+          - option "All of Vancouver"
+          - option "West End" [selected]
+          - option "Downtown"
+          - option "Kitsilano"
+      - region "Categories" [ref=e23]:
+        - heading "Categories" [level=2] [ref=e24]
+        - group "Categories" [ref=e25]:
+          - paragraph [ref=e26]: Loading…
+        - generic [ref=e27]:
+          - button "All" [ref=e28] [cursor=pointer]
+          - button "None" [ref=e29] [cursor=pointer]
+      - paragraph [ref=e31]: Loading places…
+    - region "Map of Vancouver amenities" [ref=e32]:
+      - generic:
+        - generic [ref=e33]:
+          - button "Zoom in" [ref=e34] [cursor=pointer]: +
+          - button "Zoom out" [ref=e35] [cursor=pointer]: −
+        - generic [ref=e36]:
+          - link "Leaflet" [ref=e37] [cursor=pointer]:
+            - /url: https://leafletjs.com
+            - img [ref=e38]
+            - text: Leaflet
+          - text: "| ©"
+          - link "OpenStreetMap" [ref=e42] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: contributors
+  - region "About this map" [ref=e43]:
+    - heading "About this map" [level=2] [ref=e44]
+    - paragraph [ref=e45]:
+      - text: A senior-friendly directory of services and places across Vancouver, built for the
+      - link "West End Seniors’ Network" [ref=e46] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+      - text: using open data from the
+      - link "City of Vancouver" [ref=e47] [cursor=pointer]:
+        - /url: https://opendata.vancouver.ca/
+      - text: .
+  - contentinfo [ref=e48]:
+    - paragraph [ref=e49]:
+      - text: © 2026 West End Seniors’ Network · Tiles by
+      - link "OpenStreetMap" [ref=e50] [cursor=pointer]:
+        - /url: https://www.openstreetmap.org/copyright

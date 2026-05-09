@@ -198,17 +198,33 @@ button { font: inherit; cursor: pointer; }
   align-items: stretch;
 }
 
+/* Sidebar = natural vertical flow.
+   Search, neighbourhood, full category grid, then status. The whole sidebar
+   scrolls if it overflows; the status card pins to the bottom of the viewport
+   via position:sticky so the count is always visible without overlapping
+   the tiles above it. */
 .sidebar {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  height: 100%;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 0.25rem;
-  height: 100%;
 }
 .sidebar::-webkit-scrollbar { width: 8px; }
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: var(--paper-edge); border-radius: 4px; }
+
+.sidebar > .status-section {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin-top: auto;
+  /* Solid backdrop so tiles scrolling underneath don't bleed through. */
+  background: var(--card-2);
+  box-shadow: 0 -10px 14px -10px rgba(8, 30, 20, 0.18);
+}
 
 .surface-card {
   background: var(--card);
@@ -218,7 +234,10 @@ button { font: inherit; cursor: pointer; }
   box-shadow: 0 1px 0 var(--paper-edge), 0 8px 18px -16px rgba(8, 30, 20, 0.25);
 }
 
-.filter-section { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.filter-section {
+  display: flex;
+  flex-direction: column;
+}
 
 /* Sidebar labels */
 .sidebar label,
@@ -282,13 +301,13 @@ button { font: inherit; cursor: pointer; }
   padding-right: 2.4rem;
 }
 
-/* Category tile grid — every category visible without scrolling */
+/* Category tile grid — full natural height; the sidebar (not this list)
+   handles any overflow scrolling. */
 .category-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   margin: 0 0 0.75rem;
-  /* No inner scroll: the sidebar itself scrolls if it ever needs to. */
 }
 .category-list .loading { grid-column: 1 / -1; }
 
@@ -304,7 +323,8 @@ button { font: inherit; cursor: pointer; }
   border-radius: var(--r-card);
   cursor: pointer;
   user-select: none;
-  min-height: 56px;
+  min-height: 60px;
+  align-content: center;
   color: var(--ink);
   transition: background 120ms ease, border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
   /* Reset small-caps cascade from .sidebar label rule above. */
@@ -369,8 +389,11 @@ button { font: inherit; cursor: pointer; }
   line-height: 1.2;
   color: inherit;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* Allow two-line wrap so descriptive labels like "Dentists & Optometrists"
+     are never truncated on narrow tiles. */
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
 }
 
 .category-count {
@@ -688,25 +711,90 @@ dialog#place-detail h2 {
 
 /* =========================================================================
    Responsive
+   =========================================================================
+   Tablet and below: stack sidebar above map, but cap the sidebar so the
+   map stays visible. The category grid scrolls internally on small screens
+   so the user never loses sight of the map.
    ========================================================================= */
 @media (max-width: 1000px) {
   .layout {
     grid-template-columns: 1fr;
     height: auto;
+    min-height: calc(100vh - 76px);
   }
-  .sidebar { height: auto; max-height: none; overflow: visible; }
-  .map { height: 60vh; min-height: 460px; }
-  .category-list { max-height: 320px; overflow-y: auto; }
+  .sidebar {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.6rem;
+  }
+  /* Search + area side-by-side at top */
+  .sidebar > .search-section,
+  .sidebar > .area-section { grid-row: auto; grid-column: span 1; }
+  .sidebar > .filter-section,
+  .sidebar > .status-section { grid-row: auto; grid-column: 1 / -1; }
+  .filter-section { overflow: visible; }
+  .filter-section .category-list {
+    max-height: 320px;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .map {
+    height: 62vh;
+    min-height: 420px;
+  }
 }
 
 @media (max-width: 720px) {
-  .site-header { flex-wrap: wrap; padding: 0.6rem 1rem 0.7rem; }
-  .site-header h1 { padding-left: 0; border-left: 0; font-size: 1.1rem; }
+  .site-header {
+    flex-wrap: wrap;
+    padding: 0.55rem 0.85rem 0.7rem;
+    min-height: 0;
+    gap: 0.6rem;
+  }
+  .site-header h1 {
+    padding-left: 0;
+    border-left: 0;
+    font-size: 1.05rem;
+  }
   .brand { gap: 0.7rem; }
-  .brand-logo { height: 44px; }
-  .site-nav { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
-  .layout { padding: 0.75rem; gap: 0.75rem; }
-  .about { grid-template-columns: 1fr; gap: 0.85rem; }
+  .brand-logo { height: 40px; max-width: 150px; }
+  .site-nav {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .site-nav a,
+  .site-nav button {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.9rem;
+    min-height: 42px;
+  }
+  .layout {
+    padding: 0.75rem;
+    gap: 0.75rem;
+    min-height: 0;
+  }
+  .sidebar { grid-template-columns: 1fr; }
+  .map { height: 55vh; min-height: 360px; }
+  .about {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    margin: 1rem 0.75rem;
+    padding: 1.2rem 1rem;
+  }
+  .site-footer { margin: 0 0.75rem 1rem; padding: 0.85rem; }
+}
+
+/* Phones: tiles drop to a single column so labels never truncate */
+@media (max-width: 520px) {
+  .category-list { grid-template-columns: 1fr; }
+  .category-item { min-height: 52px; }
+  .filter-actions button { font-size: 0.9rem; }
 }
 
 @media print {

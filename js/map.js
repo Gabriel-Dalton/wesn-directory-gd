@@ -83,12 +83,14 @@ window.AmenityMap = (function () {
   function popupHtml(place, group) {
     const directions = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
     const subLabel = place.subCategory && place.subCategory !== group.label
-      ? ` · ${escapeHtml(place.subCategory)}`
+      ? ` &middot; ${escapeHtml(place.subCategory)}`
       : "";
     const areaLabel = place.area ? `<p class="popup-address">${escapeHtml(place.area)}</p>` : "";
+    // group.icon is trusted SVG markup from categories.js — render as HTML.
+    // The label and any user-supplied data goes through escapeHtml().
     return [
       `<p class="popup-name">${escapeHtml(place.name)}</p>`,
-      `<p class="popup-category">${escapeHtml(group.icon + " " + group.label)}${subLabel}</p>`,
+      `<p class="popup-category">${group.icon}<span>${escapeHtml(group.label)}${subLabel}</span></p>`,
       place.address ? `<p class="popup-address">${escapeHtml(place.address)}</p>` : "",
       areaLabel,
       `<a class="popup-link" href="${directions}" target="_blank" rel="noopener">Get directions</a>`,
