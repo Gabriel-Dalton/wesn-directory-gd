@@ -185,6 +185,76 @@ window.AmenityData = (function () {
       .filter(Boolean);
   }
 
+  /* ---------- Drinking Fountains ---------- */
+
+  async function loadDrinkingFountains() {
+    const fc = await fetchJson(geojsonUrl("drinking-fountains"));
+    return (fc.features || [])
+      .map((f) => {
+        const p = f.properties || {};
+        const pt = pointOf(f);
+        if (!pt) return null;
+        return {
+          id: `fountain-${p.mapid || p.fountain_id || `${pt.lat}:${pt.lng}`}`,
+          name: p.name || "Drinking Fountain",
+          groupId: "drinking-fountains",
+          subCategory: p.in_operation ? `In service (${p.in_operation})` : "Drinking Fountain",
+          address: p.location || "",
+          area: p.geo_local_area || "",
+          lat: pt.lat,
+          lng: pt.lng,
+        };
+      })
+      .filter(Boolean);
+  }
+
+  /* ---------- Cultural Spaces ---------- */
+
+  async function loadCulturalSpaces() {
+    const fc = await fetchJson(geojsonUrl("cultural-spaces"));
+    return (fc.features || [])
+      .map((f) => {
+        const p = f.properties || {};
+        const pt = pointOf(f);
+        if (!pt) return null;
+        const name = p.cultural_space_name || p.name || "Cultural Space";
+        return {
+          id: `culture-${p.id || name}`,
+          name,
+          groupId: "cultural-spaces",
+          subCategory: p.primary_use || p.type || "Cultural Space",
+          address: p.address || "",
+          area: p.local_area || p.geo_local_area || "",
+          lat: pt.lat,
+          lng: pt.lng,
+        };
+      })
+      .filter(Boolean);
+  }
+
+  /* ---------- Public Art ---------- */
+
+  async function loadPublicArt() {
+    const fc = await fetchJson(geojsonUrl("public-art"));
+    return (fc.features || [])
+      .map((f) => {
+        const p = f.properties || {};
+        const pt = pointOf(f);
+        if (!pt) return null;
+        return {
+          id: `art-${p.registryid || p.title || `${pt.lat}:${pt.lng}`}`,
+          name: p.title_of_work || p.title || "Public Artwork",
+          groupId: "public-art",
+          subCategory: p.type || "Public Art",
+          address: p.siteaddress || p.descriptionofsite || "",
+          area: p.geo_local_area || "",
+          lat: pt.lat,
+          lng: pt.lng,
+        };
+      })
+      .filter(Boolean);
+  }
+
   /* ---------- CSV fallback ---------- */
 
   /**
@@ -278,6 +348,9 @@ window.AmenityData = (function () {
       { name: "Libraries", fn: loadLibraries },
       { name: "Public Washrooms", fn: loadWashrooms },
       { name: "Parks", fn: loadParks },
+      { name: "Drinking Fountains", fn: loadDrinkingFountains },
+      { name: "Cultural Spaces", fn: loadCulturalSpaces },
+      { name: "Public Art", fn: loadPublicArt },
     ];
 
     const settled = await Promise.allSettled(sources.map((s) => s.fn()));

@@ -282,76 +282,114 @@ button { font: inherit; cursor: pointer; }
   padding-right: 2.4rem;
 }
 
-/* Category list */
+/* Category tile grid — every category visible without scrolling */
 .category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
   margin: 0 0 0.75rem;
-  border-top: 1px solid var(--paper-rule);
-  overflow-y: auto;
-  flex: 1 1 auto;
-  min-height: 0;
+  /* No inner scroll: the sidebar itself scrolls if it ever needs to. */
 }
+.category-list .loading { grid-column: 1 / -1; }
 
 .category-item {
+  position: relative;
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0.7rem;
-  padding: 0.6rem 0.4rem;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--paper-rule);
-  border-radius: 0;
+  gap: 0.55rem;
+  padding: 0.55rem 0.65rem;
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r-card);
   cursor: pointer;
   user-select: none;
-  min-height: 48px;
-  transition: background 120ms ease, padding 120ms ease;
-  position: relative;
+  min-height: 56px;
+  color: var(--ink);
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  /* Reset small-caps cascade from .sidebar label rule above. */
+  font-variant: normal;
+  letter-spacing: normal;
+  font-weight: 400;
+  font-family: var(--font-body);
+  text-transform: none;
 }
-.category-item:hover { background: var(--card-2); padding-left: 0.6rem; }
+.category-item:hover {
+  background: var(--card);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
 .category-item:has(input:checked) {
-  background: linear-gradient(90deg, rgba(14, 114, 135, 0.07), transparent 70%);
-}
-.category-item:has(input:checked)::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 8px; bottom: 8px;
-  width: 3px;
   background: var(--teal);
+  border-color: var(--teal-deep);
+  color: #fff;
+  box-shadow: 2px 2px 0 var(--teal-deep);
+}
+.category-item:has(input:checked):hover {
+  background: var(--teal-dark);
+  box-shadow: 3px 3px 0 var(--teal-deep);
+}
+.category-item:has(input:disabled) {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
+/* Hide the native checkbox — the tile itself is the toggle. */
 .category-item input[type="checkbox"] {
-  width: 20px; height: 20px; margin: 0;
-  accent-color: var(--teal);
-  flex-shrink: 0;
-  cursor: pointer;
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+.category-item:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .category-icon {
-  font-size: 1.25rem;
-  width: 1.6rem;
-  text-align: center;
-  line-height: 1;
+  width: 24px; height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal-dark);
+  flex: 0 0 auto;
 }
+.category-icon svg { width: 22px; height: 22px; display: block; }
+.category-item:has(input:checked) .category-icon { color: #fff; }
 
 .category-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-variant: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  line-height: 1.2;
+  color: inherit;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .category-count {
   font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--ink-mute);
-  padding-left: 0.5rem;
-  border-left: 1px dotted var(--paper-rule);
-  min-width: 3ch;
-  text-align: right;
+  padding: 1px 6px;
+  background: var(--card-2);
+  border-radius: 999px;
+  min-width: 2.2ch;
+  text-align: center;
+  line-height: 1.4;
+  flex: 0 0 auto;
+}
+.category-item:has(input:checked) .category-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }
 
 .filter-actions {
@@ -422,12 +460,12 @@ button { font: inherit; cursor: pointer; }
   border-radius: 50%;
   background: var(--teal);
   color: #fff;
-  font-size: 1rem;
   border: 2px solid #fff;
   box-shadow:
     0 0 0 1px var(--ink),
     0 6px 14px -8px rgba(8, 30, 20, 0.7);
 }
+.amenity-marker svg { width: 18px; height: 18px; display: block; }
 
 /* Marker cluster bubbles */
 .amenity-cluster-wrap { background: transparent !important; border: 0 !important; }
@@ -490,7 +528,11 @@ button { font: inherit; cursor: pointer; }
   font-variant: small-caps;
   letter-spacing: 0.1em;
   font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
+.popup-category svg { width: 16px; height: 16px; flex: 0 0 auto; }
 .popup-address { margin: 0 0 0.7rem; color: var(--ink-soft); }
 .popup-link {
   display: inline-block;
