@@ -1,0 +1,88 @@
+- generic [active] [ref=e1]:
+  - link "Skip to map" [ref=e2] [cursor=pointer]:
+    - /url: "#map"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - img "West End Seniors' Network logo" [ref=e6]
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: West End Seniors' Network
+        - heading "Vancouver Amenities Map" [level=1] [ref=e9]
+        - paragraph [ref=e10]: Find trusted services, essentials, and community spaces near you.
+    - navigation "Primary" [ref=e11]:
+      - button "A Increase text size" [ref=e12] [cursor=pointer]:
+        - text: A
+        - generic [ref=e13]: +
+        - generic [ref=e14]: Increase text size
+      - link "Visit WESN (opens in new window)" [ref=e15] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+        - text: Visit WESN
+        - generic [ref=e16]: (opens in new window)
+      - link "About" [ref=e17] [cursor=pointer]:
+        - /url: "#about"
+  - main [ref=e18]:
+    - complementary "Filters and search" [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Senior-friendly community directory
+        - heading "Browse Vancouver amenities with clearer search and simpler filters." [level=2] [ref=e22]
+        - paragraph [ref=e23]: Built for WESN members to quickly find health services, groceries, libraries, washrooms, and other everyday destinations.
+        - list "Highlights" [ref=e24]:
+          - listitem [ref=e25]: Accessible type and high-contrast controls
+          - listitem [ref=e26]: Neighbourhood filtering for faster browsing
+          - listitem [ref=e27]: Directions links for each location
+      - generic [ref=e28]:
+        - generic [ref=e29]: Search by name or address
+        - searchbox "Search by name or address" [ref=e30]
+      - generic [ref=e31]:
+        - generic [ref=e32]: Neighbourhood
+        - combobox "Neighbourhood" [ref=e33]:
+          - option "All of Vancouver"
+          - option "West End" [selected]
+          - option "Downtown"
+          - option "Kitsilano"
+      - region "What are you looking for?" [ref=e34]:
+        - heading "What are you looking for?" [level=2] [ref=e35]
+        - group "What are you looking for?" [ref=e36]:
+          - paragraph [ref=e37]: Loading categories…
+        - generic [ref=e38]:
+          - button "Select all" [ref=e39] [cursor=pointer]
+          - button "Clear all" [ref=e40] [cursor=pointer]
+      - generic [ref=e41]:
+        - paragraph [ref=e42]: Map status
+        - paragraph [ref=e43]: Loading places…
+    - region "Map of Vancouver amenities" [ref=e44]:
+      - generic:
+        - generic [ref=e45]:
+          - button "Zoom in" [ref=e46] [cursor=pointer]: +
+          - button "Zoom out" [ref=e47] [cursor=pointer]: −
+        - generic [ref=e48]:
+          - link "Leaflet" [ref=e49] [cursor=pointer]:
+            - /url: https://leafletjs.com
+            - img [ref=e50]
+            - text: Leaflet
+          - text: "| ©"
+          - link "OpenStreetMap" [ref=e54] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: contributors
+  - region "A calmer, more accessible way to find nearby services." [ref=e55]:
+    - paragraph [ref=e56]: About this tool
+    - heading "A calmer, more accessible way to find nearby services." [level=2] [ref=e57]
+    - paragraph [ref=e58]:
+      - text: This map helps people — especially seniors — find services and places across Vancouver. It uses open data from the
+      - link "City of Vancouver Open Data Portal" [ref=e59] [cursor=pointer]:
+        - /url: https://opendata.vancouver.ca/
+      - text: and is maintained for the
+      - link "West End Seniors' Network" [ref=e60] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+      - text: .
+    - paragraph [ref=e61]: The interface prioritizes readable type, clear controls, and quick directions so members can browse with less friction on desktop, tablet, or phone.
+    - paragraph [ref=e62]:
+      - text: Tiles by
+      - link "OpenStreetMap" [ref=e63] [cursor=pointer]:
+        - /url: https://www.openstreetmap.org/copyright
+      - text: "contributors. Map library:"
+      - link "Leaflet" [ref=e64] [cursor=pointer]:
+        - /url: https://leafletjs.com/
+      - text: .
+  - contentinfo [ref=e65]:
+    - paragraph [ref=e66]: © 2026 West End Seniors' Network. Data sourced from the City of Vancouver.
+    - paragraph [ref=e67]: Designed to reflect WESN's community-first, accessibility-focused brand.
