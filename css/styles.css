@@ -301,6 +301,142 @@ button { font: inherit; cursor: pointer; }
   padding-right: 2.4rem;
 }
 
+/* =========================================================================
+   Search autocomplete
+   Suggestion dropdown for streets, places, and services. Built for seniors:
+   ≥48px rows, large readable text, high-contrast active state, and a calm
+   hint underneath the input so the feature is discoverable.
+   ========================================================================= */
+/* Each `.sidebar > section` ends up with a non-none transform from the
+   `rise` animation, which creates its own stacking context. We need to
+   lift the search section above its siblings (notably .area-section, which
+   sits below it in the DOM) so the absolute-positioned dropdown overlays. */
+.search-section { position: relative; z-index: 10; }
+
+.search-combobox { position: relative; }
+
+.search-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-mute);
+  line-height: 1.35;
+}
+
+.search-suggestions {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: var(--card);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-card);
+  box-shadow:
+    3px 3px 0 var(--ink),
+    0 18px 40px -22px rgba(8, 30, 20, 0.45);
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.search-suggestions[hidden] { display: none; }
+
+.search-suggestions::-webkit-scrollbar { width: 8px; }
+.search-suggestions::-webkit-scrollbar-track { background: transparent; }
+.search-suggestions::-webkit-scrollbar-thumb { background: var(--paper-edge); border-radius: 4px; }
+
+.suggestion {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem 0.8rem;
+  min-height: 52px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--ink);
+  line-height: 1.3;
+  /* Reset small-caps cascade from the .sidebar label rule. */
+  font-variant: normal;
+  letter-spacing: normal;
+  font-weight: 400;
+  text-transform: none;
+  font-family: var(--font-body);
+  transition: background 100ms ease, color 100ms ease;
+}
+.suggestion + .suggestion {
+  border-top: 1px solid var(--paper-edge);
+}
+.suggestion:hover,
+.suggestion.is-active {
+  background: var(--teal);
+  color: #fff;
+  border-top-color: transparent;
+}
+.suggestion:hover + .suggestion,
+.suggestion.is-active + .suggestion {
+  border-top-color: transparent;
+}
+
+.suggestion-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--card-2);
+  color: var(--teal-dark);
+  flex: 0 0 auto;
+}
+.suggestion-icon svg { width: 16px; height: 16px; display: block; }
+.suggestion:hover .suggestion-icon,
+.suggestion.is-active .suggestion-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.suggestion-text {
+  font-size: 1.02rem;
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.suggestion-text mark {
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.suggestion:hover .suggestion-text mark,
+.suggestion.is-active .suggestion-text mark {
+  color: var(--gold);
+}
+
+.suggestion-type {
+  font-family: var(--font-display);
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-mute);
+  padding: 2px 8px;
+  background: var(--card-2);
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.suggestion:hover .suggestion-type,
+.suggestion.is-active .suggestion-type {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
 /* Category tile grid — full natural height; the sidebar (not this list)
    handles any overflow scrolling. */
 .category-list {
@@ -353,6 +489,14 @@ button { font: inherit; cursor: pointer; }
 .category-item:has(input:disabled) {
   opacity: 0.45;
   cursor: not-allowed;
+}
+/* Categories with zero matches under the current area/search — kept visible
+   and clickable, but visually de-emphasised so users see at a glance which
+   ones won't add anything to the map. */
+.category-item.is-empty:not(:has(input:checked)) { opacity: 0.55; }
+.category-item.is-empty .category-count {
+  background: transparent;
+  color: var(--ink-faint);
 }
 
 /* Hide the native checkbox — the tile itself is the toggle. */
@@ -742,6 +886,13 @@ dialog#place-detail h2 {
     mask-image: none;
     -webkit-mask-image: none;
   }
+  .search-suggestions {
+    /* Stretch beyond the half-width search column so long names stay readable. */
+    right: auto;
+    min-width: 100%;
+    max-width: min(520px, calc(100vw - 2rem));
+    max-height: 280px;
+  }
   .map {
     height: 62vh;
     min-height: 420px;
@@ -795,6 +946,18 @@ dialog#place-detail h2 {
   .category-list { grid-template-columns: 1fr; }
   .category-item { min-height: 52px; }
   .filter-actions button { font-size: 0.9rem; }
+  .search-suggestions { max-height: 60vh; }
+  /* On the narrowest screens, drop the type chip to its own line so it never
+     squeezes the suggestion text. */
+  .suggestion {
+    grid-template-columns: 28px 1fr;
+    min-height: 56px;
+  }
+  .suggestion-type {
+    grid-column: 2 / 3;
+    justify-self: start;
+    margin-top: 2px;
+  }
 }
 
 @media print {

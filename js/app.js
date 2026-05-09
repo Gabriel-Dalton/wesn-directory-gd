@@ -10,6 +10,14 @@
 
     const map = window.AmenityMap.init("map");
 
+    if (window.AmenitySearchAutocomplete) {
+      window.AmenitySearchAutocomplete.init({
+        inputId: "search-input",
+        listboxId: "search-suggestions",
+        statusId: "search-status",
+      });
+    }
+
     window.AmenityFilters.init({
       onChange: (filterState) => {
         for (const group of window.AmenityCategories.groups) {
@@ -35,6 +43,10 @@
     }
 
     window.AmenityFilters.renderCategories(places);
+
+    if (window.AmenitySearchAutocomplete) {
+      window.AmenitySearchAutocomplete.setPlaces(places);
+    }
 
     if (errors.length) {
       const recovered = errors.filter((e) => e.recovered);

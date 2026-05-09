@@ -19,6 +19,28 @@ window.AmenityFilters = (function () {
     area: "West End",
   };
 
+  /**
+   * Normalize text for substring matching so abbreviated and spelled-out
+   * street suffixes are treated as equivalent. Both the haystack (place
+   * name/sub-category/address) and the user's query run through this so
+   * "Denman St" in the data still matches a "Denman Street" search.
+   */
+  function normalizeForSearch(s) {
+    return String(s)
+      .toLowerCase()
+      .replace(/\bst\.?\b/g, "street")
+      .replace(/\bave?\.?\b/g, "avenue")
+      .replace(/\bav\.?\b/g, "avenue")
+      .replace(/\bblvd\.?\b/g, "boulevard")
+      .replace(/\brd\.?\b/g, "road")
+      .replace(/\bdr\.?\b/g, "drive")
+      .replace(/\bhwy\.?\b/g, "highway")
+      .replace(/\bpl\.?\b/g, "place")
+      .replace(/\bcres\.?\b/g, "crescent")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function init({ onChange }) {
     onChangeFn = onChange || (() => {});
 
@@ -26,8 +48,9 @@ window.AmenityFilters = (function () {
     restoreState();
 
     document.getElementById("search-input").addEventListener("input", (e) => {
-      state.search = e.target.value.trim().toLowerCase();
+      state.search = normalizeForSearch(e.target.value);
       saveState();
+      updateCategoryCounts();
       emit();
     });
 
@@ -35,6 +58,7 @@ window.AmenityFilters = (function () {
     document.getElementById("area-select").addEventListener("change", (e) => {
       state.area = e.target.value;
       saveState();
+      updateCategoryCounts();
       emit();
     });
 
@@ -59,28 +83,28 @@ window.AmenityFilters = (function () {
     const container = document.getElementById("category-list");
     container.innerHTML = "";
 
-    // Count how many places fall into each group.
-    const counts = new Map();
+    // Citywide totals (used only to decide whether a category exists at all).
+    const totalCounts = new Map();
     for (const p of places) {
-      counts.set(p.groupId, (counts.get(p.groupId) || 0) + 1);
+      totalCounts.set(p.groupId, (totalCounts.get(p.groupId) || 0) + 1);
     }
 
     // First pass: enable any group that has any data, defaulting to checked.
     const initializeDefaults = state.enabledGroups.size === 0;
     for (const group of window.AmenityCategories.groups) {
-      const count = counts.get(group.id) || 0;
+      const count = totalCounts.get(group.id) || 0;
       if (count === 0) continue;
       if (initializeDefaults) state.enabledGroups.add(group.id);
     }
 
     // Build checkboxes. Show every configured group; disable empty ones.
     for (const group of window.AmenityCategories.groups) {
-      const count = counts.get(group.id) || 0;
+      const isEmpty = (totalCounts.get(group.id) || 0) === 0;
       const id = `cat-${group.id}`;
       const label = document.createElement("label");
       label.className = "category-item";
       label.htmlFor = id;
-      const isEmpty = count === 0;
+      label.dataset.groupId = group.id;
       if (isEmpty) {
         label.style.opacity = "0.55";
         label.title = "No locations in this category right now.";
@@ -92,7 +116,7 @@ window.AmenityFilters = (function () {
                ${isEmpty ? "disabled" : ""}>
         <span class="category-icon" aria-hidden="true">${group.icon}</span>
         <span class="category-label">${group.label}</span>
-        <span class="category-count" aria-label="${count} places">${count}</span>
+        <span class="category-count" data-count-for="${group.id}">0</span>
       `;
       container.appendChild(label);
     }
@@ -107,8 +131,44 @@ window.AmenityFilters = (function () {
       }
     });
 
+    // Counts reflect the active area + search filters — so the totals on the
+    // tiles always reconcile with the "N places shown" status line.
+    updateCategoryCounts();
     saveState();
     emit();
+  }
+
+  /**
+   * Recompute the per-tile counts based on the current area + search filters
+   * (but NOT the per-group enabled state). This is what makes the tile number
+   * agree with what the user sees on the map when they toggle a single group.
+   */
+  function updateCategoryCounts() {
+    const search = state.search;
+    const area = state.area;
+    const counts = new Map();
+    for (const p of allPlaces) {
+      if (area !== "all") {
+        if (!p.area || p.area !== area) continue;
+      }
+      if (search) {
+        const haystack = normalizeForSearch(`${p.name} ${p.subCategory} ${p.address}`);
+        if (!haystack.includes(search)) continue;
+      }
+      counts.set(p.groupId, (counts.get(p.groupId) || 0) + 1);
+    }
+    document.querySelectorAll("[data-count-for]").forEach((el) => {
+      const id = el.getAttribute("data-count-for");
+      const n = counts.get(id) || 0;
+      el.textContent = n.toLocaleString();
+      el.setAttribute("aria-label", `${n} places`);
+      // Visually mute tiles whose category has no matches under current filters,
+      // but still keep them clickable so the user can broaden the search.
+      const tile = el.closest(".category-item");
+      if (tile && !tile.querySelector("input").disabled) {
+        tile.classList.toggle("is-empty", n === 0);
+      }
+    });
   }
 
   /** Apply the current filter state to the master list. */
@@ -122,7 +182,7 @@ window.AmenityFilters = (function () {
         return false;
       }
       if (search) {
-        const haystack = `${p.name} ${p.subCategory} ${p.address}`.toLowerCase();
+        const haystack = normalizeForSearch(`${p.name} ${p.subCategory} ${p.address}`);
         if (!haystack.includes(search)) return false;
       }
       return true;
@@ -170,7 +230,7 @@ window.AmenityFilters = (function () {
         state.enabledGroups = new Set(saved.enabledGroups);
       if (typeof saved.area === "string") state.area = saved.area;
       if (typeof saved.search === "string") {
-        state.search = saved.search;
+        state.search = normalizeForSearch(saved.search);
         document.getElementById("search-input").value = saved.search;
       }
     } catch (_) {

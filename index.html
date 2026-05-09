@@ -6,6 +6,13 @@
     <meta name="description" content="A senior-friendly map of community amenities across Vancouver — clinics, pharmacies, libraries, community centres, washrooms, parks and more. Built for the West End Seniors' Network." />
     <meta name="theme-color" content="#0e3b25" />
     <meta name="color-scheme" content="light only" />
+    <!-- Dev: prevent the browser from serving stale CSS/JS from disk cache.
+         Live Preview's tiny HTTP server doesn't send cache-control headers
+         of its own, so the browser would otherwise reuse old copies until
+         a hard refresh (Ctrl+Shift+R). Safe to remove for production. -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Vancouver Amenities Map · WESN</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -51,8 +58,16 @@
       <aside class="sidebar" aria-label="Filters and search">
         <section class="search-section surface-card">
           <label for="search-input">Search</label>
-          <input id="search-input" type="search" autocomplete="off"
-                 placeholder="Name, street, or service&hellip;" />
+          <div class="search-combobox">
+            <input id="search-input" type="search" autocomplete="off"
+                   placeholder="Name, street, or service&hellip;" />
+            <ul id="search-suggestions" class="search-suggestions"
+                role="listbox" aria-label="Search suggestions" hidden></ul>
+          </div>
+          <p class="search-hint" id="search-hint">
+            Start typing a street, place name, or service&mdash;suggestions will appear.
+          </p>
+          <div id="search-status" class="visually-hidden" aria-live="polite"></div>
         </section>
 
         <section class="area-section surface-card">
@@ -117,6 +132,7 @@
     <script src="js/categories.js"></script>
     <script src="js/data.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/autocomplete.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/app.js"></script>
   </body>

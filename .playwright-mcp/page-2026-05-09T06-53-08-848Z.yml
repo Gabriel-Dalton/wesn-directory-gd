@@ -1,0 +1,236 @@
+- generic [ref=e1]:
+  - link "Skip to map" [ref=e2] [cursor=pointer]:
+    - /url: "#map"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - img "West End Seniors' Network" [ref=e5]
+      - heading "Vancouver Amenities Map" [level=1] [ref=e6]:
+        - text: Vancouver
+        - emphasis [ref=e7]: Amenities
+        - text: Map
+    - navigation "Primary" [ref=e8]:
+      - button "A Increase text size" [ref=e9] [cursor=pointer]:
+        - text: A
+        - generic [ref=e10]: +
+        - generic [ref=e11]: Increase text size
+      - link "Visit WESN (opens in new window)" [ref=e12] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+        - text: Visit WESN
+        - generic [ref=e13]: (opens in new window)
+      - link "About" [ref=e14] [cursor=pointer]:
+        - /url: "#about"
+  - main [ref=e15]:
+    - complementary "Filters and search" [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Search
+        - combobox "Search" [active] [ref=e20]
+        - paragraph [ref=e21]: Start typing a street, place name, or service—suggestions will appear.
+      - generic [ref=e23]:
+        - generic [ref=e24]: Neighbourhood
+        - combobox "Neighbourhood" [ref=e25]:
+          - option "All of Vancouver"
+          - option "West End" [selected]
+          - option "Downtown"
+          - option "Kitsilano"
+      - region "Categories" [ref=e26]:
+        - heading "Categories" [level=2] [ref=e27]
+        - group "Categories" [ref=e28]:
+          - generic "No locations in this category right now." [ref=e54]:
+            - checkbox "Clinics & Health 0 places" [disabled]
+            - img [ref=e56]
+            - text: Clinics & Health 0
+          - generic "No locations in this category right now." [ref=e59]:
+            - checkbox "Pharmacies 0 places" [disabled]
+            - img [ref=e61]
+            - text: Pharmacies 0
+          - generic "No locations in this category right now." [ref=e64]:
+            - checkbox "Dentists & Optometrists 0 places" [disabled]
+            - img [ref=e66]
+            - text: Dentists & Optometrists 0
+          - generic "No locations in this category right now." [ref=e68]:
+            - checkbox "Groceries 0 places" [disabled]
+            - img [ref=e70]
+            - text: Groceries 0
+          - generic "No locations in this category right now." [ref=e74]:
+            - checkbox "Bakeries & Cafés 0 places" [disabled]
+            - img [ref=e76]
+            - text: Bakeries & Cafés 0
+          - generic "No locations in this category right now." [ref=e79]:
+            - checkbox "Banks 0 places" [disabled]
+            - img [ref=e81]
+            - text: Banks 0
+          - generic "No locations in this category right now." [ref=e83]:
+            - checkbox "Personal Services 0 places" [disabled]
+            - img [ref=e85]
+            - text: Personal Services 0
+          - generic [ref=e91] [cursor=pointer]:
+            - checkbox "Community Centres 1 places" [checked]
+            - img [ref=e93]
+            - text: Community Centres 1
+          - generic [ref=e95] [cursor=pointer]:
+            - checkbox "Libraries 1 places" [checked]
+            - img [ref=e97]
+            - text: Libraries 1
+          - generic [ref=e100] [cursor=pointer]:
+            - checkbox "Public Washrooms 8 places" [checked]
+            - img [ref=e102]
+            - text: Public Washrooms 8
+          - generic [ref=e104] [cursor=pointer]:
+            - checkbox "Parks 0 places" [checked]
+            - img [ref=e106]
+            - text: Parks 0
+          - generic [ref=e108] [cursor=pointer]:
+            - checkbox "Drinking Fountains 24 places" [checked]
+            - img [ref=e110]
+            - text: Drinking Fountains 24
+          - generic [ref=e112] [cursor=pointer]:
+            - checkbox "Cultural Spaces 34 places" [checked]
+            - img [ref=e114]
+            - text: Cultural Spaces 34
+          - generic [ref=e120] [cursor=pointer]:
+            - checkbox "Public Art 34 places" [checked]
+            - img [ref=e122]
+            - text: Public Art 34
+        - generic [ref=e30]:
+          - button "All" [ref=e31] [cursor=pointer]
+          - button "None" [ref=e32] [cursor=pointer]
+      - paragraph [ref=e34]: 102 places shown
+    - region "Map of Vancouver amenities" [ref=e35]:
+      - generic:
+        - generic:
+          - button "Community Centres" [ref=e126] [cursor=pointer]:
+            - generic "Community Centres" [ref=e127]:
+              - img [ref=e128]
+          - button "Libraries" [ref=e130] [cursor=pointer]:
+            - generic "Libraries" [ref=e131]:
+              - img [ref=e132]
+          - button "Public Washrooms" [ref=e135] [cursor=pointer]:
+            - generic "Public Washrooms" [ref=e136]:
+              - img [ref=e137]
+          - button "Public Washrooms" [ref=e139] [cursor=pointer]:
+            - generic "Public Washrooms" [ref=e140]:
+              - img [ref=e141]
+          - button "Public Washrooms" [ref=e143] [cursor=pointer]:
+            - generic "Public Washrooms" [ref=e144]:
+              - img [ref=e145]
+          - button "Drinking Fountains" [ref=e147] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e148]:
+              - img [ref=e149]
+          - button "Drinking Fountains" [ref=e151] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e152]:
+              - img [ref=e153]
+          - button "Drinking Fountains" [ref=e155] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e156]:
+              - img [ref=e157]
+          - button "Cultural Spaces" [ref=e159] [cursor=pointer]:
+            - generic "Cultural Spaces" [ref=e160]:
+              - img [ref=e161]
+          - button "Public Washrooms" [ref=e167] [cursor=pointer]:
+            - generic "Public Washrooms" [ref=e168]:
+              - img [ref=e169]
+          - button "Public Washrooms" [ref=e171] [cursor=pointer]:
+            - generic "Public Washrooms" [ref=e172]:
+              - img [ref=e173]
+          - button "Public Washrooms" [ref=e175] [cursor=pointer]:
+            - generic "Public Washrooms" [ref=e176]:
+              - img [ref=e177]
+          - button "2" [ref=e179] [cursor=pointer]:
+            - generic [ref=e181]: "2"
+          - button "2" [ref=e182] [cursor=pointer]:
+            - generic [ref=e184]: "2"
+          - button "Drinking Fountains" [ref=e185] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e186]:
+              - img [ref=e187]
+          - button "Drinking Fountains" [ref=e189] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e190]:
+              - img [ref=e191]
+          - button "Drinking Fountains" [ref=e193] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e194]:
+              - img [ref=e195]
+          - button "2" [ref=e197] [cursor=pointer]:
+            - generic [ref=e199]: "2"
+          - button "Drinking Fountains" [ref=e200] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e201]:
+              - img [ref=e202]
+          - button "2" [ref=e204] [cursor=pointer]:
+            - generic [ref=e206]: "2"
+          - button "2" [ref=e207] [cursor=pointer]:
+            - generic [ref=e209]: "2"
+          - button "Drinking Fountains" [ref=e210] [cursor=pointer]:
+            - generic "Drinking Fountains" [ref=e211]:
+              - img [ref=e212]
+          - button "4" [ref=e214] [cursor=pointer]:
+            - generic [ref=e216]: "4"
+          - button "4" [ref=e217] [cursor=pointer]:
+            - generic [ref=e219]: "4"
+          - button "5" [ref=e220] [cursor=pointer]:
+            - generic [ref=e222]: "5"
+          - button "4" [ref=e223] [cursor=pointer]:
+            - generic [ref=e225]: "4"
+          - button "5" [ref=e226] [cursor=pointer]:
+            - generic [ref=e228]: "5"
+          - button "9" [ref=e229] [cursor=pointer]:
+            - generic [ref=e231]: "9"
+          - button "5" [ref=e232] [cursor=pointer]:
+            - generic [ref=e234]: "5"
+          - button "5" [ref=e235] [cursor=pointer]:
+            - generic [ref=e237]: "5"
+          - button "Public Art" [ref=e238] [cursor=pointer]:
+            - generic "Public Art" [ref=e239]:
+              - img [ref=e240]
+          - button "Public Art" [ref=e244] [cursor=pointer]:
+            - generic "Public Art" [ref=e245]:
+              - img [ref=e246]
+          - button "Public Art" [ref=e250] [cursor=pointer]:
+            - generic "Public Art" [ref=e251]:
+              - img [ref=e252]
+          - button "Public Art" [ref=e256] [cursor=pointer]:
+            - generic "Public Art" [ref=e257]:
+              - img [ref=e258]
+          - button "Public Art" [ref=e262] [cursor=pointer]:
+            - generic "Public Art" [ref=e263]:
+              - img [ref=e264]
+          - button "3" [ref=e268] [cursor=pointer]:
+            - generic [ref=e270]: "3"
+          - button "3" [ref=e271] [cursor=pointer]:
+            - generic [ref=e273]: "3"
+          - button "2" [ref=e274] [cursor=pointer]:
+            - generic [ref=e276]: "2"
+          - button "Public Art" [ref=e277] [cursor=pointer]:
+            - generic "Public Art" [ref=e278]:
+              - img [ref=e279]
+          - button "Public Art" [ref=e283] [cursor=pointer]:
+            - generic "Public Art" [ref=e284]:
+              - img [ref=e285]
+          - button "2" [ref=e289] [cursor=pointer]:
+            - generic [ref=e291]: "2"
+          - button "17" [ref=e292] [cursor=pointer]:
+            - generic [ref=e294]: "17"
+      - generic:
+        - generic [ref=e36]:
+          - button "Zoom in" [ref=e37] [cursor=pointer]: +
+          - button "Zoom out" [ref=e38] [cursor=pointer]: −
+        - generic [ref=e39]:
+          - link "Leaflet" [ref=e40] [cursor=pointer]:
+            - /url: https://leafletjs.com
+            - img [ref=e41]
+            - text: Leaflet
+          - text: "| ©"
+          - link "OpenStreetMap" [ref=e45] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: contributors
+  - region "About this map" [ref=e46]:
+    - heading "About this map" [level=2] [ref=e47]
+    - paragraph [ref=e48]:
+      - text: A senior-friendly directory of services and places across Vancouver, built for the
+      - link "West End Seniors’ Network" [ref=e49] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+      - text: using open data from the
+      - link "City of Vancouver" [ref=e50] [cursor=pointer]:
+        - /url: https://opendata.vancouver.ca/
+      - text: .
+  - contentinfo [ref=e51]:
+    - paragraph [ref=e52]:
+      - text: © 2026 West End Seniors’ Network · Tiles by
+      - link "OpenStreetMap" [ref=e53] [cursor=pointer]:
+        - /url: https://www.openstreetmap.org/copyright

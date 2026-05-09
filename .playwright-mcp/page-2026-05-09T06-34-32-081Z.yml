@@ -1,0 +1,181 @@
+- generic [ref=e1]:
+  - link "Skip to map" [ref=e2] [cursor=pointer]:
+    - /url: "#map"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - img "West End Seniors' Network" [ref=e5]
+      - heading "Vancouver Amenities Map" [level=1] [ref=e6]:
+        - text: Vancouver
+        - emphasis [ref=e7]: Amenities
+        - text: Map
+    - navigation "Primary" [ref=e8]:
+      - button "A Increase text size" [ref=e9] [cursor=pointer]:
+        - text: A
+        - generic [ref=e10]: +
+        - generic [ref=e11]: Increase text size
+      - link "Visit WESN (opens in new window)" [ref=e12] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+        - text: Visit WESN
+        - generic [ref=e13]: (opens in new window)
+      - link "About" [ref=e14] [cursor=pointer]:
+        - /url: "#about"
+  - main [ref=e15]:
+    - complementary "Filters and search" [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Search
+        - generic [ref=e19]:
+          - combobox "Search" [expanded] [active] [ref=e20]: rob
+          - listbox "Search suggestions" [ref=e170]:
+            - option "Robson Street" [ref=e171] [cursor=pointer]:
+              - img [ref=e173]
+              - generic [ref=e178]:
+                - mark [ref=e179]: Rob
+                - text: son Street
+              - generic [ref=e180]: street
+            - option "Robert Burns" [ref=e181] [cursor=pointer]:
+              - img [ref=e183]
+              - generic [ref=e186]:
+                - mark [ref=e187]: Rob
+                - text: ert Burns
+              - generic [ref=e188]: place
+            - option "Robson Park Community Mural" [ref=e189] [cursor=pointer]:
+              - img [ref=e191]
+              - generic [ref=e194]:
+                - mark [ref=e195]: Rob
+                - text: son Park Community Mural
+              - generic [ref=e196]: place
+            - option "Robson Square Ice Rink" [ref=e197] [cursor=pointer]:
+              - img [ref=e199]
+              - generic [ref=e202]:
+                - mark [ref=e203]: Rob
+                - text: son Square Ice Rink
+              - generic [ref=e204]: place
+            - option "Robson St and Granville St" [ref=e205] [cursor=pointer]:
+              - img [ref=e207]
+              - generic [ref=e210]:
+                - mark [ref=e211]: Rob
+                - text: son St and Granville St
+              - generic [ref=e212]: place
+            - option "Robson St and Richards St" [ref=e213] [cursor=pointer]:
+              - img [ref=e215]
+              - generic [ref=e218]:
+                - mark [ref=e219]: Rob
+                - text: son St and Richards St
+              - generic [ref=e220]: place
+            - 'option "Fountain location: Granville & Robson" [ref=e221] [cursor=pointer]':
+              - img [ref=e223]
+              - generic [ref=e226]:
+                - text: "Fountain location: Granville &"
+                - mark [ref=e227]: Rob
+                - text: son
+              - generic [ref=e228]: place
+            - 'option "Temporary Misting Station location: Robson & Cardero" [ref=e229] [cursor=pointer]':
+              - img [ref=e231]
+              - generic [ref=e234]:
+                - text: "Temporary Misting Station location:"
+                - mark [ref=e235]: Rob
+                - text: son & Cardero
+              - generic [ref=e236]: place
+        - paragraph [ref=e21]: Start typing a street, place name, or service—suggestions will appear.
+        - generic [ref=e22]: 8 suggestions. Use up and down arrow keys to navigate, Enter to select.
+      - generic [ref=e23]:
+        - generic [ref=e24]: Neighbourhood
+        - combobox "Neighbourhood" [ref=e25]:
+          - option "All of Vancouver"
+          - option "West End" [selected]
+          - option "Downtown"
+          - option "Kitsilano"
+      - region "Categories" [ref=e26]:
+        - heading "Categories" [level=2] [ref=e27]
+        - group "Categories" [ref=e28]:
+          - generic "No locations in this category right now." [ref=e54]:
+            - checkbox "Clinics & Health 0 places" [disabled]
+            - img [ref=e56]
+            - text: Clinics & Health 0
+          - generic "No locations in this category right now." [ref=e59]:
+            - checkbox "Pharmacies 0 places" [disabled]
+            - img [ref=e61]
+            - text: Pharmacies 0
+          - generic "No locations in this category right now." [ref=e64]:
+            - checkbox "Dentists & Optometrists 0 places" [disabled]
+            - img [ref=e66]
+            - text: Dentists & Optometrists 0
+          - generic "No locations in this category right now." [ref=e68]:
+            - checkbox "Groceries 0 places" [disabled]
+            - img [ref=e70]
+            - text: Groceries 0
+          - generic "No locations in this category right now." [ref=e74]:
+            - checkbox "Bakeries & Cafés 0 places" [disabled]
+            - img [ref=e76]
+            - text: Bakeries & Cafés 0
+          - generic "No locations in this category right now." [ref=e79]:
+            - checkbox "Banks 0 places" [disabled]
+            - img [ref=e81]
+            - text: Banks 0
+          - generic "No locations in this category right now." [ref=e83]:
+            - checkbox "Personal Services 0 places" [disabled]
+            - img [ref=e85]
+            - text: Personal Services 0
+          - generic [ref=e91] [cursor=pointer]:
+            - checkbox "Community Centres 0 places" [checked]
+            - img [ref=e93]
+            - text: Community Centres 0
+          - generic [ref=e95] [cursor=pointer]:
+            - checkbox "Libraries 0 places" [checked]
+            - img [ref=e97]
+            - text: Libraries 0
+          - generic [ref=e100] [cursor=pointer]:
+            - checkbox "Public Washrooms 0 places" [checked]
+            - img [ref=e102]
+            - text: Public Washrooms 0
+          - generic [ref=e104] [cursor=pointer]:
+            - checkbox "Parks 0 places" [checked]
+            - img [ref=e106]
+            - text: Parks 0
+          - generic [ref=e108] [cursor=pointer]:
+            - checkbox "Drinking Fountains 2 places" [checked]
+            - img [ref=e110]
+            - text: Drinking Fountains 2
+          - generic [ref=e112] [cursor=pointer]:
+            - checkbox "Cultural Spaces 0 places" [checked]
+            - img [ref=e114]
+            - text: Cultural Spaces 0
+          - generic [ref=e120] [cursor=pointer]:
+            - checkbox "Public Art 0 places" [checked]
+            - img [ref=e122]
+            - text: Public Art 0
+        - generic [ref=e30]:
+          - button "All" [ref=e31] [cursor=pointer]
+          - button "None" [ref=e32] [cursor=pointer]
+      - paragraph [ref=e34]: 2 places shown
+    - region "Map of Vancouver amenities" [ref=e35]:
+      - button "2" [ref=e237] [cursor=pointer]:
+        - generic [ref=e239]: "2"
+      - generic:
+        - generic [ref=e36]:
+          - button "Zoom in" [ref=e37] [cursor=pointer]: +
+          - button "Zoom out" [ref=e38] [cursor=pointer]: −
+        - generic [ref=e39]:
+          - link "Leaflet" [ref=e40] [cursor=pointer]:
+            - /url: https://leafletjs.com
+            - img [ref=e41]
+            - text: Leaflet
+          - text: "| ©"
+          - link "OpenStreetMap" [ref=e45] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: contributors
+  - region "About this map" [ref=e46]:
+    - heading "About this map" [level=2] [ref=e47]
+    - paragraph [ref=e48]:
+      - text: A senior-friendly directory of services and places across Vancouver, built for the
+      - link "West End Seniors’ Network" [ref=e49] [cursor=pointer]:
+        - /url: https://www.wesn.ca/
+      - text: using open data from the
+      - link "City of Vancouver" [ref=e50] [cursor=pointer]:
+        - /url: https://opendata.vancouver.ca/
+      - text: .
+  - contentinfo [ref=e51]:
+    - paragraph [ref=e52]:
+      - text: © 2026 West End Seniors’ Network · Tiles by
+      - link "OpenStreetMap" [ref=e53] [cursor=pointer]:
+        - /url: https://www.openstreetmap.org/copyright

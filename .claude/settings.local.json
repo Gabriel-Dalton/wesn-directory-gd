@@ -14,7 +14,9 @@
       "PowerShell(python .graphify_step3c.py)",
       "PowerShell(python .graphify_step4.py)",
       "PowerShell(python .graphify_step5.py)",
-      "PowerShell(python .graphify_step6.py)"
+      "PowerShell(python .graphify_step6.py)",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_press_key"
     ]
   }
 }
