@@ -2,17 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A senior-friendly map of community amenities across Vancouver — clinics, pharmacies, libraries, community centres, washrooms, parks and more. Built for the West End Seniors' Network." />
-    <meta name="theme-color" content="#2c1810" />
+    <meta name="theme-color" content="#0a3522" />
     <title>Vancouver Amenities Map · WESN</title>
-
-    <link rel="icon" type="image/jpeg" href="assets/wesn-logo.jpg" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Source+Sans+3:wght@400;500;600;700&display=swap" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -24,117 +17,84 @@
 
     <header class="site-header" role="banner">
       <div class="brand">
-        <a class="brand-link" href="https://www.wesn.ca/" target="_blank" rel="noopener"
-           aria-label="West End Seniors' Network — open wesn.ca in a new tab">
-          <img class="brand-logo" src="assets/wesn-logo.jpg"
-               alt="West End Seniors' Network"
-               width="220" height="64" />
-        </a>
-        <div class="brand-text">
+        <picture class="brand-logo-wrap">
+          <source srcset="assets/wesn-logo.avif" type="image/avif" />
+          <source srcset="assets/wesn-logo.webp" type="image/webp" />
+          <img class="brand-logo" src="assets/wesn-logo-fallback.svg" alt="West End Seniors' Network logo" width="3375" height="1102" />
+        </picture>
+        <div class="brand-copy">
+          <p class="brand-eyebrow">West End Seniors' Network</p>
           <h1>Vancouver Amenities Map</h1>
-          <p class="tagline">Find services and places near you</p>
+          <p class="tagline">Find trusted services, essentials, and community spaces near you.</p>
         </div>
       </div>
       <nav class="site-nav" aria-label="Primary">
-        <button id="text-size-toggle" class="nav-btn" type="button" aria-pressed="false"
-                title="Make text larger">
-          <span class="nav-btn-icon" aria-hidden="true">A</span>
-          <span class="nav-btn-icon nav-btn-icon-plus" aria-hidden="true">+</span>
+        <button id="text-size-toggle" type="button" aria-pressed="false" title="Make text larger">
+          A<span aria-hidden="true">+</span>
           <span class="visually-hidden">Increase text size</span>
         </button>
-        <a class="nav-btn" href="#about">About</a>
+        <a href="https://www.wesn.ca/" target="_blank" rel="noopener">
+          Visit WESN
+          <span class="visually-hidden">(opens in new window)</span>
+        </a>
+        <a href="#about">About</a>
       </nav>
     </header>
 
     <main class="layout">
-      <button id="filters-toggle" class="filters-toggle" type="button"
-              aria-expanded="false" aria-controls="sidebar">
-        <svg class="filters-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 6h18M6 12h12M10 18h4" stroke="currentColor" stroke-width="2.4"
-                stroke-linecap="round" fill="none"/>
-        </svg>
-        <span class="filters-toggle-text">Filters &amp; search</span>
-        <span class="filters-toggle-count" id="filters-toggle-count" aria-hidden="true"></span>
-      </button>
+      <aside class="sidebar" aria-label="Filters and search">
+        <section class="sidebar-hero">
+          <p class="section-eyebrow">Senior-friendly community directory</p>
+          <h2>Browse Vancouver amenities with clearer search and simpler filters.</h2>
+          <p>
+            Built for WESN members to quickly find health services, groceries,
+            libraries, washrooms, and other everyday destinations.
+          </p>
+          <ul class="hero-points" aria-label="Highlights">
+            <li>Accessible type and high-contrast controls</li>
+            <li>Neighbourhood filtering for faster browsing</li>
+            <li>Directions links for each location</li>
+          </ul>
+        </section>
 
-      <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
-
-      <aside id="sidebar" class="sidebar" aria-label="Filters and search">
-        <div class="sidebar-header">
-          <h2 class="sidebar-title">Find a place</h2>
-          <button id="sidebar-close" class="sidebar-close" type="button"
-                  aria-label="Close filters">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2.4"
-                    stroke-linecap="round" fill="none"/>
-            </svg>
-          </button>
-        </div>
-
-        <section class="search-section">
+        <section class="search-section surface-card">
           <label for="search-input">Search by name or address</label>
-          <div class="search-wrap">
-            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round"/>
-            </svg>
-            <input id="search-input" type="search" autocomplete="off"
-                   placeholder="e.g. pharmacy, Davie Street" />
-          </div>
+          <input id="search-input" type="search" autocomplete="off"
+                 placeholder="e.g. pharmacy, Davie Street, Library" />
         </section>
 
-        <section class="area-section">
+        <section class="area-section surface-card">
           <label for="area-select">Neighbourhood</label>
-          <div class="select-wrap">
-            <select id="area-select">
-              <option value="all">All of Vancouver</option>
-              <option value="West End" selected>West End</option>
-              <option value="Downtown">Downtown</option>
-              <option value="Kitsilano">Kitsilano</option>
-            </select>
-            <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-          </div>
+          <select id="area-select">
+            <option value="all">All of Vancouver</option>
+            <option value="West End" selected>West End</option>
+            <option value="Downtown">Downtown</option>
+            <option value="Kitsilano">Kitsilano</option>
+          </select>
         </section>
 
-        <section class="filter-section" aria-labelledby="filter-heading">
-          <div class="filter-section-header">
-            <h2 id="filter-heading">What are you looking for?</h2>
-            <div class="filter-actions">
-              <button id="select-all" type="button">All</button>
-              <button id="clear-all" type="button">None</button>
-            </div>
-          </div>
-          <div id="category-list" class="category-list" role="group"
-               aria-labelledby="filter-heading">
+        <section class="filter-section surface-card" aria-labelledby="filter-heading">
+          <h2 id="filter-heading">What are you looking for?</h2>
+          <div id="category-list" class="category-list" role="group" aria-labelledby="filter-heading">
             <p class="loading">Loading categories…</p>
           </div>
+          <div class="filter-actions">
+            <button id="select-all" type="button">Select all</button>
+            <button id="clear-all" type="button">Clear all</button>
+          </div>
         </section>
 
-        <section class="status-section" aria-live="polite">
+        <section class="status-section surface-card" aria-live="polite">
+          <p class="status-label">Map status</p>
           <p id="result-count" class="result-count">Loading places…</p>
         </section>
-
-        <div class="sidebar-footer">
-          <button id="sidebar-apply" class="sidebar-apply" type="button">
-            Show on map
-          </button>
-        </div>
       </aside>
 
       <section id="map" class="map" aria-label="Map of Vancouver amenities"></section>
     </main>
 
     <dialog id="place-detail" aria-labelledby="detail-name">
-      <button class="close-button" data-close type="button" aria-label="Close details">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2.4"
-                stroke-linecap="round" fill="none"/>
-        </svg>
-      </button>
+      <button class="close-button" data-close type="button" aria-label="Close details">✕</button>
       <h2 id="detail-name"></h2>
       <p class="detail-category" id="detail-category"></p>
       <p class="detail-address" id="detail-address"></p>
@@ -145,24 +105,29 @@
     </dialog>
 
     <section id="about" class="about" aria-labelledby="about-heading">
-      <div class="about-inner">
-        <h2 id="about-heading">About this map</h2>
-        <p>
-          This map helps people — especially seniors — find services and places
-          across Vancouver. It uses open data from the
-          <a href="https://opendata.vancouver.ca/" target="_blank" rel="noopener">City of Vancouver Open Data Portal</a>
-          and is maintained for the
-          <a href="https://www.wesn.ca/" target="_blank" rel="noopener">West End Seniors' Network</a>.
-        </p>
-        <p>
-          Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
-          Map library: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>.
-        </p>
-      </div>
+      <p class="section-eyebrow">About this tool</p>
+      <h2 id="about-heading">A calmer, more accessible way to find nearby services.</h2>
+      <p>
+        This map helps people — especially seniors — find services and places
+        across Vancouver. It uses open data from the
+        <a href="https://opendata.vancouver.ca/" target="_blank" rel="noopener">City of Vancouver Open Data Portal</a>
+        and is maintained for the
+        <a href="https://www.wesn.ca/" target="_blank" rel="noopener">West End Seniors' Network</a>.
+      </p>
+      <p>
+        The interface prioritizes readable type, clear controls, and quick
+        directions so members can browse with less friction on desktop, tablet,
+        or phone.
+      </p>
+      <p>
+        Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+        Map library: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>.
+      </p>
     </section>
 
     <footer class="site-footer">
       <p>&copy; <span id="year"></span> West End Seniors' Network. Data sourced from the City of Vancouver.</p>
+      <p>Designed to reflect WESN's community-first, accessibility-focused brand.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
