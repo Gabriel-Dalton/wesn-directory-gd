@@ -364,10 +364,31 @@ window.AmenitySearchAutocomplete = (function () {
   function applyAfterSelect() {
     const countEl = document.getElementById("result-count");
     const noMatches = /No places match/i.test(countEl?.textContent || "");
-    const areaSelect = document.getElementById("area-select");
-    if (noMatches && areaSelect && areaSelect.value !== "all") {
-      areaSelect.value = "all";
-      areaSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    if (noMatches) {
+      // Switch the multi-select to "All of Vancouver" by unchecking every
+      // specific borough and ticking the "all" pseudo-option. Dispatching
+      // `change` on each touched checkbox lets AmenityFilters update state
+      // and re-emit without us reaching into its internals.
+      const allCb = document.querySelector('input[data-area-value="__all__"]');
+      const specifics = document.querySelectorAll(
+        'input[data-area-value]:not([data-area-value="__all__"])'
+      );
+      let touched = false;
+      specifics.forEach((cb) => {
+        if (cb.checked) {
+          cb.checked = false;
+          cb.dispatchEvent(new Event("change", { bubbles: true }));
+          touched = true;
+        }
+      });
+      if (allCb && !allCb.checked) {
+        allCb.checked = true;
+        allCb.dispatchEvent(new Event("change", { bubbles: true }));
+        touched = true;
+      }
+      // If nothing changed, the user was already on "All of Vancouver" and
+      // the empty result is genuinely empty — no further action.
+      void touched;
     }
     if (window.AmenityMap && typeof window.AmenityMap.fitToVisible === "function") {
       window.AmenityMap.fitToVisible();

@@ -264,8 +264,7 @@ button { font: inherit; cursor: pointer; }
 }
 
 /* Inputs */
-#search-input,
-#area-select {
+#search-input {
   width: 100%;
   font-family: var(--font-body);
   font-size: 1.05rem;
@@ -279,8 +278,7 @@ button { font: inherit; cursor: pointer; }
   transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
 #search-input::placeholder { color: var(--ink-faint); font-style: italic; }
-#search-input:focus,
-#area-select:focus {
+#search-input:focus {
   border-color: var(--teal);
   background: #fffdf3;
   box-shadow:
@@ -289,16 +287,84 @@ button { font: inherit; cursor: pointer; }
   outline: none;
 }
 
-#area-select {
-  appearance: none;
-  -webkit-appearance: none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--ink) 50%),
-    linear-gradient(-45deg, transparent 50%, var(--ink) 50%);
-  background-position: calc(100% - 1.05rem) 50%, calc(100% - 0.6rem) 50%;
-  background-size: 7px 7px, 7px 7px;
-  background-repeat: no-repeat;
-  padding-right: 2.4rem;
+/* Neighbourhood multi-select. Renders as a fieldset of checkboxes so users
+   can combine two or more boroughs (e.g. West End + Downtown) and screen
+   readers announce the grouping context. */
+.area-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.area-fieldset legend {
+  padding: 0;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-variant: small-caps;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-size: 0.85rem;
+  color: var(--teal-dark);
+}
+.area-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+.area-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r-card);
+  cursor: pointer;
+  user-select: none;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-variant: normal;
+  letter-spacing: normal;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--ink);
+  text-transform: none;
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+.area-option:hover {
+  background: var(--card);
+  border-color: var(--ink);
+}
+.area-option:has(input:checked) {
+  background: var(--teal);
+  border-color: var(--teal-deep);
+  color: #fff;
+  box-shadow: 1px 1px 0 var(--teal-deep);
+}
+.area-option:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.area-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  accent-color: var(--teal-dark);
+  margin: 0;
+}
+.area-option:has(input:checked) input[type="checkbox"] { accent-color: #fff; }
+.area-option > span {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+/* "All of Vancouver" spans both columns so it reads as the master toggle. */
+.area-option:has(input[data-area-value="__all__"]) {
+  grid-column: 1 / -1;
+}
+.area-hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-mute);
+  line-height: 1.35;
 }
 
 /* =========================================================================
@@ -437,13 +503,128 @@ button { font: inherit; cursor: pointer; }
   color: #fff;
 }
 
-/* Category tile grid — full natural height; the sidebar (not this list)
-   handles any overflow scrolling. */
+/* =========================================================================
+   Domain / Subdomain category tree
+   Mirrors the WHO Age-Friendly Communities framework (taxonomy.js):
+     Domain (collapsible) → Subdomain (sub-heading) → tile grid.
+   ========================================================================= */
+.domain-section + .domain-section { margin-top: 0.75rem; }
+
+.domain-header {
+  display: grid;
+  grid-template-columns: 1.4rem 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: var(--card-2);
+  border: 1px solid var(--paper-rule);
+  border-radius: var(--r-card);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 24;
+  font-size: 1.02rem;
+  color: var(--ink);
+  text-align: left;
+  letter-spacing: -0.005em;
+  box-shadow: 1px 1px 0 var(--paper-edge);
+  transition: background 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+.domain-header:hover {
+  background: var(--gold-soft);
+  box-shadow: 2px 2px 0 var(--paper-rule);
+  transform: translate(-1px, -1px);
+}
+.domain-header:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.domain-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--teal-dark);
+  transition: transform 150ms ease;
+  font-size: 0.95rem;
+}
+.domain-section.is-collapsed .domain-caret { transform: rotate(-90deg); }
+
+.domain-label {
+  min-width: 0;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.domain-count {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-mute);
+  padding: 1px 8px;
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: 999px;
+  min-width: 2.4ch;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.domain-body {
+  padding: 0.6rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.subdomain-section { display: block; }
+
+.subdomain-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  padding: 0 0.15rem;
+  font-family: var(--font-display);
+  font-variant: small-caps;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-size: 0.82rem;
+  color: var(--teal-dark);
+  text-transform: none;
+}
+.subdomain-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--paper-edge);
+}
+.subdomain-label { flex: 0 0 auto; }
+.subdomain-count {
+  font-family: var(--font-display);
+  font-variant: normal;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-mute);
+  padding: 1px 7px;
+  background: var(--card-2);
+  border-radius: 999px;
+  min-width: 2.2ch;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+/* Category tile grid — sits inside each subdomain section. */
 .category-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.4rem;
 }
 .category-list .loading { grid-column: 1 / -1; }
 

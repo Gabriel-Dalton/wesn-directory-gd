@@ -71,13 +71,28 @@
         </section>
 
         <section class="area-section surface-card">
-          <label for="area-select">Neighbourhood</label>
-          <select id="area-select">
-            <option value="all">All of Vancouver</option>
-            <option value="West End" selected>West End</option>
-            <option value="Downtown">Downtown</option>
-            <option value="Kitsilano">Kitsilano</option>
-          </select>
+          <fieldset class="area-fieldset">
+            <legend>Neighbourhood</legend>
+            <div id="area-options" class="area-options" role="group" aria-label="Filter places by neighbourhood">
+              <label class="area-option">
+                <input type="checkbox" data-area-value="__all__" />
+                <span>All of Vancouver</span>
+              </label>
+              <label class="area-option">
+                <input type="checkbox" data-area-value="West End" checked />
+                <span>West End</span>
+              </label>
+              <label class="area-option">
+                <input type="checkbox" data-area-value="Downtown" />
+                <span>Downtown</span>
+              </label>
+              <label class="area-option">
+                <input type="checkbox" data-area-value="Kitsilano" />
+                <span>Kitsilano</span>
+              </label>
+            </div>
+            <p class="area-hint">Tick more than one to combine neighbourhoods.</p>
+          </fieldset>
         </section>
 
         <section class="filter-section surface-card" aria-labelledby="filter-heading">
