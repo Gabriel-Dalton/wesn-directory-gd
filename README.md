@@ -116,3 +116,8 @@ it up automatically.
 - Map tiles by [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
 - Map library: [Leaflet](https://leafletjs.com/).
 - Data from the [City of Vancouver Open Data Portal](https://opendata.vancouver.ca/).
+- Icons from [Lucide](https://lucide.dev/) (ISC licensed). Path data is
+  inlined into [`js/categories.js`](./js/categories.js) and
+  [`js/autocomplete.js`](./js/autocomplete.js); each entry is annotated
+  with its source filename. To update an icon, copy the new inner markup
+  from `https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/<name>.svg`.

@@ -12,42 +12,87 @@
  * everything to a canonical Amenity, so this file only changes when WESN
  * decides to add or rename a sidebar grouping.
  *
- * `icon` holds an inline SVG string (Lucide-style, 24×24, currentColor stroke).
+ * ## Icons
+ *
+ * Every icon below is the verbatim inner markup of an official Lucide icon
+ * (https://lucide.dev — ISC licensed). Each entry is keyed by a local name
+ * and annotated with the Lucide source filename, so future edits can pull
+ * fresh paths from https://raw.githubusercontent.com/lucide-icons/lucide/
+ * main/icons/<name>.svg. Do not hand-edit the path data; if an icon needs
+ * updating, copy the new path from Lucide and update the comment.
+ *
+ * Sizing: each path is drawn on a 24×24 grid with stroke-width 2,
+ * stroke-linecap/linejoin "round", and fill "none" — matching Lucide's
+ * canonical viewBox. svgIcon() wraps the inner markup with that outer <svg>.
  */
 window.AmenityCategories = (function () {
   const STOREFRONTS = "storefronts-inventory";
 
-  // Compact Lucide-style icon library. Each value is the *inner* markup of
-  // a 24×24 SVG (paths only); svgIcon() wraps it with the outer <svg>.
+  // Verified Lucide icon paths (https://lucide.dev). Keys are the local
+  // semantic names used by the sidebar groups below; comments record the
+  // canonical Lucide filename so future updates can be pulled directly from
+  // https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/<name>.svg
   const I = {
-    heart:        '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7 7-7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
+    // lucide: heart-pulse — Clinics & Health
+    heart:        '<path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/><path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
+    // lucide: pill — Pharmacies
     pill:         '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
-    tooth:        '<path d="M12 5.5c-1.5-.6-3-1.1-4.5-1A3.5 3.5 0 0 0 4 8c0 3.5 1 4.5 1 9 0 1.5 1 3 2 3s2-2 2.5-4S11 13 12 13s2 1 2.5 3S15 20 16 20s2-1.5 2-3c0-4.5 1-5.5 1-9a3.5 3.5 0 0 0-3.5-3.5c-1.5-.1-3 .4-4.5 1Z"/>',
-    cart:         '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 2h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',
-    coffee:       '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><path d="M6 2v2"/><path d="M10 2v2"/><path d="M14 2v2"/>',
-    bank:         '<line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 21 7 3 7"/>',
-    scissors:     '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>',
-    landmark:     '<line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
-    book:         '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/>',
-    toilet:       '<path d="M5 21V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v13"/><path d="M5 13h14"/><path d="M9 21v-2"/><path d="M15 21v-2"/>',
-    tree:         '<path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-1.7a1 1 0 0 1-.7-1.7L8 9H6.3A1 1 0 0 1 5.6 7.4L12 1l6.4 6.4A1 1 0 0 1 17.7 9H16l3.3 3.3A1 1 0 0 1 18.7 14Z"/><path d="M12 22v-3"/>',
-    droplet:      '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7Z"/>',
-    palette:      '<circle cx="13.5" cy="6.5" r=".75"/><circle cx="17.5" cy="10.5" r=".75"/><circle cx="8.5" cy="7.5" r=".75"/><circle cx="6.5" cy="12.5" r=".75"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.83-.44-1.12-.29-.29-.44-.65-.44-1.12a1.64 1.64 0 0 1 1.67-1.67h1.99c3.05 0 5.55-2.5 5.55-5.55C22 6 17.5 2 12 2Z"/>',
-    image:        '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
-    utensils:     '<path d="M3 2v7c0 1.1.9 2 2 2h2v9"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Z"/>',
-    wineGlass:    '<path d="M8 22h8"/><path d="M12 16v6"/><path d="M5 2h14l-2 8a5 5 0 0 1-10 0Z"/>',
-    sparkles:     '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"/><path d="M19 17l1 2 2 1-2 1-1 2-1-2-2-1 2-1Z"/>',
-    paw:          '<circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><circle cx="7" cy="6" r="2"/><circle cx="4" cy="14" r="2"/><path d="M9 12a4 4 0 0 0-4 4c0 2 1.5 3 3 4s2 2 4 2 2.5-1 4-2 3-2 3-4a4 4 0 0 0-4-4Z"/>',
-    music:        '<circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/><path d="M9 18V5l12-2v13"/>',
-    gradCap:      '<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/>',
-    house:        '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-    bed:          '<path d="M2 17v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="M2 17h20v3H2z"/><path d="M5 10V7a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/>',
-    flame:        '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.4 0 2.5-1.1 2.5-2.5 0-1-.7-2.3-1.5-3-1-.9-2-1.8-2.5-2.8-.7 1.5-1 2.5-1 3.3 0 1 .5 2 1 2.5Z"/><path d="M12 22c5 0 9-4 9-9 0-3-1-5-3-7-1.5-1.5-3-3-3.5-4.5-.5 1.5-1.5 2.5-3 3.5-4 3-5 5-5 8a9 9 0 0 0 9 9Z"/>',
-    accessible:   '<circle cx="12" cy="4" r="2"/><path d="M19 13a7 7 0 1 1-9.3-6.6"/><path d="M11 12h4l3 8"/><path d="M10 6v8h5"/>',
-    users:        '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/>',
-    scale:        '<path d="M16 16a4 4 0 0 1-4 4 4 4 0 0 1-4-4"/><path d="M12 4v16"/><path d="M3 9h6l-3 8a3 3 0 0 1-3-3Z"/><path d="M15 9h6l-3 8a3 3 0 0 1-3-3Z"/>',
-    store:        '<path d="m2 7 2-4h16l2 4"/><path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7"/><path d="M4 7h16"/><path d="M9 21V12h6v9"/>',
-    cube:         '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+    // lucide: stethoscope — Dentists & Optometrists. Lucide has no tooth or
+    // dental icon; stethoscope is the closest medical-professional glyph.
+    stethoscope:  '<path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+    // lucide: shopping-cart — Groceries
+    cart:         '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+    // lucide: coffee — Bakeries & Cafés
+    coffee:       '<path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/>',
+    // lucide: landmark — Banks (columned classical building)
+    landmark:     '<path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>',
+    // lucide: scissors — Personal Services
+    scissors:     '<circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/>',
+    // lucide: building-2 — Community Centres. Differentiates from `landmark`
+    // (banks), which previously shared an identical path with this entry.
+    building:     '<path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/>',
+    // lucide: library — Libraries (books on a shelf)
+    library:      '<path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/>',
+    // lucide: toilet — Public Washrooms
+    toilet:       '<path d="M7 12h13a1 1 0 0 1 1 1 5 5 0 0 1-5 5h-.598a.5.5 0 0 0-.424.765l1.544 2.47a.5.5 0 0 1-.424.765H5.402a.5.5 0 0 1-.424-.765L7 18"/><path d="M8 18a5 5 0 0 1-5-5V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8"/>',
+    // lucide: trees — Parks
+    trees:        '<path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"/><path d="M7 16v6"/><path d="M13 19v3"/><path d="M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .8-1.7L13 3l-1.4 1.5"/>',
+    // lucide: droplets — Drinking Fountains
+    droplets:     '<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>',
+    // lucide: palette — Cultural Spaces. The four small dots use
+    // fill="currentColor" to render as solid colour wells, matching Lucide.
+    palette:      '<path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>',
+    // lucide: image — Public Art
+    image:        '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+    // lucide: utensils — Restaurants
+    utensils:     '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+    // lucide: wine — Liquor, Cannabis & Smoke Shops
+    wine:         '<path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/>',
+    // lucide: sparkles — Personal Care Products. The small circle uses no
+    // fill override (stays open) to match Lucide rendering.
+    sparkles:     '<path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/>',
+    // lucide: paw-print — Veterinary
+    pawPrint:     '<circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/>',
+    // lucide: music — Entertainment & Leisure
+    music:        '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+    // lucide: graduation-cap — Schools & Colleges
+    graduationCap:'<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+    // lucide: house — Housing
+    house:        '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    // lucide: bed — Shelters
+    bed:          '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>',
+    // lucide: flame — Fire Halls
+    flame:        '<path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/>',
+    // lucide: accessibility — Disability Parking
+    accessibility:'<circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/>',
+    // lucide: users — Community & Social Services
+    users:        '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/>',
+    // lucide: scale — Government & Legal
+    scale:        '<path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/>',
+    // lucide: store — Shops & Other Retail
+    store:        '<path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/>',
+    // lucide: package — Other Services
+    package:      '<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/>',
   };
 
   function svgIcon(inner, opts = {}) {
@@ -82,7 +127,7 @@ window.AmenityCategories = (function () {
     {
       id: "dental-vision",
       label: "Dentists & Optometrists",
-      icon: svgIcon(I.tooth),
+      icon: svgIcon(I.stethoscope),
       color: "#0e7287",
       amenities: ["Dentist", "Optometry"],
     },
@@ -105,7 +150,7 @@ window.AmenityCategories = (function () {
     {
       id: "banking",
       label: "Banks",
-      icon: svgIcon(I.bank),
+      icon: svgIcon(I.landmark),
       color: "#5d4037",
       amenities: ["Bank", "Financial Advisors", "Currency Exchange"],
     },
@@ -124,14 +169,14 @@ window.AmenityCategories = (function () {
     {
       id: "community-centres",
       label: "Community Centres",
-      icon: svgIcon(I.landmark),
+      icon: svgIcon(I.building),
       color: "#0277bd",
       amenities: ["Community Centre"],
     },
     {
       id: "libraries",
       label: "Libraries",
-      icon: svgIcon(I.book),
+      icon: svgIcon(I.library),
       color: "#283593",
       amenities: ["Library"],
     },
@@ -145,14 +190,14 @@ window.AmenityCategories = (function () {
     {
       id: "parks",
       label: "Parks",
-      icon: svgIcon(I.tree),
+      icon: svgIcon(I.trees),
       color: "#1e8a3a",
       amenities: ["Green Space", "Community Garden"],
     },
     {
       id: "drinking-fountains",
       label: "Drinking Fountains",
-      icon: svgIcon(I.droplet),
+      icon: svgIcon(I.droplets),
       color: "#0e7287",
       amenities: ["Water Fountain"],
     },
@@ -185,7 +230,7 @@ window.AmenityCategories = (function () {
     {
       id: "liquor-cannabis",
       label: "Liquor, Cannabis & Smoke Shops",
-      icon: svgIcon(I.wineGlass),
+      icon: svgIcon(I.wine),
       color: "#7e57c2",
       amenities: ["Alcohol Retail", "Cannabis Store", "Vape & Smoke Shop"],
     },
@@ -199,7 +244,7 @@ window.AmenityCategories = (function () {
     {
       id: "veterinary",
       label: "Veterinary",
-      icon: svgIcon(I.paw),
+      icon: svgIcon(I.pawPrint),
       color: "#6d4c41",
       amenities: ["Vet"],
     },
@@ -213,7 +258,7 @@ window.AmenityCategories = (function () {
     {
       id: "schools",
       label: "Schools & Colleges",
-      icon: svgIcon(I.gradCap),
+      icon: svgIcon(I.graduationCap),
       color: "#1565c0",
       amenities: [
         "Elementary School", "High School", "Secondary School",
@@ -245,7 +290,7 @@ window.AmenityCategories = (function () {
     {
       id: "disability-parking",
       label: "Disability Parking",
-      icon: svgIcon(I.accessible),
+      icon: svgIcon(I.accessibility),
       color: "#1976d2",
       amenities: ["Disability Parking"],
     },
@@ -306,7 +351,7 @@ window.AmenityCategories = (function () {
     {
       id: "other-services",
       label: "Other Services",
-      icon: svgIcon(I.cube),
+      icon: svgIcon(I.package),
       color: "#546e7a",
       amenities: ["Other Services"],
     },
