@@ -28,7 +28,12 @@
 window.AmenityData = (function () {
   const API_BASE = "https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets";
   const CSV_FALLBACK = "data/storefronts-vancouver-2025.csv";
-  const CURRENT_YEAR = 2025;
+  const CURATED_JSON = "data/all-amenities-2025.json";
+  // The live storefronts dataset rolls forward each year. Querying a single
+  // hard-coded year would silently return zero rows the day City Hall flips
+  // the inventory to the next year, so we try the current year first and fall
+  // back to the previous one — and ultimately the bundled CSV.
+  const CURRENT_YEAR = new Date().getFullYear();
 
   /** Build the GeoJSON export URL for a given dataset slug. */
   function geojsonUrl(slug, where) {
@@ -82,17 +87,76 @@ window.AmenityData = (function () {
     return place;
   }
 
+  /* ---------- Curated All Amenities (WESN) ---------- */
+
+  /**
+   * Bundled, pre-classified amenity set used as the primary data source.
+   * Sourced from the Vancouver Open Data Portal but enriched offline with
+   * WESN's Domain / Subdomain / Amenity columns and converted from
+   * EPSG:26910 to WGS84 so Leaflet can render the points directly. Every
+   * feature already has the curator-blessed Amenity, so we skip the
+   * classifier and trust the file.
+   *
+   * To refresh: re-export from the WESN All Amenities source (see
+   * data/README.md for the conversion script) and overwrite the JSON.
+   */
+  async function loadCuratedAmenities() {
+    const fc = await fetchJson(CURATED_JSON);
+    const places = [];
+    for (const feat of fc.features || []) {
+      const p = feat.properties || {};
+      const coords = feat.geometry && feat.geometry.coordinates;
+      if (!coords) continue;
+      const [lng, lat] = coords;
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+
+      const amenityName = p.Amenity || p.amenity;
+      if (!amenityName || amenityName === "Vacant") continue;
+      const triple = window.AmenityTaxonomy.lookupByAmenity(amenityName);
+      if (!triple) continue;
+      const groupId = window.AmenityCategories.groupIdForAmenity(triple.amenity);
+      if (!groupId) continue; // not surfaced in sidebar — skip
+
+      const storeId = p.Store_ID || p.store_id;
+      const yearRec = p.Year_Recor || p.year_recorded;
+      const objectId = p.OBJECTID || p.objectid;
+      places.push({
+        id: storeId && yearRec ? `sf-${storeId}_${yearRec}` : `curated-${objectId}`,
+        name: p.Business_N || amenityName,
+        groupId,
+        subCategory: amenityName,
+        domain: triple.domain,
+        subdomain: triple.subdomain,
+        amenity: triple.amenity,
+        address: p.Address || `${p.Civic_Numb || ""} ${p.Street || ""}`.trim(),
+        area: p.Local_Area || "",
+        lat,
+        lng,
+      });
+    }
+    return places;
+  }
+
   /* ---------- Storefronts ---------- */
 
+  /**
+   * Pull *new* storefront rows directly from the live Open Data API. The
+   * curated JSON already covers everything up to the year it was exported,
+   * so this loader queries only the current/previous calendar year and the
+   * caller dedupes against the curated set by `sf-<store>_<year>` id.
+   * If the City returns zero rows for the current year we retry one year
+   * back, then give up silently.
+   */
   async function loadStorefronts() {
-    const url = geojsonUrl(
-      "storefronts-inventory",
-      `year_recorded=${CURRENT_YEAR}`
-    );
-    const fc = await fetchJson(url);
-    return (fc.features || [])
-      .map(featureToStorefrontPlace)
-      .filter(Boolean);
+    for (const year of [CURRENT_YEAR, CURRENT_YEAR - 1]) {
+      const url = geojsonUrl("storefronts-inventory", `year_recorded=${year}`);
+      const fc = await fetchJson(url).catch(() => null);
+      const features = (fc && fc.features) || [];
+      if (features.length > 0) {
+        return features.map(featureToStorefrontPlace).filter(Boolean);
+      }
+    }
+    return [];
   }
 
   function featureToStorefrontPlace(feature) {
@@ -370,44 +434,79 @@ window.AmenityData = (function () {
   /* ---------- Orchestration ---------- */
 
   /**
+   * Merge live-API places into a list that already contains curated places.
+   * Curated entries win when both refer to the same storefront (matched by
+   * `sf-<store>_<year>` id) or the same single-point feature (matched by
+   * groupId + name, since live and curated share the underlying datasets).
+   * Anything not in curated — typically newer storefronts the City has
+   * added since the JSON was exported — is appended.
+   */
+  function mergeWithCurated(curated, livePlaces) {
+    const byId = new Map(curated.map((p) => [p.id, p]));
+    const byKey = new Set(
+      curated.map((p) => `${p.groupId}|${(p.name || "").toLowerCase()}`)
+    );
+    const added = [];
+    for (const lp of livePlaces) {
+      if (byId.has(lp.id)) continue;
+      const key = `${lp.groupId}|${(lp.name || "").toLowerCase()}`;
+      if (byKey.has(key)) continue;
+      added.push(lp);
+    }
+    return curated.concat(added);
+  }
+
+  /**
    * Load all amenity sources concurrently.
+   * The bundled WESN curated JSON is the primary source (everything in it is
+   * pre-classified). Live Open Data Portal loaders run in parallel to pick
+   * up records added since the curated export — the merge step keeps
+   * curated entries when both sides describe the same place.
    * Each source is allowed to fail independently — we log the failure and
    * continue with whatever we got. Returns { places, errors }.
    */
   async function loadAll() {
     const sources = [
-      { name: "Storefronts", fn: loadStorefronts },
-      { name: "Community Centres", fn: loadCommunityCentres },
-      { name: "Libraries", fn: loadLibraries },
-      { name: "Public Washrooms", fn: loadWashrooms },
-      { name: "Parks", fn: loadParks },
+      { name: "Curated All Amenities", fn: loadCuratedAmenities, primary: true },
+      { name: "Storefronts",        fn: loadStorefronts },
+      { name: "Community Centres",  fn: loadCommunityCentres },
+      { name: "Libraries",          fn: loadLibraries },
+      { name: "Public Washrooms",   fn: loadWashrooms },
+      { name: "Parks",              fn: loadParks },
       { name: "Drinking Fountains", fn: loadDrinkingFountains },
-      { name: "Cultural Spaces", fn: loadCulturalSpaces },
-      { name: "Public Art", fn: loadPublicArt },
+      { name: "Cultural Spaces",    fn: loadCulturalSpaces },
+      { name: "Public Art",         fn: loadPublicArt },
     ];
 
     const settled = await Promise.allSettled(sources.map((s) => s.fn()));
-    const places = [];
+    let curated = [];
+    const liveBuckets = [];
     const errors = [];
 
     settled.forEach((result, i) => {
       const source = sources[i];
       if (result.status === "fulfilled") {
-        places.push(...result.value);
+        if (source.primary) curated = result.value;
+        else liveBuckets.push(result.value);
       } else {
         console.warn(`[AmenityData] ${source.name} failed:`, result.reason);
         errors.push({ source: source.name, message: String(result.reason) });
       }
     });
 
-    // If storefronts failed (the bulk of the data), try CSV fallback.
-    const storefrontsFailed = errors.some((e) => e.source === "Storefronts");
-    if (storefrontsFailed) {
+    let places = curated.length
+      ? mergeWithCurated(curated, [].concat(...liveBuckets))
+      : [].concat(...liveBuckets);
+
+    // Curated JSON failed (network / static-server issue) AND no live data
+    // came back: last resort is the bundled storefronts CSV, which at least
+    // gives the search and category list something to display offline.
+    if (places.length === 0) {
       try {
         const fallback = await loadStorefrontsFromCsv();
-        places.push(...fallback);
+        places = places.concat(fallback);
         errors.push({
-          source: "Storefronts",
+          source: "Curated All Amenities",
           message: "Live data unavailable — using offline CSV (no map pins).",
           recovered: true,
         });
