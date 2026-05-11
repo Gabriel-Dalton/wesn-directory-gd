@@ -122,7 +122,7 @@
     </section>
 
     <footer class="site-footer">
-      <p>&copy; <span id="year"></span> West End Seniors&rsquo; Network &middot; Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></p>
+      <p>&copy; <span id="year"></span> West End Seniors&rsquo; Network &middot; Built by <a href="https://oasisofchange.com" target="_blank" rel="noopener">Oasis of Change, Inc.</a> &middot; Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -137,5 +137,31 @@
     <script src="js/autocomplete.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/app.js"></script>
+
+    <script>
+      window.ACCESSIBILITY_WIDGET_CONFIG = {
+        widgetPosition: {
+          side: 'right',
+          right: '20px',
+          left: '20px',
+          bottom: '20px'
+        },
+        colors: {
+          primary: '#0e7287',
+          secondary: '#ffffff',
+          optionBg: '#ffffff',
+          optionText: '#142623',
+          optionIcon: '#0e7287'
+        },
+        typography: {
+          fontFamily: '"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif',
+          fontSize: '17px',
+          titleFontSize: '22px',
+          titleFontWeight: '700',
+          lineHeight: '1.3'
+        }
+      };
+    </script>
+    <script src="js/accessibility-widget.js" defer></script>
   </body>
 </html>
