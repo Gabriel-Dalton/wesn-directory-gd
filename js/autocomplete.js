@@ -223,14 +223,19 @@ window.AmenitySearchAutocomplete = (function () {
     category: "service",
   };
 
-  // Inline SVGs (Lucide-style, 16x16) — kept tiny so they layer cleanly with the row text.
+  // Verified Lucide icon paths (https://lucide.dev). 24×24 viewBox — sized
+  // down via CSS in .suggestion-icon. Update paths from
+  // https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/<name>.svg
   const TYPE_ICON = {
+    // lucide: signpost — street suggestions
     street:
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 20l-5.4 1.8a1 1 0 0 1-1.3-1.3L4 15"/><path d="M15 4l5.4-1.8a1 1 0 0 1 1.3 1.3L20 9"/><path d="M4 15 15 4"/><path d="M9 20 20 9"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 13v8"/><path d="M12 3v3"/><path d="M2.354 10.354a1.207 1.207 0 0 1 0-1.708l2.06-2.06A2 2 0 0 1 5.828 6h12.344a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H5.828a2 2 0 0 1-1.414-.586z"/></svg>',
+    // lucide: map-pin — place suggestions
     place:
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
+    // lucide: circle-check — service-category suggestions
     category:
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
   };
 
   function escapeHtml(s) {
