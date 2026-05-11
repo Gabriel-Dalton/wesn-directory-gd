@@ -42,6 +42,11 @@
         <h1>Vancouver <em>Amenities</em> Map</h1>
       </div>
       <nav class="site-nav" aria-label="Primary">
+        <button id="filters-toggle" class="filters-toggle" type="button" aria-expanded="false" aria-controls="sidebar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="20" y2="12"/><line x1="10" y1="18" x2="20" y2="18"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          <span>Filters</span>
+          <span id="filters-toggle-count" class="filters-toggle-count" aria-hidden="true"></span>
+        </button>
         <button id="text-size-toggle" type="button" aria-pressed="false" title="Make text larger">
           A<span aria-hidden="true">+</span>
           <span class="visually-hidden">Increase text size</span>
@@ -55,7 +60,15 @@
     </header>
 
     <main class="layout">
-      <aside class="sidebar" aria-label="Filters and search">
+      <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+      <aside id="sidebar" class="sidebar" aria-label="Filters and search">
+        <div class="sidebar-topbar">
+          <div class="sidebar-handle" aria-hidden="true"></div>
+          <h2 class="sidebar-title">Filters</h2>
+          <button id="sidebar-close" class="sidebar-close" type="button" aria-label="Close filters">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
         <section class="search-section surface-card">
           <label for="search-input">Search</label>
           <div class="search-combobox">
@@ -71,13 +84,28 @@
         </section>
 
         <section class="area-section surface-card">
-          <label for="area-select">Neighbourhood</label>
-          <select id="area-select">
-            <option value="all">All of Vancouver</option>
-            <option value="West End" selected>West End</option>
-            <option value="Downtown">Downtown</option>
-            <option value="Kitsilano">Kitsilano</option>
-          </select>
+          <fieldset class="area-fieldset">
+            <legend>Neighbourhood</legend>
+            <div id="area-options" class="area-options" role="group" aria-label="Filter places by neighbourhood">
+              <label class="area-option">
+                <input type="checkbox" data-area-value="__all__" />
+                <span>All of Vancouver</span>
+              </label>
+              <label class="area-option">
+                <input type="checkbox" data-area-value="West End" checked />
+                <span>West End</span>
+              </label>
+              <label class="area-option">
+                <input type="checkbox" data-area-value="Downtown" />
+                <span>Downtown</span>
+              </label>
+              <label class="area-option">
+                <input type="checkbox" data-area-value="Kitsilano" />
+                <span>Kitsilano</span>
+              </label>
+            </div>
+            <p class="area-hint">Tick more than one to combine neighbourhoods.</p>
+          </fieldset>
         </section>
 
         <section class="filter-section surface-card" aria-labelledby="filter-heading">
@@ -93,6 +121,7 @@
 
         <section class="status-section surface-card" aria-live="polite">
           <p id="result-count" class="result-count">Loading places&hellip;</p>
+          <button id="sidebar-apply" class="sidebar-apply" type="button">Show on map</button>
         </section>
       </aside>
 

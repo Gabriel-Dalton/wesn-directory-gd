@@ -155,5 +155,9 @@ window.AmenityMap = (function () {
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
   }
 
-  return { init, setPlaces, setGroupVisible, fitToVisible };
+  function invalidateSize() {
+    if (map && typeof map.invalidateSize === "function") map.invalidateSize();
+  }
+
+  return { init, setPlaces, setGroupVisible, fitToVisible, invalidateSize };
 })();

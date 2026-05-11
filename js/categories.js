@@ -104,10 +104,17 @@ window.AmenityCategories = (function () {
   // the taxonomy (js/taxonomy.js). When the API returns a new Sub_Category, the
   // classifier normalizes it to one of these — no edits needed here unless
   // WESN wants the new Amenity surfaced under a different sidebar group.
+  //
+  // `domain` and `subdomain` slot each group into the WHO Age-Friendly
+  // Communities hierarchy (mirrors taxonomy.js). The sidebar uses them to
+  // render Domain → Subdomain sections; groups whose amenities span multiple
+  // subdomains use the most representative one.
   const groups = [
     {
       id: "healthcare",
       label: "Clinics & Health",
+      domain: "Community & Healthcare Services",
+      subdomain: "Healthcare",
       icon: svgIcon(I.heart),
       color: "#c62828",
       amenities: [
@@ -120,6 +127,8 @@ window.AmenityCategories = (function () {
     {
       id: "pharmacy",
       label: "Pharmacies",
+      domain: "Community & Healthcare Services",
+      subdomain: "Healthcare",
       icon: svgIcon(I.pill),
       color: "#1e8a3a",
       amenities: ["Pharmacy"],
@@ -127,13 +136,26 @@ window.AmenityCategories = (function () {
     {
       id: "dental-vision",
       label: "Dentists & Optometrists",
+      domain: "Community & Healthcare Services",
+      subdomain: "Healthcare",
       icon: svgIcon(I.stethoscope),
       color: "#0e7287",
       amenities: ["Dentist", "Optometry"],
     },
     {
+      id: "veterinary",
+      label: "Veterinary",
+      domain: "Community & Healthcare Services",
+      subdomain: "Healthcare",
+      icon: svgIcon(I.pawPrint),
+      color: "#6d4c41",
+      amenities: ["Vet"],
+    },
+    {
       id: "groceries",
       label: "Groceries",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Retail & Commercial Services",
       icon: svgIcon(I.cart),
       color: "#558b2f",
       amenities: [
@@ -143,20 +165,57 @@ window.AmenityCategories = (function () {
     {
       id: "cafes",
       label: "Bakeries & Cafés",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Retail & Commercial Services",
       icon: svgIcon(I.coffee),
       color: "#8d6e63",
       amenities: ["Bakery & Cafe", "Dessert & Sweet Food Shops"],
     },
     {
-      id: "banking",
-      label: "Banks",
-      icon: svgIcon(I.landmark),
-      color: "#5d4037",
-      amenities: ["Bank", "Financial Advisors", "Currency Exchange"],
+      id: "restaurants",
+      label: "Restaurants",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Retail & Commercial Services",
+      icon: svgIcon(I.utensils),
+      color: "#d84315",
+      amenities: ["Food & Beverage"],
+    },
+    {
+      id: "liquor-cannabis",
+      label: "Liquor, Cannabis & Smoke Shops",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Retail & Commercial Services",
+      icon: svgIcon(I.wine),
+      color: "#7e57c2",
+      amenities: ["Alcohol Retail", "Cannabis Store", "Vape & Smoke Shop"],
+    },
+    {
+      id: "shops-other",
+      label: "Shops & Other Retail",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Retail & Commercial Services",
+      icon: svgIcon(I.store),
+      color: "#795548",
+      amenities: [
+        "Other Businesses", "Dollarama", "Supplement Products",
+        "Flower Shop", "Mushroom Shop", "Automotive Goods & Services",
+        "Telecom Stores", "Computer & Mobile Phone Service",
+      ],
+    },
+    {
+      id: "personal-care",
+      label: "Personal Care Products",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Personal Care Products",
+      icon: svgIcon(I.sparkles),
+      color: "#ec407a",
+      amenities: ["Personal Care Products"],
     },
     {
       id: "personal-services",
       label: "Personal Services",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Personal & Household Services",
       icon: svgIcon(I.scissors),
       color: "#6a1b9a",
       amenities: [
@@ -167,43 +226,28 @@ window.AmenityCategories = (function () {
       ],
     },
     {
-      id: "community-centres",
-      label: "Community Centres",
-      icon: svgIcon(I.building),
-      color: "#0277bd",
-      amenities: ["Community Centre"],
+      id: "banking",
+      label: "Banks",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Financial Services",
+      icon: svgIcon(I.landmark),
+      color: "#5d4037",
+      amenities: ["Bank", "Financial Advisors", "Currency Exchange"],
     },
     {
       id: "libraries",
       label: "Libraries",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Education & Cultural Services",
       icon: svgIcon(I.library),
       color: "#283593",
       amenities: ["Library"],
     },
     {
-      id: "washrooms",
-      label: "Public Washrooms",
-      icon: svgIcon(I.toilet),
-      color: "#00838f",
-      amenities: ["Public Washroom"],
-    },
-    {
-      id: "parks",
-      label: "Parks",
-      icon: svgIcon(I.trees),
-      color: "#1e8a3a",
-      amenities: ["Green Space", "Community Garden"],
-    },
-    {
-      id: "drinking-fountains",
-      label: "Drinking Fountains",
-      icon: svgIcon(I.droplets),
-      color: "#0e7287",
-      amenities: ["Water Fountain"],
-    },
-    {
       id: "cultural-spaces",
       label: "Cultural Spaces",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Education & Cultural Services",
       icon: svgIcon(I.palette),
       color: "#ad1457",
       amenities: ["Art & Cultural Space", "BC Alliance for Arts and Culture"],
@@ -211,53 +255,17 @@ window.AmenityCategories = (function () {
     {
       id: "public-art",
       label: "Public Art",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Education & Cultural Services",
       icon: svgIcon(I.image),
       color: "#b76e0e",
       amenities: ["Public Art"],
     },
-
-    // -- Newly added groups (driven by the WESN curated All Amenities set). --
-    // Order placed after the senior-priority groups so the sidebar's most-used
-    // toggles stay near the top.
-
-    {
-      id: "restaurants",
-      label: "Restaurants",
-      icon: svgIcon(I.utensils),
-      color: "#d84315",
-      amenities: ["Food & Beverage"],
-    },
-    {
-      id: "liquor-cannabis",
-      label: "Liquor, Cannabis & Smoke Shops",
-      icon: svgIcon(I.wine),
-      color: "#7e57c2",
-      amenities: ["Alcohol Retail", "Cannabis Store", "Vape & Smoke Shop"],
-    },
-    {
-      id: "personal-care",
-      label: "Personal Care Products",
-      icon: svgIcon(I.sparkles),
-      color: "#ec407a",
-      amenities: ["Personal Care Products"],
-    },
-    {
-      id: "veterinary",
-      label: "Veterinary",
-      icon: svgIcon(I.pawPrint),
-      color: "#6d4c41",
-      amenities: ["Vet"],
-    },
-    {
-      id: "entertainment",
-      label: "Entertainment & Leisure",
-      icon: svgIcon(I.music),
-      color: "#c2185b",
-      amenities: ["Entertainment and Leisure", "Dragon Boat BC", "Media Company"],
-    },
     {
       id: "schools",
       label: "Schools & Colleges",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Education & Cultural Services",
       icon: svgIcon(I.graduationCap),
       color: "#1565c0",
       amenities: [
@@ -267,36 +275,78 @@ window.AmenityCategories = (function () {
       ],
     },
     {
-      id: "housing",
-      label: "Housing",
-      icon: svgIcon(I.house),
-      color: "#2e7d32",
-      amenities: ["Non-market Housing"],
+      id: "entertainment",
+      label: "Entertainment & Leisure",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Entertainment and Leisure",
+      icon: svgIcon(I.music),
+      color: "#c2185b",
+      amenities: ["Entertainment and Leisure", "Dragon Boat BC", "Media Company"],
     },
     {
-      id: "shelters",
-      label: "Shelters",
-      icon: svgIcon(I.bed),
-      color: "#ef6c00",
-      amenities: ["Shelter"],
+      id: "parks",
+      label: "Parks",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Green Space",
+      icon: svgIcon(I.trees),
+      color: "#1e8a3a",
+      amenities: ["Green Space", "Community Garden"],
     },
     {
-      id: "fire-halls",
-      label: "Fire Halls",
-      icon: svgIcon(I.flame),
-      color: "#b71c1c",
-      amenities: ["Fire Hall"],
+      id: "washrooms",
+      label: "Public Washrooms",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Rest Areas",
+      icon: svgIcon(I.toilet),
+      color: "#00838f",
+      amenities: ["Public Washroom"],
     },
     {
-      id: "disability-parking",
-      label: "Disability Parking",
-      icon: svgIcon(I.accessibility),
-      color: "#1976d2",
-      amenities: ["Disability Parking"],
+      id: "drinking-fountains",
+      label: "Drinking Fountains",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Rest Areas",
+      icon: svgIcon(I.droplets),
+      color: "#0e7287",
+      amenities: ["Water Fountain"],
+    },
+    {
+      id: "government-legal",
+      label: "Government & Legal",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Government & Public Services",
+      icon: svgIcon(I.scale),
+      color: "#455a64",
+      amenities: [
+        "ICBC Driver Licensing", "Work BC Centre",
+        "Army Navy Head Office", "Avi Lewis (NDP) Campaign office",
+        "M.L.A Spencer Chandra Herbert",
+        "Notary", "Law Office",
+      ],
+    },
+    {
+      id: "other-services",
+      label: "Other Services",
+      domain: "Outdoor Spaces and Amenities",
+      subdomain: "Other",
+      icon: svgIcon(I.package),
+      color: "#546e7a",
+      amenities: ["Other Services"],
+    },
+    {
+      id: "community-centres",
+      label: "Community Centres",
+      domain: "Social Participation and Inclusion",
+      subdomain: "Community & Social Services",
+      icon: svgIcon(I.building),
+      color: "#0277bd",
+      amenities: ["Community Centre"],
     },
     {
       id: "community-services",
       label: "Community & Social Services",
+      domain: "Social Participation and Inclusion",
+      subdomain: "Community & Social Services",
       icon: svgIcon(I.users),
       color: "#00695c",
       amenities: [
@@ -326,36 +376,83 @@ window.AmenityCategories = (function () {
       ],
     },
     {
-      id: "government-legal",
-      label: "Government & Legal",
-      icon: svgIcon(I.scale),
-      color: "#455a64",
-      amenities: [
-        "ICBC Driver Licensing", "Work BC Centre",
-        "Army Navy Head Office", "Avi Lewis (NDP) Campaign office",
-        "M.L.A Spencer Chandra Herbert",
-        "Notary", "Law Office",
-      ],
+      id: "housing",
+      label: "Housing",
+      domain: "Housing",
+      subdomain: "Affordable Housing",
+      icon: svgIcon(I.house),
+      color: "#2e7d32",
+      amenities: ["Non-market Housing"],
     },
     {
-      id: "shops-other",
-      label: "Shops & Other Retail",
-      icon: svgIcon(I.store),
-      color: "#795548",
-      amenities: [
-        "Other Businesses", "Dollarama", "Supplement Products",
-        "Flower Shop", "Mushroom Shop", "Automotive Goods & Services",
-        "Telecom Stores", "Computer & Mobile Phone Service",
-      ],
+      id: "shelters",
+      label: "Shelters",
+      domain: "Housing",
+      subdomain: "Emergency Housing",
+      icon: svgIcon(I.bed),
+      color: "#ef6c00",
+      amenities: ["Shelter"],
     },
     {
-      id: "other-services",
-      label: "Other Services",
-      icon: svgIcon(I.package),
-      color: "#546e7a",
-      amenities: ["Other Services"],
+      id: "disability-parking",
+      label: "Disability Parking",
+      domain: "Transportation",
+      subdomain: "Parking Infrastructure",
+      icon: svgIcon(I.accessibility),
+      color: "#1976d2",
+      amenities: ["Disability Parking"],
+    },
+    {
+      id: "fire-halls",
+      label: "Fire Halls",
+      domain: "Safety",
+      subdomain: "Built Environment Safety",
+      icon: svgIcon(I.flame),
+      color: "#b71c1c",
+      amenities: ["Fire Hall"],
     },
   ];
+
+  // Order the Domain accordions in the sidebar. Anything not listed here will
+  // fall through to the end in insertion order — but every domain produced by
+  // the taxonomy is enumerated explicitly below.
+  const DOMAIN_ORDER = [
+    "Community & Healthcare Services",
+    "Outdoor Spaces and Amenities",
+    "Social Participation and Inclusion",
+    "Housing",
+    "Transportation",
+    "Safety",
+  ];
+
+  /**
+   * Build the Domain → Subdomain → groups tree the sidebar renders.
+   * Returns: [{ domain, subdomains: [{ subdomain, groups: [group] }] }]
+   */
+  function tree() {
+    const byDomain = new Map();
+    for (const g of groups) {
+      const d = g.domain || "Other";
+      if (!byDomain.has(d)) byDomain.set(d, new Map());
+      const subdomains = byDomain.get(d);
+      const s = g.subdomain || "Other";
+      if (!subdomains.has(s)) subdomains.set(s, []);
+      subdomains.get(s).push(g);
+    }
+    const domainKey = (name) => {
+      const i = DOMAIN_ORDER.indexOf(name);
+      return i === -1 ? DOMAIN_ORDER.length : i;
+    };
+    return [...byDomain.entries()]
+      .sort((a, b) => domainKey(a[0]) - domainKey(b[0]))
+      .map(([domain, subMap]) => ({
+        domain,
+        subdomains: [...subMap.entries()].map(([subdomain, gs]) => ({
+          subdomain,
+          groups: gs,
+        })),
+      }));
+  }
 
   const byId = Object.fromEntries(groups.map((g) => [g.id, g]));
 
@@ -394,6 +491,7 @@ window.AmenityCategories = (function () {
   return {
     groups,
     byId,
+    tree,
     classifyStorefront,
     groupIdForAmenity,
     STOREFRONTS,

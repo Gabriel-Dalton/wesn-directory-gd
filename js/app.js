@@ -69,7 +69,30 @@
       // Leaflet needs invalidateSize after layout shifts (e.g. mobile drawer).
       if (map && map.invalidateSize) map.invalidateSize();
     }, 50);
+
+    // Re-invalidate on viewport/orientation changes so the map fills the
+    // available space when the mobile URL bar collapses, the device rotates,
+    // or the user widens a desktop window.
+    setupMapResizeWatcher(map);
   });
+
+  function setupMapResizeWatcher(map) {
+    if (!map || typeof map.invalidateSize !== "function") return;
+    let raf = 0;
+    const refresh = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        map.invalidateSize();
+      });
+    };
+    window.addEventListener("resize", refresh, { passive: true });
+    window.addEventListener("orientationchange", refresh);
+    if (typeof ResizeObserver === "function") {
+      const mapEl = document.getElementById("map");
+      if (mapEl) new ResizeObserver(refresh).observe(mapEl);
+    }
+  }
 
   function setStatus(text) {
     const el = document.getElementById("result-count");
@@ -149,10 +172,15 @@
       backdrop.classList.remove("is-visible");
       toggle.setAttribute("aria-expanded", "false");
       document.body.style.overflow = "";
-      // Hide backdrop after transition so it doesn't catch clicks.
+      // Hide backdrop after transition so it doesn't catch clicks, and ask
+      // the Leaflet map to recalc its size now that the sheet animation has
+      // finished (tile reflow when the user rotates while the drawer is up).
       setTimeout(() => {
         if (!backdrop.classList.contains("is-visible")) backdrop.hidden = true;
-      }, 250);
+        if (window.AmenityMap && window.AmenityMap.invalidateSize) {
+          window.AmenityMap.invalidateSize();
+        }
+      }, 280);
       toggle.focus();
     };
 
