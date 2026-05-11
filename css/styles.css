@@ -1039,21 +1039,28 @@ dialog#place-detail h2 {
    The "Filters" toggle, slide-up sidebar handle, close (X) and "Show on map"
    (apply) controls are only shown on small viewports — they're rendered but
    hidden on desktop so the same DOM serves both layouts.
+   The backdrop is toggled via the native HTML `hidden` attribute (managed
+   from app.js) — do NOT set a `display` value on it from CSS, or we'd
+   override `[hidden]` and end up with an invisible-but-clickable overlay
+   that swallows every tap on the page (including the Filters button).
    ========================================================================= */
 .filters-toggle { display: none; }
+.sidebar-topbar { display: none; }
 .sidebar-handle { display: none; }
+.sidebar-title { display: none; }
 .sidebar-close { display: none; }
 .sidebar-apply { display: none; }
 .sidebar-backdrop {
-  display: none;
   position: fixed;
   inset: 0;
   background: rgba(8, 30, 20, 0.45);
   z-index: 999;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 200ms ease;
 }
-.sidebar-backdrop.is-visible { opacity: 1; }
+.sidebar-backdrop.is-visible { opacity: 1; pointer-events: auto; }
+.sidebar-backdrop[hidden] { display: none; }
 
 /* =========================================================================
    Responsive
@@ -1175,27 +1182,55 @@ dialog#place-detail h2 {
     gap: 0.7rem;
   }
   .sidebar.is-open { transform: translateY(0); }
-  .sidebar-backdrop { display: block; }
 
-  /* Sheet handle (visual grab indicator at the top). */
+  /* Tighten the surface-card padding inside the sheet so content fits the
+     narrow viewport without wasted whitespace. */
+  .sidebar .surface-card { padding: 0.7rem 0.85rem 0.85rem; }
+
+  /* Sticky topbar inside the sheet: grab-handle (centered), title (left),
+     close (X, right). Sticky so it stays in view as the user scrolls the
+     filter content. */
+  .sidebar-topbar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 0.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    margin: -0.4rem -0.85rem 0;
+    padding: 0.35rem 0.85rem 0.5rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--paper-edge);
+  }
   .sidebar-handle {
     display: block;
+    grid-column: 1 / -1;
+    grid-row: 1;
     width: 44px;
     height: 4px;
     border-radius: 999px;
     background: var(--paper-edge);
-    margin: 0.15rem auto 0.45rem;
-    flex: 0 0 auto;
+    margin: 0 auto 0.35rem;
   }
-
-  /* Close (X) at top-right inside the sheet. */
+  .sidebar-title {
+    display: block;
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
   .sidebar-close {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 0.6rem;
-    right: 0.7rem;
+    grid-column: 2;
+    grid-row: 2;
     width: 44px;
     height: 44px;
     border-radius: var(--r-card);
@@ -1203,13 +1238,13 @@ dialog#place-detail h2 {
     background: var(--paper);
     color: var(--ink);
     box-shadow: 1px 1px 0 var(--paper-edge);
-    z-index: 2;
   }
   .sidebar-close:hover {
     background: var(--ink);
     color: var(--paper);
     border-color: var(--ink);
   }
+  .sidebar-close:active { transform: translate(1px, 1px); box-shadow: none; }
 
   /* Status section stays pinned at the bottom of the sheet (sticky works
      because the sheet itself is now the scroll container). */
@@ -1294,6 +1329,20 @@ dialog#place-detail h2 {
     margin-top: 2px;
   }
 
+  /* Touch-friendly Leaflet zoom controls. The Leaflet defaults are 26px
+     squares — below the recommended 44px touch target. */
+  .leaflet-touch .leaflet-bar a,
+  .leaflet-bar a {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.4rem;
+  }
+  .leaflet-touch .leaflet-control-zoom-in,
+  .leaflet-touch .leaflet-control-zoom-out {
+    font-size: 1.4rem;
+  }
+
   .about {
     grid-template-columns: 1fr;
     gap: 0.85rem;
@@ -1308,7 +1357,9 @@ dialog#place-detail h2 {
   .area-options { grid-template-columns: 1fr; }
   .area-option:has(input[data-area-value="__all__"]) { grid-column: 1; }
   .site-header h1 { display: none; }
-  .filters-toggle span:not(.filters-toggle-count) { display: none; }
+  .brand-logo { max-width: 110px; }
+  .site-nav a, .site-nav button { padding: 0.4rem 0.6rem; font-size: 0.82rem; }
+  .filters-toggle { padding: 0.4rem 0.55rem; }
 }
 
 @media print {
