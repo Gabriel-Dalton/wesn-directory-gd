@@ -152,7 +152,7 @@ window.AmenityFilters = (function () {
         if (!p.area || p.area !== area) continue;
       }
       if (search) {
-        const haystack = normalizeForSearch(`${p.name} ${p.subCategory} ${p.address}`);
+        const haystack = normalizeForSearch(`${p.name} ${p.subCategory} ${p.amenity || ""} ${p.subdomain || ""} ${p.address}`);
         if (!haystack.includes(search)) continue;
       }
       counts.set(p.groupId, (counts.get(p.groupId) || 0) + 1);
@@ -182,7 +182,7 @@ window.AmenityFilters = (function () {
         return false;
       }
       if (search) {
-        const haystack = normalizeForSearch(`${p.name} ${p.subCategory} ${p.address}`);
+        const haystack = normalizeForSearch(`${p.name} ${p.subCategory} ${p.amenity || ""} ${p.subdomain || ""} ${p.address}`);
         if (!haystack.includes(search)) return false;
       }
       return true;

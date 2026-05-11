@@ -25,7 +25,9 @@ This is a static site — no server, no build step, no framework.
 ```
 index.html        ← page shell
 css/styles.css    ← senior-friendly styling
-js/categories.js  ← category groupings (Clinics, Pharmacies, Libraries…)
+js/taxonomy.js    ← Domain / Subdomain / Amenity hierarchy + alias tables
+js/classify.js    ← auto-classifier: API record → { domain, subdomain, amenity }
+js/categories.js  ← sidebar groupings (Clinics, Pharmacies, Libraries…)
 js/data.js        ← fetches GeoJSON from City of Vancouver Open Data
 js/map.js         ← Leaflet map + custom markers
 js/filters.js     ← sidebar filter logic
@@ -82,15 +84,24 @@ node scripts/fetch-data.mjs
 
 ## Adding more categories
 
-Edit [`js/categories.js`](./js/categories.js):
+The amenity taxonomy lives in [`js/taxonomy.js`](./js/taxonomy.js); the
+sidebar groupings live in [`js/categories.js`](./js/categories.js). They
+are decoupled on purpose — when the City of Vancouver renames a
+`Sub_Category` on the portal, you only need to add a one-line alias in
+`taxonomy.js` and every downstream consumer (filters, popups, search) picks
+it up automatically.
 
-1. To add a new senior-relevant grouping based on the existing storefront
-   data, append a new entry to `groups` with a list of `subCategories` to
-   include.
-2. To pull from a new Vancouver Open Data dataset, add a `sources` entry
-   referencing the dataset slug, then add a small loader in
-   [`js/data.js`](./js/data.js) following the pattern of `loadLibraries`,
-   `loadCommunityCentres`, etc.
+1. **Add a new Amenity** (a leaf in the Domain → Subdomain → Amenity tree):
+   append a row to `TRIPLES` in `taxonomy.js`. If the storefront API
+   reports it under a different name, also add an entry to
+   `SUB_CATEGORY_ALIASES`.
+2. **Add a new sidebar grouping**: append an entry to `groups` in
+   `categories.js`, listing the canonical `amenities` it should surface.
+3. **Pull from a new Vancouver Open Data dataset**: register the slug in
+   `DATASET_AMENITY` (`taxonomy.js`), then add a loader to
+   [`js/data.js`](./js/data.js) following the `loadLibraries`/`loadParks`
+   pattern. Each Place returned should call `applyTaxonomy(place, slug)`
+   so it inherits the right `{ domain, subdomain, amenity }`.
 
 ## Accessibility
 
