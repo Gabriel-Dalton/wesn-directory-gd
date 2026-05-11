@@ -1035,101 +1035,255 @@ dialog#place-detail h2 {
 .sidebar > section:nth-of-type(4) { animation-delay: 260ms; }
 
 /* =========================================================================
-   Responsive
-   =========================================================================
-   Tablet and below: stack sidebar above map, but cap the sidebar so the
-   map stays visible. The category grid scrolls internally on small screens
-   so the user never loses sight of the map.
+   Mobile drawer chrome
+   The "Filters" toggle, slide-up sidebar handle, close (X) and "Show on map"
+   (apply) controls are only shown on small viewports — they're rendered but
+   hidden on desktop so the same DOM serves both layouts.
    ========================================================================= */
-@media (max-width: 1000px) {
-  .layout {
-    grid-template-columns: 1fr;
-    height: auto;
-    min-height: calc(100vh - 76px);
-  }
-  .sidebar {
-    height: auto;
-    max-height: none;
-    overflow: visible;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    gap: 0.6rem;
-  }
-  /* Search + area side-by-side at top */
-  .sidebar > .search-section,
-  .sidebar > .area-section { grid-row: auto; grid-column: span 1; }
-  .sidebar > .filter-section,
-  .sidebar > .status-section { grid-row: auto; grid-column: 1 / -1; }
-  .filter-section { overflow: visible; }
-  .filter-section .category-list {
-    max-height: 320px;
-    mask-image: none;
-    -webkit-mask-image: none;
-  }
-  .search-suggestions {
-    /* Stretch beyond the half-width search column so long names stay readable. */
-    right: auto;
-    min-width: 100%;
-    max-width: min(520px, calc(100vw - 2rem));
-    max-height: 280px;
-  }
-  .map {
-    height: 62vh;
-    min-height: 420px;
-  }
+.filters-toggle { display: none; }
+.sidebar-handle { display: none; }
+.sidebar-close { display: none; }
+.sidebar-apply { display: none; }
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 30, 20, 0.45);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 200ms ease;
 }
+.sidebar-backdrop.is-visible { opacity: 1; }
 
-@media (max-width: 720px) {
+/* =========================================================================
+   Responsive
+   ---------------------------------------------------------------------------
+   The JS in app.js uses `(min-width: 881px)` as the breakpoint between
+   desktop (sidebar inline next to the map) and mobile/tablet (sidebar slides
+   up as a bottom sheet over the map). The CSS below has to match.
+   ========================================================================= */
+
+/* --- 881px and below: mobile/tablet drawer layout ----------------------- */
+@media (max-width: 880px) {
+  /* Header: keep on a single row but tighten spacing and shrink the title
+     so the Filters button has somewhere to go. */
   .site-header {
-    flex-wrap: wrap;
-    padding: 0.55rem 0.85rem 0.7rem;
-    min-height: 0;
+    padding: 0.55rem 0.85rem;
+    min-height: 64px;
     gap: 0.6rem;
+    flex-wrap: nowrap;
   }
+  .brand { gap: 0.65rem; min-width: 0; flex: 1 1 auto; }
+  .brand-logo { height: 38px; max-width: 130px; flex: 0 0 auto; }
   .site-header h1 {
-    padding-left: 0;
-    border-left: 0;
-    font-size: 1.05rem;
+    padding-left: 0.75rem;
+    margin-left: 0.05rem;
+    border-left: 1px solid var(--paper-edge);
+    font-size: clamp(0.95rem, 3vw, 1.1rem);
+    line-height: 1.15;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
   }
-  .brand { gap: 0.7rem; }
-  .brand-logo { height: 40px; max-width: 150px; }
   .site-nav {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+    flex-shrink: 0;
+    gap: 0.35rem;
   }
   .site-nav a,
   .site-nav button {
-    padding: 0.5rem 0.85rem;
-    font-size: 0.9rem;
-    min-height: 42px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.85rem;
+    min-height: 40px;
   }
-  .layout {
-    padding: 0.75rem;
-    gap: 0.75rem;
-    min-height: 0;
-  }
-  .sidebar { grid-template-columns: 1fr; }
-  .map { height: 55vh; min-height: 360px; }
-  .about {
-    grid-template-columns: 1fr;
-    gap: 0.85rem;
-    margin: 1rem 0.75rem;
-    padding: 1.2rem 1rem;
-  }
-  .site-footer { margin: 0 0.75rem 1rem; padding: 0.85rem; }
-}
+  /* Hide the long-form nav links on phones so the Filters / A+ controls
+     have room to breathe. They're still reachable from the About section
+     below the fold and the dialog footer. */
+  .site-nav > a { display: none; }
 
-/* Phones: tiles drop to a single column so labels never truncate */
-@media (max-width: 520px) {
-  .category-list { grid-template-columns: 1fr; }
-  .category-item { min-height: 52px; }
+  /* Filters toggle becomes a primary action. */
+  .filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--teal);
+    color: #fff;
+    border: 1px solid var(--teal-deep);
+    box-shadow: 2px 2px 0 var(--teal-deep);
+    font-weight: 600;
+  }
+  .filters-toggle:hover {
+    background: var(--teal-dark);
+    color: #fff;
+    border-color: var(--teal-deep);
+  }
+  .filters-toggle svg { display: block; }
+  .filters-toggle-count {
+    display: none;
+    margin-left: 0.15rem;
+    padding: 0 0.45rem;
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--gold);
+    border-radius: 999px;
+    min-width: 1.8em;
+    text-align: center;
+  }
+  .filters-toggle-count.is-visible { display: inline-block; }
+
+  /* Layout: map fills the area below the header. The sidebar is taken out
+     of the flow and absolutely positioned as a bottom sheet. */
+  .layout {
+    grid-template-columns: 1fr;
+    height: calc(100dvh - 64px);
+    min-height: 0;
+    padding: 0.6rem;
+    gap: 0;
+  }
+  .map {
+    height: 100%;
+    min-height: 0;
+    border-radius: var(--r-card);
+  }
+
+  /* Sidebar = bottom-sheet drawer. Animates in/out of view; covers ~90% of
+     the visible viewport so the user can still see a sliver of the map and
+     understand they're in an overlay. */
+  .sidebar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 1000;
+    height: 92dvh;
+    max-height: 92dvh;
+    width: 100%;
+    padding: 0.4rem 0.85rem 1rem;
+    background: var(--card);
+    border-top: 1px solid var(--paper-edge);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -20px 50px -20px rgba(8, 30, 20, 0.45);
+    transform: translateY(100%);
+    transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .sidebar.is-open { transform: translateY(0); }
+  .sidebar-backdrop { display: block; }
+
+  /* Sheet handle (visual grab indicator at the top). */
+  .sidebar-handle {
+    display: block;
+    width: 44px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--paper-edge);
+    margin: 0.15rem auto 0.45rem;
+    flex: 0 0 auto;
+  }
+
+  /* Close (X) at top-right inside the sheet. */
+  .sidebar-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0.6rem;
+    right: 0.7rem;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-card);
+    border: 1px solid var(--paper-edge);
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 1px 1px 0 var(--paper-edge);
+    z-index: 2;
+  }
+  .sidebar-close:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* Status section stays pinned at the bottom of the sheet (sticky works
+     because the sheet itself is now the scroll container). */
+  .sidebar > .status-section {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin-top: auto;
+    background: var(--card-2);
+    border-top: 1px solid var(--paper-edge);
+    box-shadow: 0 -10px 14px -10px rgba(8, 30, 20, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sidebar-apply {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--teal);
+    color: #fff;
+    border: 1px solid var(--teal-deep);
+    box-shadow: 2px 2px 0 var(--teal-deep);
+    border-radius: var(--r-card);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    min-height: 48px;
+    width: 100%;
+  }
+  .sidebar-apply:hover { background: var(--teal-dark); color: #fff; }
+  .sidebar-apply:active { transform: translate(1px, 1px); box-shadow: none; }
+
+  /* Search dropdown should never overflow the sheet horizontally. */
+  .search-suggestions {
+    max-height: min(50vh, 320px);
+    max-width: 100%;
+  }
+  .search-section { z-index: 11; }
+
+  /* Domain headers: drop the negative letter-spacing and let labels wrap to
+     two lines cleanly. */
+  .domain-header {
+    padding: 0.7rem 0.85rem;
+    font-size: 1rem;
+    letter-spacing: 0;
+    grid-template-columns: 1.4rem 1fr auto;
+    gap: 0.55rem;
+    min-height: 52px;
+  }
+  .domain-label {
+    line-height: 1.2;
+    hyphens: manual;
+    overflow-wrap: anywhere;
+  }
+  .subdomain-header { font-size: 0.78rem; }
+  .subdomain-header::after { display: none; }
+  /* Categories drop to a single column on phones for readable labels. */
+  .category-list { grid-template-columns: 1fr; gap: 0.45rem; }
+  .category-item {
+    min-height: 56px;
+    grid-template-columns: 28px 1fr auto;
+    padding: 0.6rem 0.75rem;
+  }
+  .category-label { font-size: 1rem; }
   .filter-actions button { font-size: 0.9rem; }
-  .search-suggestions { max-height: 60vh; }
-  /* On the narrowest screens, drop the type chip to its own line so it never
-     squeezes the suggestion text. */
+
+  /* Area picker: stack the four options vertically on the narrowest screens
+     so each row is a generous full-width tap target. */
+  .area-options { grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+  .area-option:has(input[data-area-value="__all__"]) { grid-column: 1 / -1; }
+
+  /* Suggestion list: stack chip below text on narrow rows. */
   .suggestion {
     grid-template-columns: 28px 1fr;
     min-height: 56px;
@@ -1139,6 +1293,22 @@ dialog#place-detail h2 {
     justify-self: start;
     margin-top: 2px;
   }
+
+  .about {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    margin: 1rem 0.75rem;
+    padding: 1.2rem 1rem;
+  }
+  .site-footer { margin: 0 0.75rem 1rem; padding: 0.85rem; }
+}
+
+/* --- 380px and below: tighten further for the smallest phones ----------- */
+@media (max-width: 380px) {
+  .area-options { grid-template-columns: 1fr; }
+  .area-option:has(input[data-area-value="__all__"]) { grid-column: 1; }
+  .site-header h1 { display: none; }
+  .filters-toggle span:not(.filters-toggle-count) { display: none; }
 }
 
 @media print {
