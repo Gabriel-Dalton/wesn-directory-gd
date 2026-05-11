@@ -82,8 +82,12 @@ window.AmenityMap = (function () {
 
   function popupHtml(place, group) {
     const directions = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
-    const subLabel = place.subCategory && place.subCategory !== group.label
-      ? ` &middot; ${escapeHtml(place.subCategory)}`
+    // Prefer the canonical Amenity from the WESN taxonomy when it's more
+    // specific than the sidebar group label; fall back to the raw API
+    // sub_category. (e.g. group "Bakeries & Cafés" → amenity "Bakery & Cafe".)
+    const specific = place.amenity || place.subCategory;
+    const subLabel = specific && specific !== group.label
+      ? ` &middot; ${escapeHtml(specific)}`
       : "";
     const areaLabel = place.area ? `<p class="popup-address">${escapeHtml(place.area)}</p>` : "";
     // group.icon is trusted SVG markup from categories.js — render as HTML.

@@ -2,17 +2,17 @@
  * Category configuration for the WESN Vancouver Amenities Map.
  *
  * `groups` defines what users see in the sidebar — senior-relevant amenity
- * groupings. Each group maps to either:
- *   - a list of `subCategories` from the storefront dataset, OR
- *   - a separate Vancouver Open Data dataset (`dataset` field), OR
- *   - both (for groups that combine sources).
+ * groupings. Each group lists the canonical Amenity names (from the WESN
+ * taxonomy, see `js/taxonomy.js`) that should appear under it. Order in the
+ * array is the order shown in the sidebar.
  *
- * Order in the array is the order shown in the sidebar.
+ * Why amenity names and not raw `Sub_Category` strings? Because the Sub_Category
+ * field on the Vancouver storefronts API is noisy (typos, plural drift,
+ * deli-style sub-types) and changes over time. The taxonomy normalizes
+ * everything to a canonical Amenity, so this file only changes when WESN
+ * decides to add or rename a sidebar grouping.
  *
- * `icon` holds an inline SVG string (Lucide-style, 24×24, currentColor stroke)
- * that the map markers and sidebar list both render. Inline SVG was chosen
- * over an icon font because it scales cleanly at every zoom and inherits the
- * brand colour palette via `currentColor`.
+ * `icon` holds an inline SVG string (Lucide-style, 24×24, currentColor stroke).
  */
 window.AmenityCategories = (function () {
   const STOREFRONTS = "storefronts-inventory";
@@ -41,138 +41,162 @@ window.AmenityCategories = (function () {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
   }
 
+  // Sidebar groups. The `amenities` array lists canonical Amenity names from
+  // the taxonomy (js/taxonomy.js). When the API returns a new Sub_Category, the
+  // classifier normalizes it to one of these — no edits needed here unless
+  // WESN wants the new Amenity surfaced under a different sidebar group.
   const groups = [
     {
       id: "healthcare",
       label: "Clinics & Health",
       icon: svgIcon(I.heart),
       color: "#c62828",
-      sources: [{ dataset: STOREFRONTS, subCategories: [
+      amenities: [
         "Clinic", "Doctor", "Health & Wellness", "Health & Social Services",
-        "Lab", "Labs", "Beauty & Health",
+        "Lab", "LifeLabs",
         "Three Bridges Community Health Centre",
-      ]}],
+        "Safer Alternative for Emergency Response",
+      ],
     },
     {
       id: "pharmacy",
       label: "Pharmacies",
       icon: svgIcon(I.pill),
       color: "#1e8a3a",
-      sources: [{ dataset: STOREFRONTS, subCategories: ["Pharmacy"] }],
+      amenities: ["Pharmacy"],
     },
     {
       id: "dental-vision",
       label: "Dentists & Optometrists",
       icon: svgIcon(I.tooth),
       color: "#0e7287",
-      sources: [{ dataset: STOREFRONTS, subCategories: ["Dentist", "Optometry"] }],
+      amenities: ["Dentist", "Optometry"],
     },
     {
       id: "groceries",
       label: "Groceries",
       icon: svgIcon(I.cart),
       color: "#558b2f",
-      sources: [{ dataset: STOREFRONTS, subCategories: [
-        "Grocery Store", "Gourmet Grocery Store", "Supermarket",
-        "Convenience Store", "Produce Store", "Gourmet Produce",
-        "Meat Shop", "Italian Deli Food", "European Deli",
-      ]}],
+      amenities: [
+        "Grocery Store", "Supermarket", "Convenience Store", "Produce Store",
+      ],
     },
     {
       id: "cafes",
       label: "Bakeries & Cafés",
       icon: svgIcon(I.coffee),
       color: "#8d6e63",
-      sources: [{ dataset: STOREFRONTS, subCategories: [
-        "Bakery & Cafe", "Bakery", "Cafe", "Pastries",
-      ]}],
+      amenities: ["Bakery & Cafe", "Dessert & Sweet Food Shops"],
     },
     {
       id: "banking",
       label: "Banks",
       icon: svgIcon(I.bank),
       color: "#5d4037",
-      sources: [{ dataset: STOREFRONTS, subCategories: [
-        "Bank", "Financial Advisor", "Financial Advisors", "Currency Exchange",
-      ]}],
+      amenities: ["Bank", "Financial Advisors", "Currency Exchange"],
     },
     {
       id: "personal-services",
       label: "Personal Services",
       icon: svgIcon(I.scissors),
       color: "#6a1b9a",
-      sources: [{ dataset: STOREFRONTS, subCategories: [
-        "Personal & Household Services",
-        "Perosnal & Household Services",
-        "Beauty & Wellness", "Tax Services", "Notary",
-        "Insurance Company", "Insurance Advisor",
-        "Real Estate Services", "Real Estate Service",
-        "Courier Company", "Courier Companies",
-      ]}],
+      amenities: [
+        "Beauty & Wellness", "Tax Services", "Notary", "Insurance Company",
+        "Real Estate Service", "Courier Company",
+        "Laundry and Dry Cleaner", "Tailoring & Alterations",
+        "Shoe & Bag Repair",
+      ],
     },
     {
       id: "community-centres",
       label: "Community Centres",
       icon: svgIcon(I.landmark),
       color: "#0277bd",
-      sources: [{ dataset: "community-centres" }],
+      amenities: ["Community Centre"],
     },
     {
       id: "libraries",
       label: "Libraries",
       icon: svgIcon(I.book),
       color: "#283593",
-      sources: [{ dataset: "libraries" }],
+      amenities: ["Library"],
     },
     {
       id: "washrooms",
       label: "Public Washrooms",
       icon: svgIcon(I.toilet),
       color: "#00838f",
-      sources: [{ dataset: "public-washrooms" }],
+      amenities: ["Public Washroom"],
     },
     {
       id: "parks",
       label: "Parks",
       icon: svgIcon(I.tree),
       color: "#1e8a3a",
-      sources: [{ dataset: "parks-polygon-representation" }],
+      amenities: ["Green Space", "Community Garden"],
     },
     {
       id: "drinking-fountains",
       label: "Drinking Fountains",
       icon: svgIcon(I.droplet),
       color: "#0e7287",
-      sources: [{ dataset: "drinking-fountains" }],
+      amenities: ["Water Fountain"],
     },
     {
       id: "cultural-spaces",
       label: "Cultural Spaces",
       icon: svgIcon(I.palette),
       color: "#ad1457",
-      sources: [{ dataset: "cultural-spaces" }],
+      amenities: ["Art & Cultural Space", "BC Alliance for Arts and Culture"],
     },
     {
       id: "public-art",
       label: "Public Art",
       icon: svgIcon(I.image),
       color: "#b76e0e",
-      sources: [{ dataset: "public-art" }],
+      amenities: ["Public Art"],
     },
   ];
 
   const byId = Object.fromEntries(groups.map((g) => [g.id, g]));
 
-  function classifyStorefront(record) {
-    const sub = (record.sub_category || record.sub_category1 || "").trim();
-    if (!sub || sub === "Vacant") return null;
-    for (const group of groups) {
-      const storefrontSource = group.sources.find((s) => s.dataset === STOREFRONTS);
-      if (!storefrontSource) continue;
-      if (storefrontSource.subCategories.includes(sub)) return group.id;
+  // Reverse lookup: canonical Amenity → groupId. Built once at startup so
+  // classifyStorefront/classifyAmenity are O(1).
+  const groupByAmenity = (() => {
+    const map = {};
+    for (const g of groups) {
+      for (const a of g.amenities || []) map[a] = g.id;
     }
-    return null;
+    return map;
+  })();
+
+  /**
+   * Given a canonical Amenity name, return the sidebar groupId it belongs
+   * to (or null if no sidebar group surfaces this Amenity — the record is
+   * still tracked by the taxonomy, just not shown in the sidebar).
+   */
+  function groupIdForAmenity(amenity) {
+    if (!amenity) return null;
+    const canon = window.AmenityTaxonomy.canonicalAmenity(amenity);
+    return groupByAmenity[canon] || null;
   }
 
-  return { groups, byId, classifyStorefront, STOREFRONTS };
+  /**
+   * Storefronts compatibility shim. Old callers pass a raw API record and
+   * expect a groupId back; under the hood we now route through the
+   * taxonomy-aware classifier.
+   */
+  function classifyStorefront(record) {
+    const triple = window.AmenityClassifier.classifyStorefront(record);
+    if (!triple) return null;
+    return groupIdForAmenity(triple.amenity);
+  }
+
+  return {
+    groups,
+    byId,
+    classifyStorefront,
+    groupIdForAmenity,
+    STOREFRONTS,
+  };
 })();

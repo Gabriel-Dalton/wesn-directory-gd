@@ -12,13 +12,52 @@ offline-degraded fallback only.
 | `community-centres`                | Community centres                   |
 | `libraries`                        | Public library branches             |
 | `public-washrooms`                 | Public washrooms                    |
+| `drinking-fountains`               | Drinking fountains                  |
 | `parks-polygon-representation`     | Parks                               |
+| `cultural-spaces`                  | Cultural spaces                     |
+| `public-art`                       | Public art                          |
 
 All are exported as GeoJSON via:
 
 ```
 https://opendata.vancouver.ca/api/explore/v2.1/catalog/datasets/{slug}/exports/geojson
 ```
+
+## Amenity taxonomy (Domain / Subdomain / Amenity)
+
+The Vancouver Open Data Portal does **not** publish the three custom columns
+WESN cares about — `Domain_`, `Subdomain`, and `Amenity`. These are derived
+on the fly inside the browser:
+
+- [`js/taxonomy.js`](../js/taxonomy.js) — single source of truth for every
+  `(Domain, Subdomain, Amenity)` triple WESN tracks, plus a
+  `Sub_Category → Amenity` alias table and a `dataset-slug → Amenity` table.
+- [`js/classify.js`](../js/classify.js) — `classify(record, sourceHint)`
+  picks an Amenity from either the dataset slug (libraries, parks, …) or
+  the storefronts API's `Sub_Category`/`General_Bu` fields.
+
+When the City of Vancouver publishes a new `Sub_Category`, the classifier
+will fall back to the matching `General_Bu` bucket so nothing breaks. To
+roll it up cleanly under an existing Amenity (or surface it as a new one),
+update `taxonomy.js` only — no other code changes are required.
+
+### Datasets not yet wired into the page
+
+The All Amenities export references a few sources that are valid on the
+Open Data Portal but don't yet have a loader in `js/data.js`:
+
+| Suggested slug                            | Amenities it would surface  |
+| ----------------------------------------- | --------------------------- |
+| `non-market-housing-rental-stock`         | Non-market Housing          |
+| `homeless-shelter-locations`              | Shelter                     |
+| `disability-parking`                      | Disability Parking          |
+| `fire-halls`                              | Fire Hall                   |
+| `community-gardens-and-food-trees`        | Community Garden            |
+| `schools`                                 | Elementary/High/Secondary…  |
+
+Add a new loader to `js/data.js` following the `loadLibraries` pattern, then
+register the slug in `DATASET_AMENITY` inside `js/taxonomy.js`. The sidebar
+will pick the records up automatically.
 
 ## Refreshing the snapshot
 
