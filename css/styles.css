@@ -190,7 +190,7 @@ button { font: inherit; cursor: pointer; }
    ========================================================================= */
 .layout {
   display: grid;
-  grid-template-columns: minmax(300px, 340px) 1fr;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
   gap: 1rem;
   padding: 1rem clamp(1rem, 3vw, 2rem);
   /* Fill the rest of the viewport below the masthead. */
@@ -208,10 +208,13 @@ button { font: inherit; cursor: pointer; }
   flex-direction: column;
   gap: 0.75rem;
   height: 100%;
+  min-width: 0;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 0.25rem;
 }
+.sidebar > * { min-width: 0; }
 .sidebar::-webkit-scrollbar { width: 8px; }
 .sidebar::-webkit-scrollbar-track { background: transparent; }
 .sidebar::-webkit-scrollbar-thumb { background: var(--paper-edge); border-radius: 4px; }
@@ -627,6 +630,22 @@ button { font: inherit; cursor: pointer; }
   margin: 0 0 0.4rem;
 }
 .category-list .loading { grid-column: 1 / -1; }
+
+/* The top-level #category-list is the *outer* container that holds
+   Domain accordions (each a .domain-section). It happens to share the
+   .category-list class with the inner per-subdomain tile grids, so we
+   need to override the 2-column grid here — otherwise domain accordions
+   render side-by-side and spill out of the sidebar at every viewport. */
+#category-list {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: none;
+  gap: 0;
+  width: 100%;
+  min-width: 0;
+}
+#category-list > .domain-section { min-width: 0; }
+#category-list .loading { padding: 0.25rem 0; }
 
 .category-item {
   position: relative;
