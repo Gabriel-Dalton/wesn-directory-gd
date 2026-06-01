@@ -15,6 +15,16 @@
     <meta http-equiv="Expires" content="0" />
     <title>Vancouver Amenities Map · WESN</title>
 
+    <!-- Site configuration.
+         googleMapsApiKey: paste a Google Maps Platform key (with billing
+         enabled) to render the real Google Maps background. Leave it blank to
+         use the built-in Google-Maps-style basemap (works with no key). -->
+    <script>
+      window.WESN_CONFIG = {
+        googleMapsApiKey: "",
+      };
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Public+Sans:wght@400;500;600;700&display=swap" />
@@ -119,6 +129,39 @@
           </div>
         </section>
 
+        <section class="filter-section surface-card analytics-section" aria-labelledby="analytics-toggle">
+          <div id="analytics-panel" class="domain-section is-collapsed">
+            <button id="analytics-toggle" class="domain-header" type="button"
+                    aria-expanded="false" aria-controls="analytics-body">
+              <span class="domain-caret" aria-hidden="true">▾</span>
+              <span class="domain-label">Accessibility analytics</span>
+              <span class="domain-count" aria-hidden="true">📊</span>
+            </button>
+            <div id="analytics-body" class="domain-body" hidden>
+              <p class="analytics-intro">
+                See how easy it is to reach an essential service across Vancouver.
+              </p>
+              <div class="analytics-control">
+                <label for="analytics-service">Service</label>
+                <select id="analytics-service"></select>
+              </div>
+              <div class="analytics-control">
+                <label for="analytics-walk">Walking distance</label>
+                <select id="analytics-walk">
+                  <option value="400">5-minute walk (400 m)</option>
+                  <option value="800" selected>10-minute walk (800 m)</option>
+                  <option value="1200">15-minute walk (1.2 km)</option>
+                </select>
+              </div>
+              <label class="analytics-checkbox">
+                <input type="checkbox" id="analytics-catchment" />
+                <span>Show coverage areas on the map</span>
+              </label>
+              <div id="analytics-output" class="analytics-output" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
         <section class="status-section surface-card" aria-live="polite">
           <p id="result-count" class="result-count">Loading places&hellip;</p>
           <button id="sidebar-apply" class="sidebar-apply" type="button">Show on map</button>
@@ -151,7 +194,7 @@
     </section>
 
     <footer class="site-footer">
-      <p>&copy; <span id="year"></span> West End Seniors&rsquo; Network &middot; Built by <a href="https://oasisofchange.com" target="_blank" rel="noopener">Oasis of Change, Inc.</a> &middot; Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></p>
+      <p>&copy; <span id="year"></span> West End Seniors&rsquo; Network &middot; Built by <a href="https://oasisofchange.com" target="_blank" rel="noopener">Oasis of Change, Inc.</a> &middot; Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, tiles by Google / <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a></p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -165,6 +208,7 @@
     <script src="js/map.js"></script>
     <script src="js/autocomplete.js"></script>
     <script src="js/filters.js"></script>
+    <script src="js/analytics.js"></script>
     <script src="js/app.js"></script>
 
     <script>
