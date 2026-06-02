@@ -97,22 +97,9 @@
           <fieldset class="area-fieldset">
             <legend>Neighbourhood</legend>
             <div id="area-options" class="area-options" role="group" aria-label="Filter places by neighbourhood">
-              <label class="area-option">
-                <input type="checkbox" data-area-value="__all__" />
-                <span>All of Vancouver</span>
-              </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="West End" checked />
-                <span>West End</span>
-              </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="Downtown" />
-                <span>Downtown</span>
-              </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="Kitsilano" />
-                <span>Kitsilano</span>
-              </label>
+              <!-- Built from the loaded data by js/filters.js (renderAreaOptions)
+                   so every neighbourhood present is filterable. -->
+              <p class="loading">Loading neighbourhoods&hellip;</p>
             </div>
             <p class="area-hint">Tick more than one to combine neighbourhoods.</p>
           </fieldset>
@@ -170,17 +157,6 @@
 
       <section id="map" class="map" aria-label="Map of Vancouver amenities"></section>
     </main>
-
-    <dialog id="place-detail" aria-labelledby="detail-name">
-      <button class="close-button" data-close type="button" aria-label="Close details">✕</button>
-      <h2 id="detail-name"></h2>
-      <p class="detail-category" id="detail-category"></p>
-      <p class="detail-address" id="detail-address"></p>
-      <p class="detail-area" id="detail-area"></p>
-      <div class="detail-actions">
-        <a id="detail-directions" href="#" target="_blank" rel="noopener">Get directions</a>
-      </div>
-    </dialog>
 
     <section id="about" class="about" aria-labelledby="about-heading">
       <h2 id="about-heading">About this map</h2>

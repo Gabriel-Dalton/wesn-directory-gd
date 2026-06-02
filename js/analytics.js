@@ -168,11 +168,19 @@ window.AmenityAnalytics = (function () {
     return m >= 1000 ? `${(m / 1000).toFixed(1)} km` : `${Math.round(m)} m`;
   }
 
+  // Neighbourhoods with fewer than this many mapped places are dropped from the
+  // breakdown — too small a sample to read as a meaningful percentage.
+  const MIN_AREA_SAMPLE = 5;
+
   function renderStats({ group, radius, targets, sample, coverage, avgWalk, byArea }) {
     const mins = walkMinutes(radius);
+    const color = group ? group.color : "#0e7287";
     const label = group ? group.label.toLowerCase() : "this service";
+    const locNoun = targets.length === 1 ? "location" : "locations";
 
-    // Neighbourhood rows sorted by accessibility (best coverage first).
+    // One row per neighbourhood, sorted by accessibility (best coverage first).
+    // Every neighbourhood with a usable sample is shown — not just a top few —
+    // so nothing is silently hidden.
     const rows = [...byArea.entries()]
       .map(([area, r]) => ({
         area,
@@ -180,41 +188,51 @@ window.AmenityAnalytics = (function () {
         avg: Math.round(r.distSum / r.total),
         total: r.total,
       }))
-      .filter((r) => r.total >= 5) // ignore noise from tiny areas
-      .sort((a, b) => b.pct - a.pct)
-      .slice(0, 8);
+      .filter((r) => r.total >= MIN_AREA_SAMPLE)
+      .sort((a, b) => b.pct - a.pct || a.area.localeCompare(b.area));
+
+    const omitted = byArea.size - rows.length;
 
     const rowsHtml = rows
-      .map(
-        (r) => `
-        <li class="analytics-bar-row">
+      .map((r) => {
+        const detail =
+          `${r.area}: ${r.pct}% of ${r.total.toLocaleString()} mapped places ` +
+          `within a ${mins}-minute walk of ${label}; ${fmtDistance(r.avg)} average to the closest one.`;
+        return `
+        <li class="analytics-bar-row" title="${escapeHtml(detail)}" aria-label="${escapeHtml(detail)}">
           <span class="analytics-bar-label">${escapeHtml(r.area)}</span>
-          <span class="analytics-bar-track">
-            <span class="analytics-bar-fill" style="width:${r.pct}%;background:${group ? group.color : "#0e7287"}"></span>
+          <span class="analytics-bar-track" aria-hidden="true">
+            <span class="analytics-bar-fill" style="width:${r.pct}%;background:${color}"></span>
           </span>
-          <span class="analytics-bar-val">${r.pct}%</span>
-        </li>`
-      )
+          <span class="analytics-bar-val" aria-hidden="true">${r.pct}%</span>
+        </li>`;
+      })
       .join("");
 
     output.innerHTML = `
       <div class="analytics-headline">
-        <span class="analytics-big" style="color:${group ? group.color : "#0e7287"}">${coverage}%</span>
+        <span class="analytics-big" style="color:${color}">${coverage}%</span>
         <span class="analytics-big-cap">of mapped places are within a
-          ${mins}-minute walk of ${escapeHtml(label)}</span>
+          ${mins}-minute walk (${fmtDistance(radius)}) of ${escapeHtml(label)}</span>
       </div>
       <ul class="analytics-stats">
-        <li><strong>${targets.length.toLocaleString()}</strong> ${escapeHtml(label)} locations</li>
+        <li><strong>${targets.length.toLocaleString()}</strong> ${escapeHtml(label)} ${locNoun} mapped</li>
         <li><strong>${fmtDistance(avgWalk)}</strong> average walk to the nearest one</li>
-        <li>based on <strong>${sample.length.toLocaleString()}</strong> sample points across the city</li>
+        <li>measured from <strong>${sample.length.toLocaleString()}</strong> other mapped places across the city</li>
       </ul>
       ${
         rows.length
           ? `<h4 class="analytics-subhead">Accessibility by neighbourhood</h4>
              <ul class="analytics-bars">${rowsHtml}</ul>
-             <p class="analytics-note">Share of nearby places within a ${mins}-minute
-                (${fmtDistance(radius)}) walk. Straight-line estimate.</p>`
-          : `<p class="analytics-note">Straight-line walking estimate.</p>`
+             <p class="analytics-note">Every mapped place is treated as a destination
+                people need to reach. Bars show the share within a ${mins}-minute
+                (${fmtDistance(radius)}) straight-line walk of ${escapeHtml(label)}.${
+                  omitted > 0
+                    ? ` ${omitted} smaller neighbourhood${omitted === 1 ? "" : "s"} with under ${MIN_AREA_SAMPLE} mapped places ${omitted === 1 ? "is" : "are"} omitted.`
+                    : ""
+                }</p>`
+          : `<p class="analytics-note">Straight-line walking estimate of the distance
+                from every other mapped place to the nearest ${escapeHtml(label)}.</p>`
       }
     `;
   }

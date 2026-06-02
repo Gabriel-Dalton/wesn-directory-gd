@@ -356,8 +356,26 @@ button { font: inherit; cursor: pointer; }
 }
 .area-option:has(input:checked) input[type="checkbox"] { accent-color: #fff; }
 .area-option > span {
+  flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: break-word;
+}
+/* Per-neighbourhood place count — a small right-aligned pill. */
+.area-count {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-mute);
+  background: var(--card-2);
+  border-radius: 999px;
+  padding: 1px 7px;
+  min-width: 2.2ch;
+  text-align: center;
+}
+.area-option:has(input:checked) .area-count {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.22);
 }
 /* "All of Vancouver" spans both columns so it reads as the master toggle. */
 .area-option:has(input[data-area-value="__all__"]) {
@@ -582,6 +600,13 @@ button { font: inherit; cursor: pointer; }
   flex-direction: column;
   gap: 0.7rem;
 }
+/* The `hidden` attribute must win over the flex/grid `display` declarations
+   above. Author rules beat the UA `[hidden] { display: none }`, so without
+   this an expanded/collapsed menu's body keeps rendering and only the caret
+   rotates — the body never actually hides or shows. (Same footgun is handled
+   for .search-suggestions and .sidebar-backdrop elsewhere in this file.) */
+.domain-body[hidden],
+.subdomain-body[hidden] { display: none; }
 
 .subdomain-section { display: block; }
 
@@ -945,61 +970,6 @@ button { font: inherit; cursor: pointer; }
   font-weight: 700;
 }
 .leaflet-bar a:hover { background: var(--gold-soft) !important; }
-
-/* Detail dialog */
-dialog#place-detail {
-  max-width: 520px;
-  width: calc(100vw - 2rem);
-  padding: 1.4rem 1.5rem 1.6rem;
-  font-size: var(--fs-body);
-  border: 1px solid var(--ink);
-  background: var(--card);
-  border-radius: var(--r-card);
-  box-shadow: 6px 6px 0 var(--ink), 0 40px 80px -40px rgba(8, 30, 20, 0.6);
-}
-dialog#place-detail::backdrop { background: rgba(8, 30, 20, 0.55); backdrop-filter: blur(2px); }
-dialog#place-detail h2 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-variation-settings: "opsz" 96, "SOFT" 30;
-  font-size: 1.7rem;
-  margin: 0 0 0.4rem;
-  letter-spacing: -0.01em;
-}
-.detail-category {
-  font-family: var(--font-display);
-  font-variant: small-caps;
-  letter-spacing: 0.12em;
-  color: var(--teal-dark);
-  font-size: 0.9rem;
-  margin: 0 0 0.85rem;
-}
-.detail-address, .detail-area { color: var(--ink-soft); margin: 0 0 0.4rem; }
-.detail-actions { margin-top: 1rem; }
-#detail-directions {
-  display: inline-block;
-  background: var(--teal);
-  color: #fff;
-  border: 1px solid var(--teal-deep);
-  box-shadow: 3px 3px 0 var(--teal-deep);
-  padding: 0.7rem 1.05rem;
-  border-radius: var(--r-card);
-  font-weight: 600;
-  text-decoration: none;
-}
-#detail-directions:hover { background: var(--gold); color: var(--ink); border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
-
-.close-button {
-  float: right;
-  border: 1px solid var(--ink);
-  background: var(--paper);
-  font-size: 1rem;
-  width: 2.4rem; height: 2.4rem;
-  border-radius: var(--r-card);
-  box-shadow: 2px 2px 0 var(--ink);
-  color: var(--ink);
-}
-.close-button:hover { background: var(--ink); color: var(--paper); }
 
 /* =========================================================================
    About + Footer (below the fold — for users who want context)

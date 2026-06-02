@@ -14,7 +14,6 @@
  */
 window.AmenityFilters = (function () {
   const ALL_AREA = "__all__";
-  const KNOWN_AREAS = ["West End", "Downtown", "Kitsilano"];
 
   let allPlaces = [];
   let onChangeFn = () => {};
@@ -22,7 +21,10 @@ window.AmenityFilters = (function () {
   const state = {
     enabledGroups: new Set(),
     search: "",
-    areas: new Set(["West End"]),
+    // Empty = "All of Vancouver". The map opens showing every neighbourhood so
+    // nothing is hidden by default; the per-neighbourhood checkboxes (built
+    // from the data in renderAreaOptions) let the user narrow it down.
+    areas: new Set(),
     // Set of collapsed Domain names. On a first visit every domain starts
     // collapsed so the categories read as a tidy list of drop-down menus
     // rather than a wall of checkboxes; session storage repopulates a
@@ -125,6 +127,51 @@ window.AmenityFilters = (function () {
     });
   }
 
+  /**
+   * Build the neighbourhood checkboxes from the data that actually loaded, so
+   * every neighbourhood present is filterable (the list used to be hard-coded
+   * to three, hiding the rest behind "All of Vancouver"). West End leads — it
+   * is WESN's catchment — then the remaining neighbourhoods by descending
+   * count. Each option shows how many places it holds.
+   */
+  function renderAreaOptions(places) {
+    const container = document.getElementById("area-options");
+    if (!container) return;
+
+    const counts = new Map();
+    for (const p of places) {
+      const a = (p.area || "").trim();
+      if (a) counts.set(a, (counts.get(a) || 0) + 1);
+    }
+    const areas = [...counts.entries()].sort((a, b) => {
+      if (a[0] === "West End") return -1;
+      if (b[0] === "West End") return 1;
+      return b[1] - a[1];
+    });
+
+    let html = `
+      <label class="area-option">
+        <input type="checkbox" data-area-value="${ALL_AREA}" />
+        <span>All of Vancouver</span>
+      </label>`;
+    for (const [area, n] of areas) {
+      html += `
+      <label class="area-option">
+        <input type="checkbox" data-area-value="${escapeAttr(area)}" />
+        <span>${escapeHtml(area)}</span>
+        <span class="area-count" aria-label="${n} places">${n.toLocaleString()}</span>
+      </label>`;
+    }
+    container.innerHTML = html;
+
+    // Drop any saved/selected neighbourhood that the data no longer contains,
+    // so the count line can never disagree with what's tickable.
+    for (const a of [...state.areas]) {
+      if (!counts.has(a)) state.areas.delete(a);
+    }
+    syncAreaCheckboxes();
+  }
+
   /** True if a place's area passes the current neighbourhood filter. */
   function areaMatches(place) {
     if (state.areas.size === 0) return true; // All of Vancouver
@@ -137,6 +184,7 @@ window.AmenityFilters = (function () {
   /** Build the Domain → Subdomain → tile UI based on actual loaded data. */
   function renderCategories(places) {
     allPlaces = places;
+    renderAreaOptions(places);
     const container = document.getElementById("category-list");
     container.innerHTML = "";
 
@@ -439,5 +487,5 @@ window.AmenityFilters = (function () {
     return escapeHtml(s);
   }
 
-  return { init, renderCategories, KNOWN_AREAS };
+  return { init, renderCategories };
 })();
