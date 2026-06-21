@@ -66,9 +66,14 @@ window.AmenityMap = (function () {
     });
   }
 
-  function buildMarkerIcon(group) {
+  function buildMarkerIcon(group, place) {
     const color = group?.color || "#0b4c7a";
-    const icon = group?.icon || "📍";
+    // Prefer an amenity-specific icon (e.g. a receipt for Tax Services) over
+    // the broad group icon (scissors for all of Personal Services).
+    const icon =
+      window.AmenityCategories.iconForAmenity(place?.amenity || place?.subCategory) ||
+      group?.icon ||
+      "📍";
     return L.divIcon({
       className: "",
       html:
@@ -90,11 +95,13 @@ window.AmenityMap = (function () {
       ? ` &middot; ${escapeHtml(specific)}`
       : "";
     const areaLabel = place.area ? `<p class="popup-address">${escapeHtml(place.area)}</p>` : "";
-    // group.icon is trusted SVG markup from categories.js — render as HTML.
-    // The label and any user-supplied data goes through escapeHtml().
+    // Mirror the marker: use the amenity-specific icon when one exists, else
+    // the group icon. Both are trusted SVG markup from categories.js — rendered
+    // as HTML. The label and any user-supplied data go through escapeHtml().
+    const icon = window.AmenityCategories.iconForAmenity(specific) || group.icon;
     return [
       `<p class="popup-name">${escapeHtml(place.name)}</p>`,
-      `<p class="popup-category">${group.icon}<span>${escapeHtml(group.label)}${subLabel}</span></p>`,
+      `<p class="popup-category">${icon}<span>${escapeHtml(group.label)}${subLabel}</span></p>`,
       place.address ? `<p class="popup-address">${escapeHtml(place.address)}</p>` : "",
       areaLabel,
       `<a class="popup-link" href="${directions}" target="_blank" rel="noopener">Get directions</a>`,
@@ -123,7 +130,7 @@ window.AmenityMap = (function () {
       const group = window.AmenityCategories.byId[place.groupId];
       if (!group) continue;
       const marker = L.marker([place.lat, place.lng], {
-        icon: buildMarkerIcon(group),
+        icon: buildMarkerIcon(group, place),
         title: place.name,
         alt: `${group.label}: ${place.name}`,
         riseOnHover: true,
