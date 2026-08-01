@@ -6,13 +6,32 @@
  *   - Render markers for a list of Place objects, grouped by category for
  *     fast show/hide.
  *   - Build informative popups that include directions links.
+ *
+ * ## Background map (basemap)
+ *
+ * The map renders immediately on a clean, Google-Maps-style raster basemap
+ * (CARTO "Voyager") so it works with no API key. If a Google Maps Platform
+ * key is supplied in `window.WESN_CONFIG.googleMapsApiKey`, the module loads
+ * the Google Maps JavaScript API + the Leaflet.GoogleMutant plugin and
+ * swaps in the *real* Google Maps tiles — giving the familiar Google look
+ * seniors recognize. No key means it transparently keeps the Google-style
+ * fallback; an invalid key logs a warning and keeps the fallback too.
  */
 window.AmenityMap = (function () {
   // West End / Downtown Vancouver — close to WESN's catchment.
   const DEFAULT_CENTER = [49.286, -123.135];
   const DEFAULT_ZOOM = 14;
 
+  // Google-Maps-style fallback basemap (clean, low-clutter, familiar look).
+  const STYLE_TILE_URL =
+    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+  const STYLE_TILE_ATTR =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  const GOOGLEMUTANT_URL =
+    "https://unpkg.com/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js";
+
   let map;
+  let baseLayer = null;
   /** Map<groupId, L.LayerGroup> */
   const layerByGroup = new Map();
 
@@ -24,11 +43,7 @@ window.AmenityMap = (function () {
       preferCanvas: false,
     });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19,
-    }).addTo(map);
+    setupBasemap();
 
     // Each category group gets its own marker-cluster layer so toggling
     // visibility is just addLayer/removeLayer, and dense areas auto-collapse
@@ -50,6 +65,64 @@ window.AmenityMap = (function () {
     }
 
     return map;
+  }
+
+  /**
+   * Add the background map. Always starts on the Google-Maps-style raster
+   * fallback so something renders instantly; upgrades to real Google Maps
+   * tiles asynchronously if a key is configured.
+   */
+  function setupBasemap() {
+    baseLayer = L.tileLayer(STYLE_TILE_URL, {
+      attribution: STYLE_TILE_ATTR,
+      subdomains: "abcd",
+      maxZoom: 20,
+    }).addTo(map);
+
+    const key = (window.WESN_CONFIG || {}).googleMapsApiKey;
+    if (!key) return;
+
+    loadGoogleBasemap(key)
+      .then((googleLayer) => {
+        if (!googleLayer) return;
+        googleLayer.addTo(map);
+        // Drop the fallback once Google tiles are live.
+        if (baseLayer && map.hasLayer(baseLayer)) map.removeLayer(baseLayer);
+        baseLayer = googleLayer;
+      })
+      .catch((err) => {
+        console.warn(
+          "[AmenityMap] Google Maps unavailable — keeping Google-style fallback basemap.",
+          err
+        );
+      });
+  }
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(s);
+    });
+  }
+
+  /** Load the Google Maps JS API + GoogleMutant plugin and build the layer. */
+  async function loadGoogleBasemap(key) {
+    if (!(window.google && window.google.maps)) {
+      await loadScript(
+        `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&v=quarterly`
+      );
+    }
+    if (!(L.gridLayer && L.gridLayer.googleMutant)) {
+      await loadScript(GOOGLEMUTANT_URL);
+    }
+    if (L.gridLayer && typeof L.gridLayer.googleMutant === "function") {
+      return L.gridLayer.googleMutant({ type: "roadmap", maxZoom: 21 });
+    }
+    return null;
   }
 
   function buildClusterIcon(count, group) {
@@ -159,5 +232,10 @@ window.AmenityMap = (function () {
     if (map && typeof map.invalidateSize === "function") map.invalidateSize();
   }
 
-  return { init, setPlaces, setGroupVisible, fitToVisible, invalidateSize };
+  /** Expose the underlying Leaflet map so overlays (e.g. analytics) can attach. */
+  function getMap() {
+    return map;
+  }
+
+  return { init, setPlaces, setGroupVisible, fitToVisible, invalidateSize, getMap };
 })();

@@ -18,6 +18,10 @@
       });
     }
 
+    if (window.AmenityAnalytics) {
+      window.AmenityAnalytics.init();
+    }
+
     window.AmenityFilters.init({
       onChange: (filterState) => {
         for (const group of window.AmenityCategories.groups) {
@@ -46,6 +50,10 @@
 
     if (window.AmenitySearchAutocomplete) {
       window.AmenitySearchAutocomplete.setPlaces(places);
+    }
+
+    if (window.AmenityAnalytics) {
+      window.AmenityAnalytics.setPlaces(places);
     }
 
     if (errors.length) {

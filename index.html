@@ -15,6 +15,16 @@
     <meta http-equiv="Expires" content="0" />
     <title>Vancouver Amenities Map · WESN</title>
 
+    <!-- Site configuration.
+         googleMapsApiKey: paste a Google Maps Platform key (with billing
+         enabled) to render the real Google Maps background. Leave it blank to
+         use the built-in Google-Maps-style basemap (works with no key). -->
+    <script>
+      window.WESN_CONFIG = {
+        googleMapsApiKey: "",
+      };
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Public+Sans:wght@400;500;600;700&display=swap" />
@@ -87,22 +97,9 @@
           <fieldset class="area-fieldset">
             <legend>Neighbourhood</legend>
             <div id="area-options" class="area-options" role="group" aria-label="Filter places by neighbourhood">
-              <label class="area-option">
-                <input type="checkbox" data-area-value="__all__" />
-                <span>All of Vancouver</span>
-              </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="West End" checked />
-                <span>West End</span>
-              </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="Downtown" />
-                <span>Downtown</span>
-              </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="Kitsilano" />
-                <span>Kitsilano</span>
-              </label>
+              <!-- Built from the loaded data by js/filters.js (renderAreaOptions)
+                   so every neighbourhood present is filterable. -->
+              <p class="loading">Loading neighbourhoods&hellip;</p>
             </div>
             <p class="area-hint">Tick more than one to combine neighbourhoods.</p>
           </fieldset>
@@ -119,6 +116,39 @@
           </div>
         </section>
 
+        <section class="filter-section surface-card analytics-section" aria-labelledby="analytics-toggle">
+          <div id="analytics-panel" class="domain-section is-collapsed">
+            <button id="analytics-toggle" class="domain-header" type="button"
+                    aria-expanded="false" aria-controls="analytics-body">
+              <span class="domain-caret" aria-hidden="true">▾</span>
+              <span class="domain-label">Accessibility analytics</span>
+              <span class="domain-count" aria-hidden="true">📊</span>
+            </button>
+            <div id="analytics-body" class="domain-body" hidden>
+              <p class="analytics-intro">
+                See how easy it is to reach an essential service across Vancouver.
+              </p>
+              <div class="analytics-control">
+                <label for="analytics-service">Service</label>
+                <select id="analytics-service"></select>
+              </div>
+              <div class="analytics-control">
+                <label for="analytics-walk">Walking distance</label>
+                <select id="analytics-walk">
+                  <option value="400">5-minute walk (400 m)</option>
+                  <option value="800" selected>10-minute walk (800 m)</option>
+                  <option value="1200">15-minute walk (1.2 km)</option>
+                </select>
+              </div>
+              <label class="analytics-checkbox">
+                <input type="checkbox" id="analytics-catchment" />
+                <span>Show coverage areas on the map</span>
+              </label>
+              <div id="analytics-output" class="analytics-output" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
         <section class="status-section surface-card" aria-live="polite">
           <p id="result-count" class="result-count">Loading places&hellip;</p>
           <button id="sidebar-apply" class="sidebar-apply" type="button">Show on map</button>
@@ -127,17 +157,6 @@
 
       <section id="map" class="map" aria-label="Map of Vancouver amenities"></section>
     </main>
-
-    <dialog id="place-detail" aria-labelledby="detail-name">
-      <button class="close-button" data-close type="button" aria-label="Close details">✕</button>
-      <h2 id="detail-name"></h2>
-      <p class="detail-category" id="detail-category"></p>
-      <p class="detail-address" id="detail-address"></p>
-      <p class="detail-area" id="detail-area"></p>
-      <div class="detail-actions">
-        <a id="detail-directions" href="#" target="_blank" rel="noopener">Get directions</a>
-      </div>
-    </dialog>
 
     <section id="about" class="about" aria-labelledby="about-heading">
       <h2 id="about-heading">About this map</h2>
@@ -151,7 +170,7 @@
     </section>
 
     <footer class="site-footer">
-      <p>&copy; <span id="year"></span> West End Seniors&rsquo; Network &middot; Built by <a href="https://oasisofchange.com" target="_blank" rel="noopener">Oasis of Change, Inc.</a> &middot; Tiles by <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></p>
+      <p>&copy; <span id="year"></span> West End Seniors&rsquo; Network &middot; Built by <a href="https://oasisofchange.com" target="_blank" rel="noopener">Oasis of Change, Inc.</a> &middot; Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, tiles by Google / <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a></p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -165,6 +184,7 @@
     <script src="js/map.js"></script>
     <script src="js/autocomplete.js"></script>
     <script src="js/filters.js"></script>
+    <script src="js/analytics.js"></script>
     <script src="js/app.js"></script>
 
     <script>

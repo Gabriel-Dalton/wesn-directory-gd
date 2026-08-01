@@ -35,6 +35,26 @@ window.AmenityData = (function () {
   // back to the previous one — and ultimately the bundled CSV.
   const CURRENT_YEAR = new Date().getFullYear();
 
+  // Neighbourhood (Local_Area) names arrive spelled inconsistently across the
+  // curated export and the live Open Data datasets — most notably the Downtown
+  // Eastside, which appears as both "DowntownEastside" (curated) and
+  // "Downtown Eastside" (live). Left unnormalized these split into duplicate
+  // rows in the neighbourhood filter and the analytics breakdown. Collapse the
+  // known variants to one canonical label.
+  const AREA_ALIASES = {
+    "downtowneastside": "Downtown Eastside",
+    "downtown eastside": "Downtown Eastside",
+    "dtes": "Downtown Eastside",
+  };
+
+  /** Canonicalize a neighbourhood name: trim, collapse whitespace, de-alias. */
+  function normalizeArea(raw) {
+    if (!raw) return "";
+    const s = String(raw).replace(/\s+/g, " ").trim();
+    if (!s) return "";
+    return AREA_ALIASES[s.toLowerCase()] || s;
+  }
+
   /** Build the GeoJSON export URL for a given dataset slug. */
   function geojsonUrl(slug, where) {
     let url = `${API_BASE}/${encodeURIComponent(slug)}/exports/geojson?lang=en&timezone=America%2FLos_Angeles`;
@@ -514,6 +534,10 @@ window.AmenityData = (function () {
         console.warn("[AmenityData] CSV fallback failed:", e);
       }
     }
+
+    // Canonicalize neighbourhood names once, here, so every consumer
+    // (filters, analytics, popups) sees a single spelling per neighbourhood.
+    for (const p of places) p.area = normalizeArea(p.area);
 
     return { places, errors };
   }

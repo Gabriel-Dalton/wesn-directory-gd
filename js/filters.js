@@ -14,7 +14,6 @@
  */
 window.AmenityFilters = (function () {
   const ALL_AREA = "__all__";
-  const KNOWN_AREAS = ["West End", "Downtown", "Kitsilano"];
 
   let allPlaces = [];
   let onChangeFn = () => {};
@@ -22,11 +21,24 @@ window.AmenityFilters = (function () {
   const state = {
     enabledGroups: new Set(),
     search: "",
-    areas: new Set(["West End"]),
-    // Set of collapsed Domain names. Default is empty (everything expanded);
-    // session storage repopulates it for repeat visits.
+    // Empty = "All of Vancouver". The map opens showing every neighbourhood so
+    // nothing is hidden by default; the per-neighbourhood checkboxes (built
+    // from the data in renderAreaOptions) let the user narrow it down.
+    areas: new Set(),
+    // Set of collapsed Domain names. On a first visit every domain starts
+    // collapsed so the categories read as a tidy list of drop-down menus
+    // rather than a wall of checkboxes; session storage repopulates a
+    // returning visitor's own expand/collapse choices.
     collapsedDomains: new Set(),
+    // Set of collapsed "Domain|Subdomain" keys (the nested drop-downs inside
+    // an open domain). Default: expanded, so opening a domain reveals its
+    // categories in one click.
+    collapsedSubdomains: new Set(),
   };
+
+  // True once a returning visitor's collapse choices have been restored, so
+  // renderCategories knows not to force the first-visit "all collapsed" default.
+  let hadSavedCollapsed = false;
 
   /**
    * Normalize text for substring matching so abbreviated and spelled-out
@@ -115,6 +127,51 @@ window.AmenityFilters = (function () {
     });
   }
 
+  /**
+   * Build the neighbourhood checkboxes from the data that actually loaded, so
+   * every neighbourhood present is filterable (the list used to be hard-coded
+   * to three, hiding the rest behind "All of Vancouver"). West End leads — it
+   * is WESN's catchment — then the remaining neighbourhoods by descending
+   * count. Each option shows how many places it holds.
+   */
+  function renderAreaOptions(places) {
+    const container = document.getElementById("area-options");
+    if (!container) return;
+
+    const counts = new Map();
+    for (const p of places) {
+      const a = (p.area || "").trim();
+      if (a) counts.set(a, (counts.get(a) || 0) + 1);
+    }
+    const areas = [...counts.entries()].sort((a, b) => {
+      if (a[0] === "West End") return -1;
+      if (b[0] === "West End") return 1;
+      return b[1] - a[1];
+    });
+
+    let html = `
+      <label class="area-option">
+        <input type="checkbox" data-area-value="${ALL_AREA}" />
+        <span>All of Vancouver</span>
+      </label>`;
+    for (const [area, n] of areas) {
+      html += `
+      <label class="area-option">
+        <input type="checkbox" data-area-value="${escapeAttr(area)}" />
+        <span>${escapeHtml(area)}</span>
+        <span class="area-count" aria-label="${n} places">${n.toLocaleString()}</span>
+      </label>`;
+    }
+    container.innerHTML = html;
+
+    // Drop any saved/selected neighbourhood that the data no longer contains,
+    // so the count line can never disagree with what's tickable.
+    for (const a of [...state.areas]) {
+      if (!counts.has(a)) state.areas.delete(a);
+    }
+    syncAreaCheckboxes();
+  }
+
   /** True if a place's area passes the current neighbourhood filter. */
   function areaMatches(place) {
     if (state.areas.size === 0) return true; // All of Vancouver
@@ -127,8 +184,17 @@ window.AmenityFilters = (function () {
   /** Build the Domain → Subdomain → tile UI based on actual loaded data. */
   function renderCategories(places) {
     allPlaces = places;
+    renderAreaOptions(places);
     const container = document.getElementById("category-list");
     container.innerHTML = "";
+
+    // First-visit default: collapse every domain so the categories present as
+    // closed drop-down menus. Returning visitors keep their own choices.
+    if (!hadSavedCollapsed) {
+      for (const { domain } of window.AmenityCategories.tree()) {
+        state.collapsedDomains.add(domain);
+      }
+    }
 
     // Citywide totals (used only to decide whether a category exists at all).
     const totalCounts = new Map();
@@ -178,15 +244,25 @@ window.AmenityFilters = (function () {
         const subHasData = groups.some((g) => (totalCounts.get(g.id) || 0) > 0);
         if (!subHasData) continue;
 
+        const subKey = `${domain}|${subdomain}`;
+        const subId = `sub-${slug(domain)}-${slug(subdomain)}`;
+        const subCollapsed = state.collapsedSubdomains.has(subKey);
         const subSection = document.createElement("div");
         subSection.className = "subdomain-section";
         subSection.dataset.subdomain = subdomain;
+        if (subCollapsed) subSection.classList.add("is-collapsed");
         subSection.innerHTML = `
-          <h3 class="subdomain-header">
+          <button class="subdomain-header" type="button"
+                  aria-expanded="${!subCollapsed}"
+                  aria-controls="${subId}-body"
+                  data-subdomain-toggle="${escapeAttr(subKey)}">
+            <span class="subdomain-caret" aria-hidden="true">▾</span>
             <span class="subdomain-label">${escapeHtml(subdomain)}</span>
-            <span class="subdomain-count" data-subdomain-count-for="${escapeAttr(domain)}|${escapeAttr(subdomain)}">0</span>
-          </h3>
-          <div class="category-list" role="group" aria-label="${escapeAttr(subdomain)} categories"></div>
+            <span class="subdomain-count" data-subdomain-count-for="${escapeAttr(subKey)}">0</span>
+          </button>
+          <div class="subdomain-body" id="${subId}-body" ${subCollapsed ? "hidden" : ""}>
+            <div class="category-list" role="group" aria-label="${escapeAttr(subdomain)} categories"></div>
+          </div>
         `;
         const list = subSection.querySelector(".category-list");
 
@@ -229,21 +305,32 @@ window.AmenityFilters = (function () {
     });
 
     container.addEventListener("click", (e) => {
-      const toggle = e.target.closest("[data-domain-toggle]");
-      if (!toggle) return;
-      const domain = toggle.dataset.domainToggle;
-      const section = toggle.closest(".domain-section");
-      const body = section.querySelector(".domain-body");
-      const isCollapsed = section.classList.toggle("is-collapsed");
-      toggle.setAttribute("aria-expanded", String(!isCollapsed));
-      if (isCollapsed) {
-        body.hidden = true;
-        state.collapsedDomains.add(domain);
-      } else {
-        body.hidden = false;
-        state.collapsedDomains.delete(domain);
+      const domainToggle = e.target.closest("[data-domain-toggle]");
+      if (domainToggle) {
+        const domain = domainToggle.dataset.domainToggle;
+        const section = domainToggle.closest(".domain-section");
+        const body = section.querySelector(".domain-body");
+        const isCollapsed = section.classList.toggle("is-collapsed");
+        domainToggle.setAttribute("aria-expanded", String(!isCollapsed));
+        body.hidden = isCollapsed;
+        if (isCollapsed) state.collapsedDomains.add(domain);
+        else state.collapsedDomains.delete(domain);
+        saveState();
+        return;
       }
-      saveState();
+
+      const subToggle = e.target.closest("[data-subdomain-toggle]");
+      if (subToggle) {
+        const key = subToggle.dataset.subdomainToggle;
+        const section = subToggle.closest(".subdomain-section");
+        const body = section.querySelector(".subdomain-body");
+        const isCollapsed = section.classList.toggle("is-collapsed");
+        subToggle.setAttribute("aria-expanded", String(!isCollapsed));
+        if (body) body.hidden = isCollapsed;
+        if (isCollapsed) state.collapsedSubdomains.add(key);
+        else state.collapsedSubdomains.delete(key);
+        saveState();
+      }
     });
 
     // Counts reflect the active area + search filters — so the totals on the
@@ -345,6 +432,7 @@ window.AmenityFilters = (function () {
           areas: [...state.areas],
           search: state.search,
           collapsedDomains: [...state.collapsedDomains],
+          collapsedSubdomains: [...state.collapsedSubdomains],
         })
       );
     } catch (_) {
@@ -365,8 +453,12 @@ window.AmenityFilters = (function () {
         // Migrate single-area state from the previous version.
         state.areas = saved.area === "all" ? new Set() : new Set([saved.area]);
       }
-      if (Array.isArray(saved.collapsedDomains))
+      if (Array.isArray(saved.collapsedDomains)) {
         state.collapsedDomains = new Set(saved.collapsedDomains);
+        hadSavedCollapsed = true;
+      }
+      if (Array.isArray(saved.collapsedSubdomains))
+        state.collapsedSubdomains = new Set(saved.collapsedSubdomains);
       if (typeof saved.search === "string") {
         state.search = normalizeForSearch(saved.search);
         document.getElementById("search-input").value = saved.search;
@@ -395,5 +487,5 @@ window.AmenityFilters = (function () {
     return escapeHtml(s);
   }
 
-  return { init, renderCategories, KNOWN_AREAS };
+  return { init, renderCategories };
 })();
