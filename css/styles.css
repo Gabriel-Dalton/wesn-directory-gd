@@ -1391,7 +1391,9 @@ dialog#place-detail h2 {
   .site-header h1 { display: none; }
   .brand-logo { max-width: 110px; }
   .site-nav a, .site-nav button { padding: 0.4rem 0.6rem; font-size: 0.82rem; }
-  .filters-toggle { padding: 0.4rem 0.55rem; }
+  /* Scoped like the rules above so it outranks `.site-nav button` and the
+     tighter padding actually applies on the narrowest screens. */
+  .site-nav .filters-toggle { padding: 0.4rem 0.55rem; }
 }
 
 @media print {
