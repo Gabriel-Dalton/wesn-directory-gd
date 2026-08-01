@@ -37,9 +37,9 @@
 - `Pattern: extend categories via groups + sources + loader` --rationale_for--> `js/data.js`  [EXTRACTED]
   README.md → index.html
 - `featureToStorefrontPlace()` --calls--> `classifyStorefront()`  [INFERRED]
-  C:\Users\Gabriel\Documents\GitHub\wesn-directory-gd\js\data.js → C:\Users\Gabriel\Documents\GitHub\wesn-directory-gd\js\categories.js
+  js/data.js → js/categories.js
 - `loadStorefrontsFromCsv()` --calls--> `classifyStorefront()`  [INFERRED]
-  C:\Users\Gabriel\Documents\GitHub\wesn-directory-gd\js\data.js → C:\Users\Gabriel\Documents\GitHub\wesn-directory-gd\js\categories.js
+  js/data.js → js/categories.js
 - `West End Seniors' Network (WESN)` --conceptually_related_to--> `Vancouver Amenities Map (index.html)`  [EXTRACTED]
   README.md → index.html
 - `Vancouver Amenities Map (index.html)` --references--> `City of Vancouver Open Data Portal`  [EXTRACTED]
