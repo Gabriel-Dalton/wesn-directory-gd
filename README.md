@@ -6,7 +6,14 @@ public washrooms, parks, and more.
 
 Built for the [West End Seniors' Network](https://www.wesn.ca/).
 
-![Sidebar with category filters next to a Leaflet map of downtown Vancouver](./docs/screenshot-placeholder.png)
+![Sidebar with category filters next to a Leaflet map of downtown Vancouver](./docs/screenshot-desktop.webp)
+
+<details>
+<summary>On a phone</summary>
+
+![The same map on a narrow screen, with the filters collapsed behind a Filters button](./docs/screenshot-mobile.webp)
+
+</details>
 
 ## What it does
 
