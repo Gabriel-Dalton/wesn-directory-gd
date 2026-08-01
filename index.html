@@ -26,19 +26,22 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="css/styles.css" />
 
-    <link rel="preload" as="image" href="assets/coloured-logo.png" />
+    <link rel="preload" as="image" href="assets/coloured-logo.webp" type="image/webp" />
   </head>
   <body>
     <a class="skip-link" href="#map">Skip to map</a>
 
     <header class="site-header" role="banner">
       <div class="brand">
-        <img class="brand-logo"
-             src="assets/coloured-logo.png"
-             alt="West End Seniors' Network"
-             width="2560" height="836"
-             decoding="async"
-             fetchpriority="high" />
+        <picture>
+          <source srcset="assets/coloured-logo.webp" type="image/webp" />
+          <img class="brand-logo"
+               src="assets/coloured-logo.png"
+               alt="West End Seniors' Network"
+               width="440" height="144"
+               decoding="async"
+               fetchpriority="high" />
+        </picture>
         <h1>Vancouver <em>Amenities</em> Map</h1>
       </div>
       <nav class="site-nav" aria-label="Primary">

@@ -127,6 +127,15 @@ button { font: inherit; cursor: pointer; }
   min-width: 0;
 }
 
+/* The logo is wrapped in <picture> to offer WebP, so the wrapper — not the
+   <img> — is the flex item here. Keep it out of the flex sizing algorithm so
+   the header lays out exactly as it did when the <img> was the direct child. */
+.brand picture {
+  display: block;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 .brand-logo {
   height: 56px;
   width: auto;
