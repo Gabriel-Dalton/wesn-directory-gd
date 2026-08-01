@@ -6,3 +6,6 @@ node_modules/
 .vscode/
 dist/
 *.tmp
+
+# Local Claude Code state - machine-specific, never for a public repo
+.claude/
