@@ -9,3 +9,12 @@ dist/
 
 # Local Claude Code state - machine-specific, never for a public repo
 .claude/
+
+# Playwright MCP scratch snapshots - regenerated on every run
+.playwright-mcp/
+
+# Graphify: keep the report (GRAPH_REPORT.md, graph.html, graph.json),
+# drop the machine-specific cache and the absolute-path manifest.
+graphify-out/cache/
+graphify-out/manifest.json
+graphify-out/cost.json

@@ -127,6 +127,15 @@ button { font: inherit; cursor: pointer; }
   min-width: 0;
 }
 
+/* The logo is wrapped in <picture> to offer WebP, so the wrapper — not the
+   <img> — is the flex item here. Keep it out of the flex sizing algorithm so
+   the header lays out exactly as it did when the <img> was the direct child. */
+.brand picture {
+  display: block;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 .brand-logo {
   height: 56px;
   width: auto;
@@ -1063,7 +1072,10 @@ dialog#place-detail h2 {
    override `[hidden]` and end up with an invisible-but-clickable overlay
    that swallows every tap on the page (including the Filters button).
    ========================================================================= */
-.filters-toggle { display: none; }
+/* Scoped to `.site-nav` on purpose: a bare `.filters-toggle` (0,1,0) loses to
+   the `.site-nav a, .site-nav button` rule above (0,1,1), which would leave
+   the Filters button visible on desktop next to the sidebar it opens. */
+.site-nav .filters-toggle { display: none; }
 .sidebar-topbar { display: none; }
 .sidebar-handle { display: none; }
 .sidebar-title { display: none; }
@@ -1127,8 +1139,9 @@ dialog#place-detail h2 {
      below the fold and the dialog footer. */
   .site-nav > a { display: none; }
 
-  /* Filters toggle becomes a primary action. */
-  .filters-toggle {
+  /* Filters toggle becomes a primary action. Selector matches the desktop
+     hide above so it wins on source order rather than specificity. */
+  .site-nav .filters-toggle {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -1378,7 +1391,9 @@ dialog#place-detail h2 {
   .site-header h1 { display: none; }
   .brand-logo { max-width: 110px; }
   .site-nav a, .site-nav button { padding: 0.4rem 0.6rem; font-size: 0.82rem; }
-  .filters-toggle { padding: 0.4rem 0.55rem; }
+  /* Scoped like the rules above so it outranks `.site-nav button` and the
+     tighter padding actually applies on the narrowest screens. */
+  .site-nav .filters-toggle { padding: 0.4rem 0.55rem; }
 }
 
 @media print {
