@@ -357,16 +357,16 @@ window.AmenitySearchAutocomplete = (function () {
 
   /**
    * Run after a search submission (suggestion picked or Enter pressed).
-   * If the current neighbourhood filter excludes all results, fall back to
-   * "All of Vancouver" so the senior actually sees the matches. Then pan
-   * and zoom the map to fit those matches.
+   * If the current neighbourhood filter excludes all results, widen to the
+   * whole catchment so the senior actually sees the matches. Then pan and
+   * zoom the map to fit those matches.
    */
   function applyAfterSelect() {
     const countEl = document.getElementById("result-count");
     const noMatches = /No places match/i.test(countEl?.textContent || "");
     if (noMatches) {
-      // Switch the multi-select to "All of Vancouver" by unchecking every
-      // specific borough and ticking the "all" pseudo-option. Dispatching
+      // Switch the multi-select to "West End & Downtown" by unchecking every
+      // specific neighbourhood and ticking the "all" pseudo-option. Dispatching
       // `change` on each touched checkbox lets AmenityFilters update state
       // and re-emit without us reaching into its internals.
       const allCb = document.querySelector('input[data-area-value="__all__"]');
@@ -386,8 +386,8 @@ window.AmenitySearchAutocomplete = (function () {
         allCb.dispatchEvent(new Event("change", { bubbles: true }));
         touched = true;
       }
-      // If nothing changed, the user was already on "All of Vancouver" and
-      // the empty result is genuinely empty — no further action.
+      // If nothing changed, the user was already seeing both neighbourhoods
+      // and the empty result is genuinely empty — no further action.
       void touched;
     }
     if (window.AmenityMap && typeof window.AmenityMap.fitToVisible === "function") {

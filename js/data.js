@@ -35,6 +35,34 @@ window.AmenityData = (function () {
   // back to the previous one — and ultimately the bundled CSV.
   const CURRENT_YEAR = new Date().getFullYear();
 
+  /**
+   * WESN's catchment. Every source is gated to these City of Vancouver
+   * "Local Area" names by `loadAll()` — the bundled snapshot, the eight live
+   * Open Data loaders and the CSV fallback alike — so widening coverage later
+   * is a one-line change here rather than an edit to each loader.
+   *
+   * Records the City leaves un-areaed are dropped, which matches what the
+   * sidebar already did: `areaMatches()` has always failed a place with no
+   * area whenever a neighbourhood was ticked, and one always is by default.
+   */
+  const SERVED_AREAS = ["West End", "Downtown"];
+  const SERVED_AREA_KEYS = new Set(SERVED_AREAS.map(normalizeArea));
+
+  /**
+   * Fold Local Area names to a comparable form. Loose enough to survive
+   * spacing and casing drift between datasets, but still compared as a whole
+   * string: the City writes the Downtown Eastside as both "DowntownEastside"
+   * and "Downtown Eastside", so a substring test would quietly pull that
+   * separate neighbourhood in under "Downtown".
+   */
+  function normalizeArea(s) {
+    return String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
+  }
+
+  function inServedArea(place) {
+    return SERVED_AREA_KEYS.has(normalizeArea(place.area));
+  }
+
   /** Build the GeoJSON export URL for a given dataset slug. */
   function geojsonUrl(slug, where) {
     let url = `${API_BASE}/${encodeURIComponent(slug)}/exports/geojson?lang=en&timezone=America%2FLos_Angeles`;
@@ -515,8 +543,20 @@ window.AmenityData = (function () {
       }
     }
 
-    return { places, errors };
+    // Gate everything to the catchment in one place, after the merge, so the
+    // snapshot, the live API and the CSV fallback all obey the same rule.
+    // The bundled snapshot is a city-wide export with WESN's taxonomy applied
+    // on top; it is left intact on disk and simply filtered on the way in.
+    const served = places.filter(inServedArea);
+    const dropped = places.length - served.length;
+    if (dropped > 0) {
+      console.debug(
+        `[AmenityData] ${dropped} record(s) outside ${SERVED_AREAS.join(" / ")} not loaded.`
+      );
+    }
+
+    return { places: served, errors };
   }
 
-  return { loadAll };
+  return { loadAll, SERVED_AREAS };
 })();
