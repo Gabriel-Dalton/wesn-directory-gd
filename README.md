@@ -1,8 +1,8 @@
-# Vancouver Amenities Map · WESN
+# West End & Downtown Amenities Map · WESN
 
-A senior-friendly map of community amenities across Vancouver — clinics,
-pharmacies, dentists, banks, grocery stores, libraries, community centres,
-public washrooms, parks, and more.
+A senior-friendly map of community amenities across Vancouver's West End and
+Downtown — clinics, pharmacies, dentists, banks, grocery stores, libraries,
+community centres, public washrooms, parks, and more.
 
 Built for the [West End Seniors' Network](https://www.wesn.ca/).
 
@@ -17,9 +17,10 @@ Built for the [West End Seniors' Network](https://www.wesn.ca/).
 
 ## What it does
 
-- Shows amenities on an interactive map of Vancouver, centred on the West End.
-- Lets users filter by category, search by name/address, and narrow by
-  neighbourhood (West End, Downtown, Kitsilano, etc.).
+- Shows amenities on an interactive map of WESN's catchment — the West End
+  and Downtown.
+- Lets users filter by category, search by name/address, and narrow to one
+  neighbourhood or the other.
 - Each marker pops up with the place name, address, and a "Get directions"
   link that opens Google Maps.
 - Includes a text-size toggle and high-contrast styling for low-vision users.
@@ -48,6 +49,18 @@ Data is fetched at page load from the
 [`data/README.md`](./data/README.md) for the list of datasets.
 If the portal is unreachable, the page falls back to the bundled CSV
 (records visible in lists, but no map pins, since the CSV has no coordinates).
+
+## Coverage
+
+The map serves WESN's catchment: the West End and Downtown. The bundled
+snapshot and the live Open Data loaders both cover more of the city than
+that, so `loadAll()` in [`js/data.js`](./js/data.js) filters every source
+down to those two City of Vancouver "Local Area" values on the way in.
+
+Nothing is deleted from the data files to achieve this — widening or
+narrowing coverage is a one-line change to `SERVED_AREAS`. Note that the
+Downtown Eastside is a separate Local Area and is *not* included; the areas
+are matched whole, so it does not slip in under "Downtown".
 
 ## Running locally
 

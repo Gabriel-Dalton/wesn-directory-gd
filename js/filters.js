@@ -6,15 +6,21 @@
  *     tree mirroring the WHO Age-Friendly Communities framework (see
  *     js/taxonomy.js + js/categories.js).
  *   - Search input (matches name, sub-category, address).
- *   - Neighbourhood multi-select. Multiple boroughs can be combined; an
- *     "All of Vancouver" checkbox clears the borough filter entirely.
+ *   - Neighbourhood multi-select. Both neighbourhoods can be combined; the
+ *     "West End & Downtown" checkbox clears the neighbourhood filter entirely.
  *
  * Emits filter state changes via a callback; it does NOT touch the map
  * directly — app.js translates filter state into map updates.
  */
 window.AmenityFilters = (function () {
   const ALL_AREA = "__all__";
-  const KNOWN_AREAS = ["West End", "Downtown", "Kitsilano"];
+  // Mirrors the catchment gate in js/data.js. Nothing outside these areas is
+  // loaded, so the UI must not offer a neighbourhood that could only ever
+  // come back empty.
+  const KNOWN_AREAS = (window.AmenityData && window.AmenityData.SERVED_AREAS) || [
+    "West End",
+    "Downtown",
+  ];
 
   let allPlaces = [];
   let onChangeFn = () => {};
@@ -91,7 +97,7 @@ window.AmenityFilters = (function () {
       if (!(cb instanceof HTMLInputElement) || !cb.dataset.areaValue) return;
       const value = cb.dataset.areaValue;
       if (value === ALL_AREA) {
-        // "All of Vancouver" is mutually exclusive with the specific
+        // "West End & Downtown" is mutually exclusive with the individual
         // neighbourhood toggles — checking it clears the rest.
         if (cb.checked) state.areas.clear();
       } else {
@@ -117,7 +123,7 @@ window.AmenityFilters = (function () {
 
   /** True if a place's area passes the current neighbourhood filter. */
   function areaMatches(place) {
-    if (state.areas.size === 0) return true; // All of Vancouver
+    if (state.areas.size === 0) return true; // both neighbourhoods
     if (!place.area) return false;
     return state.areas.has(place.area);
   }
@@ -359,11 +365,17 @@ window.AmenityFilters = (function () {
       const saved = JSON.parse(raw);
       if (Array.isArray(saved.enabledGroups))
         state.enabledGroups = new Set(saved.enabledGroups);
+      // Anything we no longer serve is dropped on the way in. A session saved
+      // while Kitsilano was still an option would otherwise restore a filter
+      // that matches nothing and greet the user with an empty map; falling
+      // back to an empty set shows both neighbourhoods instead.
+      const known = (a) => KNOWN_AREAS.includes(a);
       if (Array.isArray(saved.areas)) {
-        state.areas = new Set(saved.areas);
+        state.areas = new Set(saved.areas.filter(known));
       } else if (typeof saved.area === "string") {
         // Migrate single-area state from the previous version.
-        state.areas = saved.area === "all" ? new Set() : new Set([saved.area]);
+        state.areas =
+          saved.area === "all" || !known(saved.area) ? new Set() : new Set([saved.area]);
       }
       if (Array.isArray(saved.collapsedDomains))
         state.collapsedDomains = new Set(saved.collapsedDomains);

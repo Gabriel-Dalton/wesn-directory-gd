@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A senior-friendly map of community amenities across Vancouver — clinics, pharmacies, libraries, community centres, washrooms, parks and more. Built for the West End Seniors' Network." />
+    <meta name="description" content="A senior-friendly map of community amenities across Vancouver's West End and Downtown — clinics, pharmacies, libraries, community centres, washrooms, parks and more. Built for the West End Seniors' Network." />
     <meta name="theme-color" content="#0e3b25" />
     <meta name="color-scheme" content="light only" />
     <!-- Dev: prevent the browser from serving stale CSS/JS from disk cache.
@@ -13,7 +13,7 @@
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Vancouver Amenities Map · WESN</title>
+    <title>West End &amp; Downtown Amenities Map · WESN</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,7 +42,7 @@
                decoding="async"
                fetchpriority="high" />
         </picture>
-        <h1>Vancouver <em>Amenities</em> Map</h1>
+        <h1>West End &amp; <em>Downtown</em></h1>
       </div>
       <nav class="site-nav" aria-label="Primary">
         <button id="filters-toggle" class="filters-toggle" type="button" aria-expanded="false" aria-controls="sidebar">
@@ -92,7 +92,7 @@
             <div id="area-options" class="area-options" role="group" aria-label="Filter places by neighbourhood">
               <label class="area-option">
                 <input type="checkbox" data-area-value="__all__" />
-                <span>All of Vancouver</span>
+                <span>West End &amp; Downtown</span>
               </label>
               <label class="area-option">
                 <input type="checkbox" data-area-value="West End" checked />
@@ -102,12 +102,8 @@
                 <input type="checkbox" data-area-value="Downtown" />
                 <span>Downtown</span>
               </label>
-              <label class="area-option">
-                <input type="checkbox" data-area-value="Kitsilano" />
-                <span>Kitsilano</span>
-              </label>
             </div>
-            <p class="area-hint">Tick more than one to combine neighbourhoods.</p>
+            <p class="area-hint">Tick both to see the whole catchment.</p>
           </fieldset>
         </section>
 
@@ -128,7 +124,7 @@
         </section>
       </aside>
 
-      <section id="map" class="map" aria-label="Map of Vancouver amenities"></section>
+      <section id="map" class="map" aria-label="Map of West End and Downtown amenities"></section>
     </main>
 
     <dialog id="place-detail" aria-labelledby="detail-name">
@@ -145,8 +141,8 @@
     <section id="about" class="about" aria-labelledby="about-heading">
       <h2 id="about-heading">About this map</h2>
       <p class="about-lede">
-        A senior-friendly directory of services and places across Vancouver,
-        built for the
+        A senior-friendly directory of services and places across Vancouver&rsquo;s
+        West End and Downtown, built for the
         <a href="https://www.wesn.ca/" target="_blank" rel="noopener">West End Seniors&rsquo; Network</a>
         using open data from the
         <a href="https://opendata.vancouver.ca/" target="_blank" rel="noopener">City of Vancouver</a>.
